@@ -2,8 +2,7 @@
   description = "Johnny's Nix Configuration";
 
   inputs = {
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-23.05-darwin"; # newest version as of may 2023, probably needs to get updated in november
-    # use unstable for linux-builder
+    # use unstable for linux-builder - consider replacing with nixpkgs-23.11-darwin once released in Nov 2023
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     home-manager.url = "github:nix-community/home-manager/release-23.05";
