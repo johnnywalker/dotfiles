@@ -62,35 +62,51 @@
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
-  environment.systemPackages = with pkgs; [
-    act
-    alejandra
-    cargo
-    cargo-udeps
-    colima
-    curl
-    docker-compose
-    direnv
-    emacs29-macport
-    # (import ./emacs.nix {inherit pkgs;})
-    evcxr
-    git
-    gnupg
-    iconv # not sure why
-    jq
-    htop
-    # neovide # build fails
-    neovim
-    nil
-    # nixos-generators
-    # php-with-extensions # remove?
-    ripgrep
-    rustc
-    rustfmt
-    vim
-    wireguard-go
-    wireguard-tools
-  ];
+  environment.systemPackages = with pkgs;
+    [
+      act
+      alacritty
+      alejandra
+      cargo
+      cargo-udeps
+      clipboard-jh
+      colima
+      curl
+      docker-compose
+      direnv
+      emacs29-macport
+      # (import ./emacs.nix {inherit pkgs;})
+      evcxr
+      git
+      gnupg
+      iconv # not sure why
+      jq
+      htop
+      # neovide # build fails
+      neovim
+      nil
+      # nixos-generators
+      nodejs
+      # php-with-extensions # remove?
+      ripgrep
+      rustc
+      rustfmt
+      vim
+      wireguard-go
+      wireguard-tools
+    ]
+    ++ (with nodePackages; [
+      prettier
+      typescript-language-server
+    ])
+    ++ (with pkgs.haskellPackages; [
+      apply-refact
+      # haskell-language-server
+      hasktags
+      hlint
+      hoogle
+      stylish-haskell
+    ]);
 
   security.pam.enableSudoTouchIdAuth = true;
 
