@@ -5,7 +5,7 @@
     # use unstable for linux-builder - consider replacing with nixpkgs-23.11-darwin once released in Nov 2023
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-    home-manager.url = "github:nix-community/home-manager/release-23.05";
+    home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     darwin.url = "github:lnl7/nix-darwin";
@@ -41,8 +41,17 @@
     darwinConfigurations."des-jwmac" = darwin.lib.darwinSystem {
       system = "x86_64-darwin";
       modules = [
-        # home-manager.darwinModules.home-manager
         ./hosts/des-jwmac/default.nix
+        home-manager.darwinModules.home-manager
+        {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.johnny = import ./home/johnny/des-jwmac.nix;
+          };
+          # https://github.com/LnL7/nix-darwin/issues/682
+          users.users.johnny.home = "/Users/johnny";
+        }
       ];
     };
   };
