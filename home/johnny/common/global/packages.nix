@@ -5,7 +5,7 @@
       age
       age-plugin-yubikey
       alejandra
-      awscli
+      awscli2
       cargo
       cargo-udeps
       clipboard-jh
