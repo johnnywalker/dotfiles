@@ -29,12 +29,14 @@
       rustc
       rustfmt
       unzip
+      vips # for sharp
       wget
       yarn
       yq
       zip
     ]
     ++ (with nodePackages; [
+      node-gyp
       prettier
       typescript-language-server
     ])
