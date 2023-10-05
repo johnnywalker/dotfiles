@@ -23,7 +23,8 @@
       nil
       nodejs
       openssl
-      python3Minimal
+      packer
+      python3
       ripgrep
       rover
       rustc
