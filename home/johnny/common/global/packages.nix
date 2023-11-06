@@ -13,6 +13,8 @@
       dig
       docker
       docker-compose
+      eslint_d # eslint server for emacs
+      fd # faster find
       gdb
       gnupg
       go
