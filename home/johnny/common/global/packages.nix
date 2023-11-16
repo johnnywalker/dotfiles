@@ -32,6 +32,7 @@
       rover
       rustc
       rustfmt
+      terraform
       unzip
       vips # for sharp
       wget

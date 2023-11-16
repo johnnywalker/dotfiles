@@ -49,6 +49,8 @@
             useUserPackages = true;
             users.johnny = import ./home/johnny/des-jwmac.nix;
           };
+          # for terraform
+          nixpkgs.config.allowUnfree = true;
           # https://github.com/LnL7/nix-darwin/issues/682
           users.users.johnny.home = "/Users/johnny";
         }
