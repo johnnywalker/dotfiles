@@ -41,6 +41,7 @@
     ]
     ++ (with nodePackages; [
       node-gyp
+      npm-check-updates
       prettier
       typescript-language-server
     ])
