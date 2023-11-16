@@ -21,6 +21,7 @@
       htop
       jetbrains-mono
       jq
+      k6
       moreutils
       nil
       nodejs
