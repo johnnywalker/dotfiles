@@ -165,11 +165,6 @@ in {
         # cat on steroids
         cat = "bat";
 
-        # use locally built terraform with aws-sdk-go v1.44.298 installed for SSO support
-        # - remove when Terraform 1.6 released
-        # https://github.com/hashicorp/terraform/pull/33607
-        terraform = "$GOPATH/bin/terraform";
-
         history = "omz_history";
       };
       syntaxHighlighting.enable = true;
