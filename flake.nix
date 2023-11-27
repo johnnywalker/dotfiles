@@ -5,6 +5,8 @@
     # use unstable for linux-builder - consider replacing with nixpkgs-23.11-darwin once released in Nov 2023
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixpkgs-23.05-darwin";
+
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -18,6 +20,7 @@
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-stable,
     home-manager,
     darwin,
     treefmt-nix,
@@ -51,6 +54,11 @@
           };
           # for terraform
           nixpkgs.config.allowUnfree = true;
+          nixpkgs.overlays = [
+            (prev: final: {
+              stable = import nixpkgs-stable {inherit (prev) system;};
+            })
+          ];
           # https://github.com/LnL7/nix-darwin/issues/682
           users.users.johnny.home = "/Users/johnny";
         }

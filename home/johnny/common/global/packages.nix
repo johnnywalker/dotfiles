@@ -5,7 +5,10 @@
       age
       age-plugin-yubikey
       alejandra
-      awscli2
+      # use stable version due to error:
+      # - error: assertion '((pyproject != null) -> (format == null))' failed
+      # already fixed but not in `nixpkgs-unstable` yet: https://github.com/NixOS/nixpkgs/pull/268590
+      stable.awscli2
       cargo
       cargo-udeps
       clipboard-jh
