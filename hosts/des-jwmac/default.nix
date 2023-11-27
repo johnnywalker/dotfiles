@@ -15,12 +15,9 @@
     linux-builder = {
       enable = true;
       maxJobs = 4;
-      modules = [
-        {virtualisation.cores = 4;}
-        # ({config, ...}: {
-        #   virtualisation.cores = 4;
-        # })
-      ];
+      config = {
+        virtualisation.cores = 4;
+      };
     };
 
     # optimise = {
