@@ -19,6 +19,7 @@
       eslint_d # eslint server for emacs
       fd # faster find
       gdb
+      gnumake
       gnupg
       go
       htop
@@ -30,6 +31,8 @@
       nodejs
       openssl
       packer
+      pandoc
+      pre-commit
       python3
       ripgrep
       rover
@@ -42,6 +45,7 @@
       yarn
       yq
       zip
+      zstd
     ]
     ++ (with nodePackages; [
       node-gyp
