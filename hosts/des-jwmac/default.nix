@@ -63,9 +63,6 @@
     alacritty
     colima
     emacs29-macport
-    # version installed by HomeBrew keeps emitting:
-    # > error: gcc: error: unrecognized command-line option '--target=x86_64-apple-darwin'
-    gcc
     # (import ./emacs.nix {inherit pkgs;})
     iconv # not sure why
     # neovide # build fails
