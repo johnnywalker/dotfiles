@@ -2,12 +2,10 @@
   nix = {
     distributedBuilds = true;
 
-    # gc = {
-    #   automatic = true;
-    #   dates = "daily";
-    #   options = "--delete-older-than 14d";
-    #   persistent = true;
-    # };
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 14d";
+    };
 
     # had trouble getting this to build the first time and had to bootstrap
     # https://nixos.org/manual/nixpkgs/unstable/#sec-darwin-builder
@@ -20,15 +18,10 @@
       };
     };
 
-    # optimise = {
-    #   automatic = true;
-    #   dates = ["daily"];
-    # };
-
     package = pkgs.nix;
 
     settings = {
-      # auto-optimise-store = true;
+      auto-optimise-store = true;
       experimental-features = ["nix-command" "flakes" "repl-flake"];
       # keep-derivations = true;
       # keep-outputs = true;
