@@ -79,5 +79,35 @@
 
   security.pam.enableSudoTouchIdAuth = true;
 
-  system.defaults.dock.autohide = true;
+  system.defaults = {
+    dock = {
+      autohide = true;
+      magnification = false;
+      mru-spaces = false;
+      orientation = "bottom";
+      tilesize = 42;
+      wvous-bl-corner = 1;
+      wvous-br-corner = 1;
+      wvous-tl-corner = 1;
+      wvous-tr-corner = 1;
+    };
+    finder = {
+      ShowPathbar = true;
+      ShowStatusBar = true;
+    };
+    menuExtraClock.Show24Hour = true;
+    spaces.spans-displays = false;
+    trackpad.Clicking = true;
+    NSGlobalDomain = {
+      # Automatic dark mode at night
+      AppleInterfaceStyleSwitchesAutomatically = true;
+
+      AppleShowAllExtensions = true;
+
+      # 15 milliseconds until the key repeats, then 2 milliseconds
+      # between subsequent inputs. This can be achieved in the settings UI
+      InitialKeyRepeat = 35;
+      KeyRepeat = 2;
+    };
+  };
 }
