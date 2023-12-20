@@ -50,12 +50,18 @@
     };
   };
 
-  # homebrew = {
-  #   enable = true;
-  #   autoUpdate = true;
-
-  #   casks = [];
-  # };
+  homebrew = {
+    enable = true;
+    # casks = [ "iterm2" "qtpass" ];
+    # masApps = {
+    #   Tailscale = 1475387142;
+    # };
+    onActivation = {
+      autoUpdate = true;
+      # uncomment to remove packages not listed above
+      # cleanup = "uninstall";
+    };
+  };
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
