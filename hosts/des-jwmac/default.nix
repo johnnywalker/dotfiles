@@ -63,6 +63,12 @@
     };
   };
 
+  environment.shells = with pkgs; [
+    bashInteractive
+    # fish
+    zsh
+  ];
+
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
@@ -109,5 +115,9 @@
       InitialKeyRepeat = 35;
       KeyRepeat = 2;
     };
+  };
+
+  users.users."johnny" = {
+    shell = pkgs.zsh;
   };
 }
