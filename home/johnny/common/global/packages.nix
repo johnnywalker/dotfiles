@@ -33,6 +33,7 @@
       packer
       pandoc
       pre-commit
+      pstree
       python3
       ripgrep
       rover
