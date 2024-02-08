@@ -26,6 +26,7 @@
       jetbrains-mono
       jq
       k6
+      metals # language server for scala
       moreutils
       nil
       nodejs
