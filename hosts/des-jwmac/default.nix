@@ -21,7 +21,8 @@
     package = pkgs.nix;
 
     settings = {
-      auto-optimise-store = true;
+      # https://github.com/NixOS/nix/issues/7273
+      auto-optimise-store = pkgs.stdenv.isLinux;
       experimental-features = ["nix-command" "flakes" "repl-flake"];
       # keep-derivations = true;
       # keep-outputs = true;
