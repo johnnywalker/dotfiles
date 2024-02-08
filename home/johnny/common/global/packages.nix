@@ -8,6 +8,7 @@
       # if unstable version encounters build errors, try stable version
       # stable.awscli2
       awscli2
+      bitwarden-cli
       cargo
       cargo-udeps
       clipboard-jh
