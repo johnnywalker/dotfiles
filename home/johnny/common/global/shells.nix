@@ -58,7 +58,7 @@
     export GPG_TTY=$(tty)
 
     ${pkgs.fortune}/bin/fortune | ${pkgs.cowsay}/bin/cowsay
-    source ${pkgs.awscli2}/share/zsh/site-functions/aws_zsh_completer.sh
+    source ${pkgs.awscli2}/share/zsh/site-functions/_aws
   '';
 
   zshProfileExtra = ''
