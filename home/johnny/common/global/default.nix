@@ -5,6 +5,7 @@
 }: {
   imports = [
     ./bat.nix
+    ./emacs
     ./git.nix
     ./neovim.nix
     ./packages.nix
