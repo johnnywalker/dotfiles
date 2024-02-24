@@ -801,6 +801,7 @@ This function is called at the very end of Spacemacs initialization."
  '(css-indent-offset 2)
  '(fill-column 100)
  '(json-reformat:indent-width 2)
+ '(lisp-indent-offset 2)
  '(lsp-auto-execute-action nil)
  '(lsp-clients-typescript-preferences '(:importModuleSpecifierPreference "project-relative"))
  '(lsp-clients-typescript-server-args '("--stdio"))
