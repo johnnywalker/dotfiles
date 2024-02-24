@@ -13,7 +13,10 @@ indent_style = space
 indent_size = 4
 max_line_length = 100
 
-[*.{[cm]js,js,json,nix,sh,[cm]ts,ts,yml,yaml}]
+[*.{el,[cm]js,js,json,nix,sh,[cm]ts,ts,yml,yaml}]
+indent_size = 2
+
+[spacemacs]
 indent_size = 2
 
 [*.{md,txt}]
