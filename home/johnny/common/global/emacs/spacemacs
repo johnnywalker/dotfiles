@@ -782,19 +782,7 @@ before packages are loaded."
   (eval-after-load "org"
     '(require 'ox-pandoc nil t))
 
-  ;; override helm-ag to fix rg compatibility
-  (require 'helm-ag)
-
   ;; add missing entries for copilot--infer-indentation-offset
-
-  ;; `helm-descbinds-mode' cannot be used with `which-key-mode', but both are loaded automatically
-  ;; by default. See https://github.com/emacs-helm/helm-descbinds/issues/32#issuecomment-1936969435
-  (eval-after-load "helm-descbinds"
-    '(when helm-descbinds-mode
-       (message "Disabling 'helm-descbinds-mode' and enabling 'which-key-mode'")
-       (remove-hook 'helm-mode-hook 'helm-descbinds-mode)
-       (helm-descbinds-mode -1)
-       (which-key-mode 1)))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
