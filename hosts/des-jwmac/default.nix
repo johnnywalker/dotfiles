@@ -53,6 +53,9 @@
 
   homebrew = {
     enable = true;
+    brews = [
+      "asimov" # automatically exclude dev dependencies from Time Machine
+    ];
     # casks = [ "iterm2" "qtpass" ];
     # masApps = {
     #   Tailscale = 1475387142;
