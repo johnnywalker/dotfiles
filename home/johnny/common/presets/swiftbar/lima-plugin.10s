@@ -1,0 +1,602 @@
+#!/usr/bin/env python3
+#
+# Lima Swiftbar/Xbar plugin
+#
+# Copyright 2021, Joe Block <jpb@unixorn.net>
+#
+# <xbar.title>Lima Control</xbar.title>
+# <xbar.version>v1.3.2</xbar.version>
+# <xbar.author>Joe Block</xbar.author>
+# <xbar.author.github>unixorn</xbar.author.github>
+# <xbar.desc>Control Lima VM</xbar.desc>
+# <xbar.dependencies>jq,lima</xbar.dependencies>
+# <xbar.image>https://raw.githubusercontent.com/unixorn/lima-xbar-plugin/main/pix/limactl-screen-shot.png</xbar.image>
+# <xbar.abouturl>https://github.com/unixorn/lima-xbar-plugin/</xbar.abouturl>
+# <swiftbar.runInBash>false</swiftbar.runInBash>
+#
+# Dependencies:
+#   lima - https://github.com/lima-vm/lima
+#   jq - https://stedolan.github.io/jq/
+
+import argparse
+import json
+import logging
+import logging.handlers
+import os
+import subprocess
+import sys
+
+# import syslog
+
+# Running VM color (default green)
+RUNNING_VM_COLOR = "#29cc00"
+
+# Stopped VM color (default red)
+STOPPED_VM_COLOR = "#ff0033"
+
+VERSION = "1.3.3"
+
+
+def logSetup(level: str = "INFO"):
+    maclog = logging.handlers.SysLogHandler(
+        address="/var/run/syslog", facility="local1"
+    )
+    maclog.ident = "lima-xbar"
+
+    loglevel = getattr(logging, level.upper(), None)
+    logFormat = " [%(asctime)s][%(levelname)8s][%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s"
+    logging.basicConfig(level=loglevel, format=logFormat)
+
+    maclog.setLevel(loglevel)
+
+    # set a format which is simpler for console use
+    formatter = logging.Formatter(" %(name)-12s: %(levelname)-8s %(message)s")
+
+    # tell the handler to use this format
+    maclog.setFormatter(formatter)
+
+    # add the handler to the root logger
+    logging.getLogger("").addHandler(maclog)
+    logging.debug("Set log level to %s", level.upper())
+
+
+def parseCLI():
+    """
+    Parse the command line options
+    """
+    parser = argparse.ArgumentParser(description="Lima Swiftbar/Xbar plugin")
+    parser.add_argument("-d", "--debug", help="Debug setting", action="store_true")
+    parser.add_argument(
+        "-l",
+        "--log-level",
+        type=str.upper,
+        help="set log level",
+        choices=["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"],
+        default="CRITICAL",
+    )
+    parser.add_argument(
+        "--vm", "--virtual-machine", type=str, help="Which vm to use", default="default"
+    )
+    parser.add_argument("--target", type=str, help="Which image/vm/container to target")
+
+    parser.add_argument(
+        "--container-action",
+        choices=["start", "stop", "rm", "pause", "unpause"],
+        help="Action to perform on a container",
+    )
+    parser.add_argument(
+        "--image-action", choices=["pull", "rm"], help="Action to perform on image"
+    )
+    parser.add_argument("--pull-new-image", action="store_true")
+    parser.add_argument(
+        "--vm-action",
+        choices=["start", "stop", "lima"],
+        help="Action to perform on vm",
+    )
+    cliArgs = parser.parse_args()
+    return cliArgs
+
+
+# fun with osascript
+
+
+def displayAlert(title: str, message: str):
+    """
+    Display an alert using osascript. Blocking.
+
+    :param str title:
+    :param str message:
+    """
+    alertCommand = f'display alert "{title}" message "{message}"'
+    runCommand(command=["osascript", "-e", alertCommand])
+
+
+def displayNotification(title: str, message: str):
+    """
+    Publish a notification to the notification manager.
+
+    :param str title:
+    :param str message:
+    """
+    alertCommand = f'display notification "{message}" with title "{title}" '
+    runCommand(command=["osascript", "-e", alertCommand])
+
+
+def inputDialog(user_prompt: str, icon: str = "note"):
+    """
+    Uses osascript to present a dialog with a prompt and returns the user's answer.
+
+    :param str prompt:
+    :param str icon: note,
+
+    :return str:
+    """
+    valid_icons = ["caution", "note", "stop"]
+    if icon.lower() not in valid_icons:
+        icon = "note"
+
+    applescript = f"""set dialogText to text returned of (display dialog "{user_prompt}" default answer "")
+   return dialogText
+    """
+
+    answer = runCommand(command=["osascript", "-e", applescript]).strip()
+    logging.debug(f"Asked {user_prompt} , got answer: {answer}")
+    return answer
+
+
+def runCommand(command: list, env=dict(os.environ)):
+    """
+    Run a command and return the decoded output
+
+    :param list command:
+
+    :return str:
+    """
+    return subprocess.run(command, env=env, stdout=subprocess.PIPE).stdout.decode(
+        "utf-8"
+    )
+
+
+def jsonCommand(command: list, env=dict(os.environ)):
+    """
+    Run a command and decode the json output
+
+    :param list command:
+    :return dict:
+    """
+    json_output = runCommand(command=command, env=env)
+
+    data = []
+    for line in json_output.splitlines():
+        try:
+            details = json.loads(line)
+            data.append(details)
+        except json.decoder.JSONDecodeError:
+            logging.error("Bad JSON returned: %s", line)
+    return data
+
+
+def listContainers(vm: str = "default"):
+    """
+    List all containers in a VM
+
+    :param vm:
+
+    :return dict:
+    """
+    containers = {}
+    env = prep_environment_for_lima(vm=vm)
+
+    command = [
+        "lima",
+        "nerdctl",
+        "container",
+        "ls",
+        "-a",
+        "--format",
+        "{{json .}}",
+    ]
+    raw = jsonCommand(command=command, env=env)
+    for container in raw:
+        try:
+            if container["Names"] != "":
+                key = container["Names"]
+            else:
+                key = container["ID"]
+            containers[key] = container
+        except KeyError:
+            logging.error("Bad container record: %s", container)
+    return containers
+
+
+def listImages(vm: str = "default"):
+    """
+    List all images in a VM
+
+    :param vm:
+
+    :return dict:
+    """
+    images = {}
+    env = prep_environment_for_lima(vm=vm)
+
+    command = ["lima", "nerdctl", "images", "--format", "{{json .}}"]
+    raw = jsonCommand(command=command, env=env)
+    logging.debug("Processing command output...")
+    for image in raw:
+        try:
+            repo = "ERROR"
+            tag = "ERROR"
+            if "Repository" in image:
+                repo = image["Repository"]
+            else:
+                logging.error("Repository key missing")
+            if "Tag" in image:
+                tag = image["Tag"]
+            else:
+                logging.error("Tag key missing")
+            images["%s:%s" % (repo, tag)] = image
+        except KeyError:
+            logging.error("Bad image record: %s", image)
+            logging.error("Keys: %s", image.keys())
+            logging.error(" ")
+    return images
+
+
+def listVMs():
+    """
+    List all VMs
+
+    :return dict:
+    """
+    vmList = {}
+
+    env = prep_environment_for_lima()
+
+    vmRaw = subprocess.run(
+        ["limactl", "list", "--json"], env=env, stdout=subprocess.PIPE
+    ).stdout.decode("utf-8")
+
+    for vm in vmRaw.splitlines():
+        details = json.loads(vm)
+        vmList[details["name"]] = details
+    return vmList
+
+
+# Submenu processing
+
+
+def prep_environment_for_lima(vm: str = "default", env: dict = dict(os.environ)):
+    """
+    Set up an environment dictionary we can use to run a lima command.
+
+    Also adds /usr/local/{s}bin, /opt/homebrew/{s}bin, /opt/local/{s}bin,
+    ~/homebrew/{s}bin and ~/{s}bin to $PATH if they exist and are directories.
+
+    :param str vm: VM to work in
+    :param dict env: Environment variables to base returned environment on
+
+    :return dict: Environment dictionary, with extra bindirs added to $PATH
+    """
+    extrapaths = [
+        "/opt/homebrew/bin",
+        "/opt/homebrew/sbin",
+        "/opt/local/bin",
+        "/opt/local/sbin",
+        "/usr/local/bin",
+        "/usr/local/sbin",
+        f"{os.environ.get('HOME')}/bin",
+        f"{os.environ.get('HOME')}/homebrew/bin",
+        f"{os.environ.get('HOME')}/homebrew/sbin",
+        f"{os.environ.get('HOME')}/sbin",
+    ]
+    for p in extrapaths:
+        if os.path.isdir(p):
+            logging.info("Adding %s to $PATH", p)
+            newpath = "%s:%s" % (env["PATH"], p)
+            env["PATH"] = newpath
+    logging.info("New path: %s", env["PATH"])
+
+    if vm != "default":
+        logging.info("Setting LIMA_INSTANCE to %s", vm)
+        env["LIMA_INSTANCE"] = vm
+    return env
+
+
+def containerOps(action: str, container: str, vm: str = "default"):
+    """
+    Handle container operations
+
+    :param str action: What container op to do
+    :param str container: What container to do the action on
+    :param str vm: Which VM is the container in?
+    """
+    logging.warning("containerOps")
+    logging.debug("action: %s" % action)
+    logging.debug("container: %s" % container)
+    logging.debug("vm: %s" % vm)
+
+    env = prep_environment_for_lima(vm=vm)
+
+    command = ["lima", "nerdctl", "container", action, container]
+    logging.warning("containerops command: %s", command)
+    displayNotification(title="Lima VM", message=" ".join(command))
+
+    output = runCommand(command=command, env=env)
+    logging.warning(output)
+    logging.warning("%s complete", action)
+    displayNotification(title="Task complete", message=" ".join(command))
+
+
+def imageOps(action: str, image: str, vm: str = "default"):
+    """
+    Handle VM operations
+
+    :param str action: What image op to do
+    :param str image: What image to do the action on
+    :param str vm: Which VM is the image in?
+    """
+    logging.info("imageOps")
+    logging.info("action: %s" % action)
+    logging.info("image: %s" % image)
+    logging.info("vm: %s" % vm)
+
+    env = prep_environment_for_lima(vm=vm)
+
+    command = ["lima", "nerdctl", "image", action, image]
+    logging.warning("command: %s", command)
+    logging.warning("PATH: %s", env["PATH"])
+    displayNotification(title="Lima VM", message=" ".join(command))
+    output = runCommand(command=command, env=env)
+    logging.debug(output)
+    logging.warning("%s complete", action)
+    displayNotification(title="Task complete", message=" ".join(command))
+
+
+def limaCommand(vm: str):
+    """
+    Run an arbitrary command with lima
+
+    :param str vm: Which vm to run the command in
+    """
+    env = prep_environment_for_lima(vm=vm)
+    user_command = inputDialog(
+        user_prompt=f"What lima command do you want to run in the {vm} VM?"
+    )
+
+    if user_command != "":
+        lima_command = ["lima"] + user_command.split()
+        displayNotification(
+            title=f"Running '{user_command}'", message=" ".join(lima_command)
+        )
+        runCommand(command=lima_command, env=env)
+        displayNotification(title=f"Ran '{user_command}' in {vm}", message="Completed")
+    else:
+        displayAlert(title="Error!", message="No nerdctl command specified")
+
+
+def vmOps(action: str, vm: str = "default"):
+    """
+    Handle VM operations
+
+    :param str action: What action to run - should be start or stop
+    :param str vm: Name of VM to act on
+    """
+    logging.info("vmOps")
+    logging.debug("action: %s" % action)
+    logging.debug("vm: %s" % vm)
+
+    env = prep_environment_for_lima(vm=vm)
+
+    if action == "lima":
+        limaCommand(vm=vm)
+
+    if action in ["start", "stop"]:
+        command = ["limactl", action, vm]
+        logging.info("command: %s", command)
+
+        displayNotification(title="Lima VM", message=" ".join(command))
+        output = runCommand(command=command, env=env)
+        logging.debug(output)
+
+        logging.info("%s complete", action)
+        displayNotification(title="Task completed", message=" ".join(command))
+
+
+def pullNewImage(vm: str = "default"):
+    """
+    Pulls a new image.
+
+    Args:
+        vm (str, optional): Which VM to pull the new image into. Defaults to 'default'.
+    """
+    env = prep_environment_for_lima(vm=vm)
+    image = inputDialog(user_prompt=f"What image should we pull into VM {vm}?")
+    if image != "":
+        pull_command = ["lima", "nerdctl", "image", "pull", image]
+        displayNotification(
+            title=f"Pulling image {image}", message=" ".join(pull_command)
+        )
+        runCommand(command=pull_command, env=env)
+        displayNotification(title=f"Pulling image {image}", message="Completed")
+    else:
+        displayAlert(title="Error!", message="No image specified")
+
+
+# Actual Xbar-compatible output
+
+
+def xbar_icon(vms: dict = {}):
+    """
+    Determine icon to display in menubar.
+
+    We display a running menubar icon if at least one VM is running.
+
+    :param dict vms: Data about Lima VMs
+    """
+    menuBarIcon = f"🐋❗ | color={STOPPED_VM_COLOR}"
+    for vm in vms:
+        logging.debug("vm: %s", vm)
+        if vms[vm]["status"] == "Running":
+            menuBarIcon = f"🐋 🏃 | color={RUNNING_VM_COLOR}"
+            break
+    print(menuBarIcon)
+    print("---")
+
+
+def aboutMenu():
+    """
+    Print details about plugin
+    """
+    env = prep_environment_for_lima()
+    limaVersion = subprocess.run(
+        ["limactl", "--version"], stdout=subprocess.PIPE, env=env
+    ).stdout.decode("utf-8")
+
+    print("About…")
+    print("-- Lima version: %s" % limaVersion.strip())
+    print("-- Lima home | href=https://github.com/lima-vm/lima")
+    print("-- lima-xbar version: %s" % VERSION)
+    print("-- force rescan | bash=limactl param1=list terminal=false refresh=true")
+
+
+def vmContainerSubMenu(vm: str = "default"):
+    """
+    Generate a container submenu for a VM
+
+    :param str vm:
+    """
+    plugin_f = __file__
+    containers = listContainers(vm=vm)
+
+    logging.debug("containers: %s", containers)
+
+    print("-- Containers")
+    for container in containers:
+        if containers[container]["Status"] == "Up":
+            print("---- %s | color=%s" % (container, RUNNING_VM_COLOR))
+            print("------ Running")
+            print(
+                f'------ stop | shell="{plugin_f}" param1="--vm" param2={vm} param3="--container-action" param4=stop param5="--target" param6={container} terminal=false refresh=true'
+            )
+            print(
+                f'------ kill | shell="{plugin_f}" param1="--vm" param2={vm} param3="--container-action" param4=kill param5="--target" param6={container} terminal=false refresh=true'
+            )
+            print(
+                f'------ pause | shell="{plugin_f}" param1="--vm" param2={vm} param3="--container-action" param4=pause param5="--target" param6={container} terminal=false refresh=true'
+            )
+        else:
+            print("---- %s | color=%s" % (container, STOPPED_VM_COLOR))
+            print("------ Stopped")
+            print(
+                f'------ rm | shell="{plugin_f}" param1="--vm" param2={vm} param3="--container-action" param4=rm param5="--target" param6={container} terminal=false refresh=true'
+            )
+            print(
+                f'------ start | shell="{plugin_f}" param1="--vm" param2={vm} param3="--container-action" param4=start param5="--target" param6={container} terminal=false refresh=true'
+            )
+            print(
+                f'------ unpause | shell="{plugin_f}" param1="--vm" param2={vm} param3="--container-action" param4=unpause param5="--target" param6={container} terminal=false refresh=true'
+            )
+
+
+def vmImageSubMenu(vm: str = "default"):
+    """
+    Generate an image submenu for a VM
+
+    :param str vm:
+    """
+    plugin_f = __file__
+    images = listImages(vm=vm)
+
+    logging.debug("images: %s", images)
+
+    print("-- Images")
+    print(
+        f'---- pull new image| bash="{plugin_f}" param1=--vm param2={vm} param3=--pull-new-image terminal=false refresh=true'
+    )
+    for image in images:
+        print("---- %s" % image)
+        print(
+            f'------ pull | bash="{plugin_f}" param1=--vm param2={vm} param3=--image-action=pull param4=--target={image} terminal=false refresh=true'
+        )
+        print(
+            f'------ rm | bash="{plugin_f}" param1=--vm param2={vm} param3=--image-action=rm param4=--target={image} terminal=false refresh=true'
+        )
+
+
+def vmMenu(vmData: dict = {}):
+    """
+    Generate submenus for all the VMs, running or not
+    """
+    plugin_f = __file__
+    logging.debug("vmMenu")
+    logging.debug("vmData: %s", vmData)
+
+    for vm in vmData:
+        logging.debug("status %s", vmData[vm]["status"])
+        if vmData[vm]["status"] != "Running":
+            print("%s VM is stopped | color=%s" % (vm, STOPPED_VM_COLOR))
+            print(
+                f"""-- ▶️ Start {vm} VM | shell=\"{plugin_f}\" param1='--vm={vm}' param2='--vm-action=start' terminal=false refresh=true"""
+            )
+        else:
+            print(f"{vm} VM (running) | color={RUNNING_VM_COLOR}")
+            print(
+                f"""-- ❌ Stop {vm} VM | color={STOPPED_VM_COLOR} shell=\"{plugin_f}\" param1='--vm={vm}' param2='--vm-action=stop' terminal=false refresh=true"""
+            )
+            print(
+                f"""-- 🐚 Run lima command | shell=\"{plugin_f}\" param1='--vm={vm}' param2='--vm-action=lima' terminal=false refresh=true"""
+            )
+            vmContainerSubMenu(vm=vm)
+            vmImageSubMenu(vm=vm)
+
+
+def xbarMenu():
+    """
+    Generate Xbar Menu
+    """
+    vms = listVMs()
+
+    xbar_icon(vms)
+    aboutMenu()
+    vmMenu(vmData=vms)
+
+
+def main():
+    """
+    Main program driver
+    """
+
+    cli = parseCLI()
+    logSetup(level=cli.log_level)
+
+    logging.debug("plugin path: %s" % __file__)
+    logging.debug("VERSON: %s", VERSION)
+
+    logging.debug("cli: %s" % cli)
+
+    logging.info("argv[0] %s" % sys.argv[0])
+
+    xbarMenu()
+
+    if cli.container_action:
+        logging.info("container action: %s", cli.container_action)
+        containerOps(vm=cli.vm, action=cli.container_action, container=cli.target)
+        sys.exit()
+
+    if cli.image_action:
+        logging.info("image action: %s", cli.image_action)
+        imageOps(action=cli.image_action, image=cli.target, vm=cli.vm)
+        sys.exit()
+
+    if cli.vm_action:
+        logging.info("vm action: %s", cli.vm_action)
+        vmOps(action=cli.vm_action, vm=cli.vm)
+        sys.exit()
+
+    if cli.pull_new_image:
+        pullNewImage(vm=cli.vm)
+
+
+if __name__ == "__main__":
+    main()

@@ -56,6 +56,14 @@
     brews = [
       "asimov" # automatically exclude dev dependencies from Time Machine
     ];
+    casks = [
+      "chromium"
+      "font-fira-code-nerd-font"
+      "font-jetbrains-mono-nerd-font"
+      "librecad"
+      "meld" # visual diff and merge tool
+      "swiftbar" # custom menu bar apps on macOS
+    ];
     # casks = [ "iterm2" "qtpass" ];
     # masApps = {
     #   Tailscale = 1475387142;
