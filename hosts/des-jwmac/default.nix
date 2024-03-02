@@ -78,6 +78,7 @@
     emacs29-macport
     # (import ./emacs.nix {inherit pkgs;})
     iconv # not sure why
+    lima
     # neovide # build fails
     # nixos-generators
     # php-with-extensions # remove?

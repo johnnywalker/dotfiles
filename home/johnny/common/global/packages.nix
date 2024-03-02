@@ -15,14 +15,17 @@
       curl
       dig
       docker
+      docker-buildx
       docker-compose
       eslint_d # eslint server for emacs
       fd # faster find
       gdb
       gnumake
       gnupg
+      gnutar
       go
       htop
+      iperf # network performance testing
       jetbrains-mono
       jq
       k6
@@ -33,6 +36,7 @@
       openssl
       packer
       pandoc
+      pipenv
       pre-commit
       pstree
       python3
@@ -40,7 +44,10 @@
       rover
       rustc
       rustfmt
+      scc # code statistics
+      sipcalc # subnet calculator
       terraform
+      unixtools.watch
       unzip
       vips # for sharp
       wget
