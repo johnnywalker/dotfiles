@@ -4,7 +4,12 @@
 
     gc = {
       automatic = true;
-      options = "--delete-older-than 14d";
+      interval = {
+        Weekday = 0;
+        Hour = 2;
+        Minute = 0;
+      };
+      options = "--delete-older-than 30d";
     };
 
     # had trouble getting this to build the first time and had to bootstrap
