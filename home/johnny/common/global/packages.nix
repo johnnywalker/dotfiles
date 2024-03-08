@@ -33,6 +33,7 @@
       moreutils
       nil
       nodejs
+      openjdk
       openssl
       packer
       pandoc
