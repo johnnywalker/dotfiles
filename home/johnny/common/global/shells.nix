@@ -70,9 +70,6 @@
     # export LDFLAGS="-L/usr/local/opt/libffi/lib"
     # export PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig"
 
-    # help Gradle find ~/.gradle/gradle.properties
-    export GRADLE_USER_HOME="${config.home.homeDirectory}/.gradle"
-
     # configure golang
     export GOPATH="${config.home.homeDirectory}/go"
 
