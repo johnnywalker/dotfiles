@@ -10,6 +10,7 @@
     ./neovim.nix
     ./packages.nix
     ./shells.nix
+    ./sops.nix
   ];
 
   home = {
@@ -20,6 +21,8 @@
     sessionVariables = {
       LANG = "en_US.UTF-8";
       LC_CTYPE = "en_US.UTF-8";
+      GRADLE_USER_HOME = "${config.xdg.configHome}/gradle";
+      NPM_CONFIG_USERCONFIG = "${config.xdg.configHome}/npm/npmrc";
     };
   };
 

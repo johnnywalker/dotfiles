@@ -13,6 +13,9 @@
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -23,6 +26,7 @@
     nixpkgs-stable,
     home-manager,
     darwin,
+    sops-nix,
     treefmt-nix,
   }: let
     supportedSystems = ["x86_64-darwin" "aarch64-darwin"];
@@ -48,6 +52,9 @@
         home-manager.darwinModules.home-manager
         {
           home-manager = {
+            sharedModules = [
+              sops-nix.homeManagerModules.sops
+            ];
             useGlobalPkgs = true;
             useUserPackages = true;
             users.johnny = import ./home/johnny/des-jwmac.nix;
