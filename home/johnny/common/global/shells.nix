@@ -120,7 +120,8 @@ in {
     };
     eza = {
       enable = true;
-      enableAliases = true;
+      enableZshIntegration = true;
+      enableBashIntegration = true;
     };
     fzf = {
       enableZshIntegration = true;
@@ -132,8 +133,8 @@ in {
       enableZshIntegration = true;
     };
     zsh = {
+      autosuggestion.enable = true;
       enable = true;
-      enableAutosuggestions = true;
       enableCompletion = true;
       dotDir = builtins.replaceStrings ["${config.home.homeDirectory}"] [""] "${config.xdg.configHome}/zsh";
       history = {
