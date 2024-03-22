@@ -2,6 +2,16 @@
   nix = {
     distributedBuilds = true;
 
+    extraOptions = ''
+      plugin-files = ${pkgs.nix-plugins}/lib/nix/plugins
+      # keep-outputs = true
+      # keep-derivations = true
+    '';
+
+    # Decrypt at eval time - useful for NIX_NPM_TOKENS
+    # ref: https://elvishjerricco.github.io/2018/06/24/secure-declarative-key-management.html
+    envVars = builtins.fromJSON (builtins.extraBuiltins.decrypt "hosts/des-jwmac/secrets/nix-env-vars.json");
+
     gc = {
       automatic = true;
       interval = {
@@ -29,8 +39,6 @@
       # https://github.com/NixOS/nix/issues/7273
       auto-optimise-store = pkgs.stdenv.isLinux;
       experimental-features = ["nix-command" "flakes" "repl-flake"];
-      # keep-derivations = true;
-      # keep-outputs = true;
       trusted-users = ["root" "@admin"];
       # min-free = lib.mkDefault (10 * 1000 * 1000 * 1000); # 10gb
       # cores = 0;

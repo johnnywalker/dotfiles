@@ -47,6 +47,7 @@
       rustfmt
       scc # code statistics
       sipcalc # subnet calculator
+      sops
       terraform
       unixtools.watch
       unzip

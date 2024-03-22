@@ -1,0 +1,17 @@
+---
+keys:
+  # Personal
+  - &admin_johnny age1thw8surng7e2hxws052fdje0nfftmh42e523tcrts7ltla4nmenqatj7sz
+  - &admin_jwalker age1qx4hqya7q5y43dzh5fyfhu4yn0m508mrf3rd4tfxytaclwvpfadqgnd2ls
+creation_rules:
+  - path_regex: hosts/.*/secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *admin_johnny
+      - *admin_jwalker
+
+  - path_regex: home/.*/secrets\.yaml$
+    key_groups:
+    - age:
+      - *admin_johnny
+      - *admin_jwalker
