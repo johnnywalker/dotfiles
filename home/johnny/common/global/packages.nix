@@ -2,6 +2,7 @@
   home.packages = with pkgs;
     [
       act
+      actionlint # GitHub action linter
       age
       age-plugin-yubikey
       alejandra
