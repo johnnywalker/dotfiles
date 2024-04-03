@@ -783,6 +783,10 @@ before packages are loaded."
     '(require 'ox-pandoc nil t))
 
   ;; add missing entries for copilot--infer-indentation-offset
+
+  ;; `C-g' to close doc
+  ;; https://github.com/emacs-lsp/lsp-ui/issues/442
+  (advice-add #'keyboard-quit :before #'lsp-ui-doc-hide)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
