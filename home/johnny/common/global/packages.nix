@@ -44,6 +44,8 @@
       python3
       ripgrep
       rover
+      ruff
+      ruff-lsp # language server for python
       rustc
       rustfmt
       scc # code statistics
