@@ -336,7 +336,8 @@ It should only modify the values of Spacemacs settings."
    ;;                             :size 13.0
    ;;                             :weight normal
    ;;                             :width normal)
-   dotspacemacs-default-font '("JetBrains Mono"
+   dotspacemacs-default-font '(;; "JetBrains Mono"
+                                "JetBrainsMono Nerd Font"
                                :size 13.0
                                :weight normal
                                :width normal)
@@ -633,7 +634,8 @@ It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; fix error listing directories on macOS
   ;; https://github.com/d12frosted/homebrew-emacs-plus/issues/383
-  (setq insert-directory-program "gls")
+  (when (eq system-type 'darwin)
+    (setq insert-directory-program "gls"))
 
   ;; https://gist.github.com/railwaycat/3498096
   ;; https://github.com/d12frosted/homebrew-emacs-plus/issues/178

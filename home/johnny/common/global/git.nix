@@ -6,7 +6,7 @@
     git = {
       enable = true;
       userName = "Johnny Walker";
-      userEmail = "jwalker@designsforhealth.com";
+      userEmail = "748017+johnnywalker@users.noreply.github.com";
 
       signing = {
         key = "637096B053DC9185AA43EB7CE066C68A21EFECDE";
