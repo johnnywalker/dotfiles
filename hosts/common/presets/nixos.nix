@@ -40,6 +40,7 @@
       psmisc
       ripgrep
       vim
+      wl-clipboard
     ];
   };
 
