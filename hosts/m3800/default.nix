@@ -2,6 +2,8 @@
   imports = [
     ../common/presets/nixos.nix
     ./hardware-configuration.nix
+    ./dns.nix
+    ./firefox.nix
   ];
 
   # Bootloader.
@@ -14,9 +16,6 @@
   # networking.useDHCP = true;
 
   # TODO
-  # - configure resolution (1920x1080) and scaling (100%)
-  # - configure scroll speed
-  # - configure firefox (bitwarden extension)
   # - configure wireless
   # - configure JetBrains Mono font for terminal (including Guake)
 
@@ -37,6 +36,16 @@
     layout = "us";
     variant = "";
   };
+
+  # TODO configure resolution and scaling (100%)
+  # # Reduce resolution from 3840x2160 to 1920x1080
+  # services.xserver.xrandrHeads = ["eDP1"];
+  # services.xserver.resolutions = [
+  #   {
+  #     x = 1920;
+  #     y = 1080;
+  #   }
+  # ];
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -59,9 +68,6 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-
-  # Install firefox.
-  programs.firefox.enable = true;
 
   # this might not be required
   # environment.shells = with pkgs; [
