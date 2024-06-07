@@ -43,6 +43,9 @@
   programs.firefox.preferences = {
     "apz.gtk.pangesture.delta_mode" = 2;
     "apz.gtk.pangesture.pixel_delta_mode_multiplier" = "20.0";
+    # disable swipe left/right
+    "browser.gesture.swipe.left" = "";
+    "browser.gesture.swipe.right" = "";
     "privacy.donottrackheader.enabled" = true;
     "privacy.globalprivacycontrol.enabled" = true;
     "privacy.globalprivacycontrol.functionality.enabled" = true;
