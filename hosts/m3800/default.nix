@@ -4,6 +4,7 @@
     ./hardware-configuration.nix
     ./dns.nix
     ./firefox.nix
+    ./nix-ld.nix
   ];
 
   # Bootloader.
