@@ -48,6 +48,7 @@
     # disable swipe left/right
     "browser.gesture.swipe.left" = "";
     "browser.gesture.swipe.right" = "";
+    "browser.tabs.insertAfterCurrent" = true;
     "privacy.donottrackheader.enabled" = true;
     "privacy.globalprivacycontrol.enabled" = true;
     "privacy.globalprivacycontrol.functionality.enabled" = true;
