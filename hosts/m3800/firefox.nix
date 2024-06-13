@@ -41,6 +41,8 @@
     };
   };
   programs.firefox.preferences = {
+    # don't scroll forever
+    "apz.fling_friction" = "0.005";
     "apz.gtk.pangesture.delta_mode" = 2;
     "apz.gtk.pangesture.pixel_delta_mode_multiplier" = "20.0";
     # disable swipe left/right
