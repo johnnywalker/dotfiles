@@ -57,6 +57,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-darwin": {
+      "locked": {
+        "lastModified": 1718350267,
+        "narHash": "sha256-hrf/m9msEun15Vbs8+IOijFe4Sb58KxG/BnDSL9xgZQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ecbc30d5ed9f75449233b17d4a4cdeab53af793f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-24.05-darwin",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-stable": {
       "locked": {
         "lastModified": 1717265169,
@@ -94,6 +110,7 @@
         "darwin": "darwin",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-darwin": "nixpkgs-darwin",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "sops-nix": "sops-nix",
         "treefmt-nix": "treefmt-nix"
