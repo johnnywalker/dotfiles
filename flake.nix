@@ -2,12 +2,13 @@
   description = "Johnny's Nix Configuration";
 
   inputs = {
-    # use unstable for linux-builder - consider replacing with nixpkgs-23.11-darwin once released in Nov 2023
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
 
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixpkgs-23.05-darwin";
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
 
-    home-manager.url = "github:nix-community/home-manager";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     darwin.url = "github:lnl7/nix-darwin";
@@ -20,22 +21,37 @@
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {
+  outputs = inputs @ {
     self,
     nixpkgs,
-    nixpkgs-stable,
+    nixpkgs-darwin,
+    nixpkgs-unstable,
     home-manager,
     darwin,
     sops-nix,
     treefmt-nix,
   }: let
-    supportedSystems = ["x86_64-darwin" "aarch64-darwin"];
+    darwinSystems = ["x86_64-darwin" "aarch64-darwin"];
+    supportedSystems = ["x86_64-linux" "aarch64-linux"] ++ darwinSystems;
 
     # Small tool to iterate over each systems
-    eachSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f nixpkgs.legacyPackages.${system});
+    eachSystem = f:
+      nixpkgs.lib.genAttrs supportedSystems (system:
+        if builtins.elem system darwinSystems
+        # use darwin branch for macOS
+        then f nixpkgs-darwin.legacyPackages.${system}
+        else f nixpkgs.legacyPackages.${system});
 
     # Eval the treefmt modules from ./treefmt.nix
     treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
+
+    specialArgs = {inherit inputs;};
+
+    overlays = [
+      (prev: final: {
+        unstable = import nixpkgs-unstable {inherit (prev) system;};
+      })
+    ];
   in {
     # for `nix fmt`
     formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
@@ -46,6 +62,7 @@
     });
 
     darwinConfigurations."des-jwmac" = darwin.lib.darwinSystem {
+      inherit specialArgs;
       system = "x86_64-darwin";
       modules = [
         ./hosts/des-jwmac/default.nix
@@ -59,17 +76,29 @@
             useUserPackages = true;
             users.johnny = import ./home/johnny/des-jwmac.nix;
           };
-          # for terraform
-          nixpkgs.config.allowUnfree = true;
-          nixpkgs.overlays = [
-            (prev: final: {
-              stable = import nixpkgs-stable {inherit (prev) system;};
-            })
-          ];
+          nixpkgs = {
+            inherit overlays;
+            # for terraform
+            config.allowUnfree = true;
+          };
           # https://github.com/LnL7/nix-darwin/issues/682
           users.users.johnny.home = "/Users/johnny";
         }
       ];
+    };
+
+    nixosConfigurations = {
+      m3800 = nixpkgs.lib.nixosSystem {
+        inherit specialArgs;
+        modules = [
+          "${self}/hosts/m3800"
+          {
+            home-manager = {
+              users.johnny = import ./home/johnny/m3800.nix;
+            };
+          }
+        ];
+      };
     };
   };
 }

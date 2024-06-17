@@ -4,6 +4,7 @@
   ...
 }: {
   imports = [
+    ./authinfo
     ./bat.nix
     ./emacs
     ./git.nix

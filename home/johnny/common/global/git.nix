@@ -1,4 +1,4 @@
-{...}: {
+{lib, ...}: {
   programs = {
     gh = {
       enable = true;
@@ -6,12 +6,7 @@
     git = {
       enable = true;
       userName = "Johnny Walker";
-      userEmail = "jwalker@designsforhealth.com";
-
-      signing = {
-        key = "637096B053DC9185AA43EB7CE066C68A21EFECDE";
-        signByDefault = true;
-      };
+      userEmail = lib.mkDefault "748017+johnnywalker@users.noreply.github.com";
 
       delta = {
         enable = true;

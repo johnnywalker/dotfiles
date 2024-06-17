@@ -6,9 +6,7 @@
       age
       age-plugin-yubikey
       alejandra
-      # if unstable version encounters build errors, try stable version
-      stable.awscli2
-      # awscli2
+      awscli2
       bitwarden-cli
       cargo
       cargo-udeps
@@ -27,7 +25,8 @@
       go
       htop
       iperf # network performance testing
-      jetbrains-mono
+      ispell # spell check for emacs
+      # jetbrains-mono
       jq
       k6
       metals # language server for scala
