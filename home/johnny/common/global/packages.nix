@@ -7,6 +7,7 @@
       age-plugin-yubikey
       alejandra
       awscli2
+      bc
       bitwarden-cli
       cargo
       cargo-udeps
