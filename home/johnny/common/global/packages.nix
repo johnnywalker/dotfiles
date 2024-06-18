@@ -29,7 +29,27 @@
       # jetbrains-mono
       jq
       k6
-      metals # language server for scala
+      # language server for scala
+      # - use snapshot version with fix for https://github.com/scalameta/metals/issues/6472
+      (metals.overrideAttrs rec {
+        pname = "metals";
+        version = "1.3.1+86-b8d71993-SNAPSHOT";
+        deps = stdenv.mkDerivation {
+          name = "${pname}-deps-${version}";
+          buildCommand = ''
+            export COURSIER_CACHE=$(pwd)
+            ${coursier}/bin/cs fetch org.scalameta:metals_2.13:${version} \
+              -r bintray:scalacenter/releases \
+              -r sonatype:snapshots > deps
+            mkdir -p $out/share/java
+            cp $(< deps) $out/share/java/
+          '';
+          outputHashMode = "recursive";
+          outputHashAlgo = "sha256";
+          outputHash = "sha256-m/07rC3s7j6GPFOmA8VazNAVCxu9452Jit0nbtgwaSE=";
+        };
+        buildInputs = [deps];
+      })
       moreutils
       nil
       nodejs
