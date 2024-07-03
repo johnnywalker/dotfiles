@@ -646,6 +646,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
     (global-set-key [(super x)] 'kill-region)
     (global-set-key [(super c)] 'kill-ring-save)
     (global-set-key [(super v)] 'yank))
+
+  ;; increase max-lisp-eval-depth to resolve "lisp nesting exceeds max-lisp-eval-depth" error
+  (setq max-lisp-eval-depth 10000)
 )
 
 
