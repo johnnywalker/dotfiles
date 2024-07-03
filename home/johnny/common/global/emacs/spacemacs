@@ -747,6 +747,8 @@ before packages are loaded."
   (add-hook 'markdown-mode-hook #'copilot-mode)
   (add-hook 'yaml-mode-hook #'copilot-mode)
 
+  ;; lsp-booster does not work with metals treeview and doctor
+  (load "~/.emacs.d/private/emacs-lsp-booster.el")
 
   ;; ;; disable company in all prog-mode based modes
   ;; (add-hook 'prog-mode-hook 'company-mode)

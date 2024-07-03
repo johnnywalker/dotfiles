@@ -57,6 +57,8 @@
 
     export GPG_TTY=$(tty)
 
+    export LSP_USE_PLISTS=true
+
     ${pkgs.fortune}/bin/fortune | ${pkgs.cowsay}/bin/cowsay
     source ${pkgs.awscli2}/share/zsh/site-functions/_aws
   '';
