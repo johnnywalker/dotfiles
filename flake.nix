@@ -19,6 +19,9 @@
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    emacs-lsp-booster.url = "github:slotThe/emacs-lsp-booster-flake";
+    emacs-lsp-booster.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {
@@ -30,6 +33,7 @@
     darwin,
     sops-nix,
     treefmt-nix,
+    emacs-lsp-booster,
   }: let
     darwinSystems = ["x86_64-darwin" "aarch64-darwin"];
     supportedSystems = ["x86_64-linux" "aarch64-linux"] ++ darwinSystems;
@@ -51,6 +55,7 @@
       (prev: final: {
         unstable = import nixpkgs-unstable {inherit (prev) system;};
       })
+      emacs-lsp-booster.overlays.default
     ];
   in {
     # for `nix fmt`
