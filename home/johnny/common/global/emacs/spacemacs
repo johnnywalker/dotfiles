@@ -129,12 +129,6 @@ This function should only modify configuration layer settings."
      lsp-docker
      direnv
      editorconfig
-     ;; support rg 14
-     ;; https://github.com/syl20bnr/spacemacs/issues/16200
-     (helm-ag :location (recipe
-                         :fetcher github
-                         :repo "zozowell/helm-ag"
-                         :branch "further-support-rg"))
      just-mode
      (copilot :location (recipe
                          :fetcher github
