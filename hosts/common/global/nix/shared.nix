@@ -35,7 +35,9 @@
 
     settings = {
       # https://github.com/NixOS/nix/issues/7273
-      auto-optimise-store = pkgs.stdenv.isLinux;
+      # auto-optimise-store = pkgs.stdenv.isLinux;
+      # let's try periodic optimization instead
+      auto-optimise-store = false;
       experimental-features = ["nix-command" "flakes" "repl-flake"];
       # keep-derivations = true;
       # keep-outputs = true;
