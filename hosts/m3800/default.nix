@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{config, ...}: {
   imports = [
     ../common/presets/nixos.nix
     ./hardware-configuration.nix
@@ -15,6 +15,7 @@
   networking.hostName = "m3800";
 
   networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = config.services.openssh.ports;
   # networking.useDHCP = true;
 
   # TODO
