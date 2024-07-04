@@ -1,9 +1,11 @@
-{pkgs, ...}: {
+{config, ...}: {
   imports = [
     ../common/presets/nixos.nix
     ./hardware-configuration.nix
+    ./clamav.nix
     ./dns.nix
     ./firefox.nix
+    ./nix-ld.nix
   ];
 
   # Bootloader.
@@ -13,6 +15,7 @@
   networking.hostName = "m3800";
 
   networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = config.services.openssh.ports;
   # networking.useDHCP = true;
 
   # TODO

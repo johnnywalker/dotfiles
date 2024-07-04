@@ -36,6 +36,8 @@
       emacs29-pgtk
       gh
       guake
+      neovide
+      neovim-gtk
       nerdfonts
       psmisc
       ripgrep

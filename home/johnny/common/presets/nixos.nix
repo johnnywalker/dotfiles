@@ -5,6 +5,7 @@
 }: {
   imports = [
     ../global
+    ../nixos
   ];
 
   home = {

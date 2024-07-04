@@ -19,6 +19,10 @@
         hashedPasswordFile = config.sops.secrets.johnny-password.path;
         shell = pkgs.zsh;
         extraGroups = ["networkmanager" "wheel" "docker"];
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK52M5lAGnnRDpjYnPPgZX9Lz5SEfvARj23ecUPSvBHX"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHhL2s7nRiFBw8U0SMQPWCsaWQXc51YMP8ga81Uqm9Rx"
+        ];
       };
     };
   };

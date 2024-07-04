@@ -4,7 +4,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
 
-    # use unstable for linux-builder - consider replacing with nixpkgs-23.11-darwin once released in Nov 2023
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
+
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     home-manager.url = "github:nix-community/home-manager/release-24.05";
@@ -18,21 +19,32 @@
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    emacs-lsp-booster.url = "github:slotThe/emacs-lsp-booster-flake";
+    emacs-lsp-booster.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {
     self,
     nixpkgs,
+    nixpkgs-darwin,
     nixpkgs-unstable,
     home-manager,
     darwin,
     sops-nix,
     treefmt-nix,
+    emacs-lsp-booster,
   }: let
-    supportedSystems = ["x86_64-darwin" "x86_64-linux" "aarch64-darwin" "aarch64-linux"];
+    darwinSystems = ["x86_64-darwin" "aarch64-darwin"];
+    supportedSystems = ["x86_64-linux" "aarch64-linux"] ++ darwinSystems;
 
     # Small tool to iterate over each systems
-    eachSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f nixpkgs.legacyPackages.${system});
+    eachSystem = f:
+      nixpkgs.lib.genAttrs supportedSystems (system:
+        if builtins.elem system darwinSystems
+        # use darwin branch for macOS
+        then f nixpkgs-darwin.legacyPackages.${system}
+        else f nixpkgs.legacyPackages.${system});
 
     # Eval the treefmt modules from ./treefmt.nix
     treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
@@ -43,6 +55,7 @@
       (prev: final: {
         unstable = import nixpkgs-unstable {inherit (prev) system;};
       })
+      emacs-lsp-booster.overlays.default
     ];
   in {
     # for `nix fmt`

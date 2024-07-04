@@ -129,12 +129,6 @@ This function should only modify configuration layer settings."
      lsp-docker
      direnv
      editorconfig
-     ;; support rg 14
-     ;; https://github.com/syl20bnr/spacemacs/issues/16200
-     (helm-ag :location (recipe
-                         :fetcher github
-                         :repo "zozowell/helm-ag"
-                         :branch "further-support-rg"))
      just-mode
      (copilot :location (recipe
                          :fetcher github
@@ -646,6 +640,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
     (global-set-key [(super x)] 'kill-region)
     (global-set-key [(super c)] 'kill-ring-save)
     (global-set-key [(super v)] 'yank))
+
+  ;; increase max-lisp-eval-depth to resolve "lisp nesting exceeds max-lisp-eval-depth" error
+  (setq max-lisp-eval-depth 10000)
 )
 
 
@@ -747,6 +744,8 @@ before packages are loaded."
   (add-hook 'markdown-mode-hook #'copilot-mode)
   (add-hook 'yaml-mode-hook #'copilot-mode)
 
+  ;; lsp-booster does not work with metals treeview and doctor
+  (load "~/.emacs.d/private/emacs-lsp-booster.el")
 
   ;; ;; disable company in all prog-mode based modes
   ;; (add-hook 'prog-mode-hook 'company-mode)
