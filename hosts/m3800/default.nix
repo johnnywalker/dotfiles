@@ -2,6 +2,7 @@
   imports = [
     ../common/presets/nixos.nix
     ./hardware-configuration.nix
+    ./clamav.nix
     ./dns.nix
     ./firefox.nix
     ./nix-ld.nix
