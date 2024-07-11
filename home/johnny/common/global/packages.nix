@@ -30,6 +30,7 @@
       # jetbrains-mono
       jq
       k6
+      kubectl
       # language server for scala
       # - use snapshot version with fix for https://github.com/scalameta/metals/issues/6472
       (metals.overrideAttrs rec {
