@@ -18,6 +18,7 @@
       docker
       docker-buildx
       docker-compose
+      emacs-lsp-booster
       eslint_d # eslint server for emacs
       fd # faster find
       gdb
