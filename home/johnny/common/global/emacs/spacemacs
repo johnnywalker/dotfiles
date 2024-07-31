@@ -76,9 +76,9 @@ This function should only modify configuration layer settings."
           ;; lsp-signature-render-documentation nil
           ;; trying to avoid a bug where lsp signature inserts the contents of the
           ;; docstring in the current buffer instead of the minibuffer
-          lsp-signature-function 'lsp-signature-posframe)
+          lsp-signature-function 'lsp-signature-posframe
           ;; lsp-signature-auto-activate '(:on-server-request)
-          ;; lsp-signature-auto-activate nil)
+          lsp-signature-auto-activate nil)
      markdown
      multiple-cursors
      (org :variables
