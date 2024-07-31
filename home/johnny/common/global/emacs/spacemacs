@@ -812,6 +812,8 @@ This function is called at the very end of Spacemacs initialization."
  '(lsp-clients-typescript-server-args '("--stdio"))
  '(lsp-idle-delay 1)
  '(lsp-typescript-tsserver-log "verbose")
+ ;; disable branch scanner - causes performance issues in large repos
+ '(magit-todos-branch-list nil)
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(magit-wip-mode t)
  '(mouse-wheel-flip-direction t)
