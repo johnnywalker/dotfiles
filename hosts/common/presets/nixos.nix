@@ -38,6 +38,7 @@
       guake
       neovide
       neovim-gtk
+      neovim-qt
       nerdfonts
       psmisc
       ripgrep
