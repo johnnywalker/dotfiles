@@ -6,7 +6,7 @@
 }: {
   home-manager = {
     users = {
-      johnny = import "${inputs.self}/home/johnny/${config.networking.hostName}.nix";
+      johnny = import "${inputs.self}/home/johnny/${config.networking.hostName}";
     };
   };
 
