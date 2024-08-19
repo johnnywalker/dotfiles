@@ -2,6 +2,7 @@
   imports = [
     ../common/presets/nixos.nix
     ../common/networks
+    ../common/users/henry
     ./hardware-configuration.nix
     ./dns.nix
     ./firefox.nix
