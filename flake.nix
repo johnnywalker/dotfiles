@@ -104,6 +104,17 @@
           }
         ];
       };
+      petey = nixpkgs.lib.nixosSystem {
+        inherit specialArgs;
+        modules = [
+          "${self}/hosts/petey"
+          {
+            home-manager = {
+              users.johnny = import ./home/johnny/petey.nix;
+            };
+          }
+        ];
+      };
     };
   };
 }

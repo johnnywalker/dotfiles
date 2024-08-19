@@ -86,6 +86,7 @@
           etoolbox
           hyperref
           mdwtools
+          multirow
           soul
           ulem
           wrapfig
