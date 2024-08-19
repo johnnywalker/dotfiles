@@ -79,7 +79,7 @@
             ];
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.johnny = import ./home/johnny/des-jwmac.nix;
+            users.johnny = import ./home/johnny/des-jwmac;
           };
           nixpkgs = {
             inherit overlays;
