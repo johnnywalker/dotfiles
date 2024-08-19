@@ -1,6 +1,6 @@
 {...}: {
   imports = [
-    ./common/presets/nix-darwin.nix
+    ../common/presets/nix-darwin.nix
   ];
 
   programs.git = {
@@ -10,4 +10,6 @@
       signByDefault = true;
     };
   };
+
+  home.file.".authinfo.gpg".source = ./authinfo.gpg;
 }
