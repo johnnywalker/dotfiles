@@ -75,6 +75,23 @@
       sipcalc # subnet calculator
       sops
       terraform
+      (texlive.combine {
+        inherit
+          (texlive)
+          scheme-basic
+          amsmath
+          booktabs
+          capt-of
+          collection-metapost
+          etoolbox
+          hyperref
+          mdwtools
+          soul
+          ulem
+          wrapfig
+          xcolor
+          ;
+      })
       unixtools.watch
       unzip
       vips # for sharp
