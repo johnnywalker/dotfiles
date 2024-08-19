@@ -21,6 +21,14 @@
         # this won't be useful globally, so neovim only is fine
         pkgs.shellcheck
       ];
+      extraLuaConfig = ''
+        if vim.g.neovide then
+          -- vim.o.guifont = "FiraCode Nerd Font:h12"
+          vim.o.guifont = "JetBrainsMono Nerd Font:h11"
+          vim.g.neovide_cursor_animation_length = 0
+          vim.g.neovide_position_animation_length = 0
+        end
+      '';
       plugins = with pkgs.vimPlugins; [
         # dependencies
         plenary-nvim
