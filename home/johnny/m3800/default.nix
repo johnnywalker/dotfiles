@@ -1,6 +1,6 @@
 {...}: {
   imports = [
-    ./common/presets/nixos.nix
+    ../common/presets/nixos.nix
   ];
 
   programs.git = {

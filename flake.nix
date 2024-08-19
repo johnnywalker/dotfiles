@@ -99,7 +99,7 @@
           "${self}/hosts/m3800"
           {
             home-manager = {
-              users.johnny = import ./home/johnny/m3800.nix;
+              users.johnny = import ./home/johnny/m3800;
             };
           }
         ];
