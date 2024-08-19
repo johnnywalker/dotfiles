@@ -7,6 +7,7 @@
       age-plugin-yubikey
       alejandra
       awscli2
+      unstable.azure-cli
       bc
       bitwarden-cli
       cargo
@@ -17,6 +18,7 @@
       docker
       docker-buildx
       docker-compose
+      emacs-lsp-booster
       eslint_d # eslint server for emacs
       fd # faster find
       gdb
@@ -30,6 +32,7 @@
       # jetbrains-mono
       jq
       k6
+      kubectl
       # language server for scala
       # - use snapshot version with fix for https://github.com/scalameta/metals/issues/6472
       (metals.overrideAttrs rec {
@@ -72,6 +75,23 @@
       sipcalc # subnet calculator
       sops
       terraform
+      (texlive.combine {
+        inherit
+          (texlive)
+          scheme-basic
+          amsmath
+          booktabs
+          capt-of
+          collection-metapost
+          etoolbox
+          hyperref
+          mdwtools
+          soul
+          ulem
+          wrapfig
+          xcolor
+          ;
+      })
       unixtools.watch
       unzip
       vips # for sharp
