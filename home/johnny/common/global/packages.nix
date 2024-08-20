@@ -18,7 +18,16 @@
       docker
       docker-buildx
       docker-compose
-      emacs-lsp-booster
+      # emacs-lsp-booster
+      # wrap emacs-lsp-booster to set RUST_BACKTRACE=1
+      (pkgs.runCommand "emacs-lsp-booster" {
+          buildInputs = [makeWrapper];
+        } ''
+          mkdir -p $out/bin
+          cp ${emacs-lsp-booster}/bin/* $out/bin/
+          wrapProgram $out/bin/emacs-lsp-booster \
+            --set RUST_BACKTRACE 1
+        '')
       eslint_d # eslint server for emacs
       fd # faster find
       gdb
