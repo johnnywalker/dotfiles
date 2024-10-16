@@ -144,6 +144,8 @@
     };
   };
 
+  system.stateVersion = 4;
+
   users.users."johnny" = {
     shell = pkgs.zsh;
   };
