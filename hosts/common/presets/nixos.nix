@@ -39,13 +39,23 @@
       neovide
       neovim-gtk
       neovim-qt
-      nerdfonts
       psmisc
       ripgrep
       vim
       wl-clipboard
     ];
   };
+
+  fonts.enableDefaultPackages = true;
+  fonts.packages = with pkgs; [
+    emacs-all-the-icons-fonts
+    (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
+    noto-fonts
+    roboto
+    source-code-pro
+    source-sans-pro
+    source-serif-pro
+  ];
 
   programs.zsh.enable = true;
 
