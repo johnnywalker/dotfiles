@@ -34,6 +34,7 @@
       bitwarden-desktop
       cmake # required to build some emacs packages
       emacs29-pgtk
+      btop
       gh
       guake
       neovide
@@ -43,6 +44,7 @@
       ripgrep
       vim
       wl-clipboard
+      xdg-launch
     ];
   };
 
