@@ -41,6 +41,7 @@
       jq
       k6
       kubectl
+      kubernetes-helm
       # language server for scala
       # - use snapshot version with fix for https://github.com/scalameta/metals/issues/6472
       (metals.overrideAttrs rec {
@@ -82,6 +83,7 @@
       scc # code statistics
       sipcalc # subnet calculator
       sops
+      ssm-session-manager-plugin
       terraform
       (texlive.combine {
         inherit
