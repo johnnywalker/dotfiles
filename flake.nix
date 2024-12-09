@@ -20,8 +20,16 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    emacs-lsp-booster.url = "github:slotThe/emacs-lsp-booster-flake";
+    # emacs-lsp-booster.url = "github:slotThe/emacs-lsp-booster-flake";
+    emacs-lsp-booster.url = "github:johnnywalker/emacs-lsp-booster/dont-panic";
+    # emacs-lsp-booster.url = "/home/johnny/source/johnny/emacs-lsp-booster";
     emacs-lsp-booster.inputs.nixpkgs.follows = "nixpkgs";
+
+    hyprland.url = "github:hyprwm/Hyprland?tag=v0.45.2";
+    hyprspace.url = "github:KZDKM/Hyprspace";
+    hyprspace.inputs.hyprland.follows = "hyprland";
+
+    hyprpolkitagent.url = "github:hyprwm/hyprpolkitagent";
   };
 
   outputs = inputs @ {
@@ -34,6 +42,9 @@
     sops-nix,
     treefmt-nix,
     emacs-lsp-booster,
+    hyprland,
+    hyprspace,
+    hyprpolkitagent,
   }: let
     darwinSystems = ["x86_64-darwin" "aarch64-darwin"];
     supportedSystems = ["x86_64-linux" "aarch64-linux"] ++ darwinSystems;
@@ -74,6 +85,7 @@
         home-manager.darwinModules.home-manager
         {
           home-manager = {
+            extraSpecialArgs = specialArgs;
             sharedModules = [
               sops-nix.homeManagerModules.sops
             ];
@@ -93,12 +105,26 @@
     };
 
     nixosConfigurations = {
+      iota = nixpkgs.lib.nixosSystem {
+        inherit specialArgs;
+        modules = [
+          "${self}/hosts/iota"
+          {
+            home-manager = {
+              backupFileExtension = "backup";
+              extraSpecialArgs = specialArgs;
+              users.johnny = import ./home/johnny/iota;
+            };
+          }
+        ];
+      };
       m3800 = nixpkgs.lib.nixosSystem {
         inherit specialArgs;
         modules = [
           "${self}/hosts/m3800"
           {
             home-manager = {
+              extraSpecialArgs = specialArgs;
               users.johnny = import ./home/johnny/m3800;
             };
           }
@@ -110,6 +136,7 @@
           "${self}/hosts/petey"
           {
             home-manager = {
+              extraSpecialArgs = specialArgs;
               users.johnny = import ./home/johnny/petey.nix;
             };
           }
