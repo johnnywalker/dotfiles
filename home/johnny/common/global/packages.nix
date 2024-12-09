@@ -37,7 +37,6 @@
       go
       htop
       iperf # network performance testing
-      ispell # spell check for emacs
       # jetbrains-mono
       jq
       k6
