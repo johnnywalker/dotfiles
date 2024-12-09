@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./apps.nix
     ./docker.nix
     ./emacs.nix
     ./gtk.nix
