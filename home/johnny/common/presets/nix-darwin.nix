@@ -6,6 +6,7 @@
 }: {
   imports = [
     ../global
+    ../nix-darwin
   ];
 
   home = {

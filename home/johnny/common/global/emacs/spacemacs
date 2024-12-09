@@ -137,7 +137,10 @@ This function should only modify configuration layer settings."
      ox-pandoc)
 
    ;; A list of packages that cannot be updated.
-   dotspacemacs-frozen-packages '()
+    dotspacemacs-frozen-packages
+    '(
+       ;; managed by nix
+       vterm-module)
 
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '()
@@ -332,7 +335,7 @@ It should only modify the values of Spacemacs settings."
    ;;                             :width normal)
    dotspacemacs-default-font '(;; "JetBrains Mono"
                                 "JetBrainsMono Nerd Font"
-                               :size 13.0
+                               :size @dotspacemacs_font_size@
                                :weight normal
                                :width normal)
 
@@ -522,7 +525,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, start an Emacs server if one is not already running.
    ;; (default nil)
-   dotspacemacs-enable-server nil
+   dotspacemacs-enable-server @dotspacemacs_enable_server@
 
    ;; Set the emacs server socket location.
    ;; If nil, uses whatever the Emacs default is, otherwise a directory path
@@ -533,7 +536,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server nil
+   dotspacemacs-persistent-server @dotspacemacs_persistent_server@
 
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.

@@ -99,7 +99,6 @@
   environment.systemPackages = with pkgs; [
     alacritty
     colima
-    emacs29-macport
     grandperspective # visualize disk usage
     # (import ./emacs.nix {inherit pkgs;})
     iconv # not sure why
