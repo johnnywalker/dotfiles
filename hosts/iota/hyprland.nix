@@ -24,5 +24,5 @@ in {
   ];
 
   # match mesa version to avoid hyprland crash
-  hardware.opengl.package = pkgs-unstable.mesa.drivers;
+  hardware.graphics.package = pkgs-unstable.mesa.drivers;
 }
