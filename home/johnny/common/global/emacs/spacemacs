@@ -861,7 +861,7 @@ This function is called at the very end of Spacemacs initialization."
  '(lsp-clients-typescript-preferences '(:importModuleSpecifierPreference "project-relative"))
  '(lsp-clients-typescript-server-args '("--stdio"))
  '(lsp-idle-delay 1)
- '(lsp-metals-fallback-scala-version "3.3.3")
+ '(lsp-metals-fallback-scala-version "3.3.4")
  '(lsp-typescript-tsserver-log "verbose")
  ;; disable branch scanner - causes performance issues in large repos
  '(magit-todos-branch-list nil)
