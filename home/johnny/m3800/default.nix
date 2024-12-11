@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   imports = [
     ../common/presets/nixos.nix
   ];
@@ -11,4 +11,13 @@
   };
 
   home.file.".authinfo.gpg".source = ./authinfo.gpg;
+  home.packages = with pkgs; [
+    gpt4all
+    imagemagick
+    inkscape
+    libreoffice
+    signal-desktop
+    telegram-desktop
+    vlc
+  ];
 }
