@@ -60,7 +60,7 @@
     # Eval the treefmt modules from ./treefmt.nix
     treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
 
-    specialArgs = {inherit inputs;};
+    specialArgs = {inherit inputs self;};
 
     overlays = [
       (prev: final: {
@@ -111,7 +111,6 @@
           "${self}/hosts/iota"
           {
             home-manager = {
-              backupFileExtension = "backup";
               extraSpecialArgs = specialArgs;
               users.johnny = import ./home/johnny/iota;
             };
