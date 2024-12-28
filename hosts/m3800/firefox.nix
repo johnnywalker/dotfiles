@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, lib, ...}: {
   # Install Firefox
   programs.firefox.enable = true;
   programs.firefox.policies = {
@@ -23,6 +23,18 @@
       install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
       installation_mode = "force_installed";
       default_area = "navbar";
+    };
+
+    # Install search extension
+    ExtensionSettings."{ed6f69b2-a3bd-40ae-925d-fbf9708ead61}" = {
+      install_url = "file://" + (import ../common/global/firefox/extensions.nix {inherit pkgs lib;}).busco;
+      installation_mode = "force_installed";
+    };
+
+    # Install Old Reddit Redirect
+    ExtensionSettings."{9063c2e9-e07c-4c2c-9646-cfe7ca8d0498}" = {
+      install_url = "https://addons.mozilla.org/firefox/downloads/latest/old-reddit-redirect/latest.xpi";
+      installation_mode = "force_installed";
     };
 
     FirefoxHome = {

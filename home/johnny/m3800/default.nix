@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ../common/presets/nixos.nix
+    ./sway.nix
   ];
 
   programs.git = {
@@ -16,6 +17,7 @@
     imagemagick
     inkscape
     libreoffice
+    mpv
     signal-desktop
     telegram-desktop
     vlc

@@ -1,11 +1,18 @@
-{config, ...}: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ../common/presets/nixos.nix
     ./hardware-configuration.nix
     ./clamav.nix
     ./dns.nix
     ./firefox.nix
+    ./nfs.nix
     ./nix-ld.nix
+    ./sway.nix
   ];
 
   # Bootloader.
@@ -26,6 +33,22 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+
+  services.logind.lidSwitch = "hybrid-sleep";
+
+  programs.thunar.enable = true;
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-archive-plugin
+    thunar-media-tags-plugin
+    thunar-volman
+  ];
+  # enable network browsing in thunar
+  services.gvfs = {
+    enable = true;
+    # use version with samba support
+    package = lib.mkForce pkgs.gnome.gvfs;
+  };
+  services.tumbler.enable = true; # Thumbnail support for images
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
