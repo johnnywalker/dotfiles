@@ -64,6 +64,10 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
+    settings = {
+      allow-loopback-pinentry = "";
+      allow-emacs-pinentry = "";
+    };
   };
 
   system = {
