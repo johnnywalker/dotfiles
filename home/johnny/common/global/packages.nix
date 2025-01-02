@@ -95,6 +95,7 @@
           capt-of
           collection-metapost
           etoolbox
+          fancyvrb
           hyperref
           mdwtools
           multirow
