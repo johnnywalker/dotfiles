@@ -62,6 +62,7 @@
 
     specialArgs = {inherit inputs self;};
 
+    # NOTE: only used on darwin
     overlays = [
       (prev: final: {
         unstable = import nixpkgs-unstable {inherit (prev) system;};
