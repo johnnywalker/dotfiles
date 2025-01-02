@@ -38,6 +38,10 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+    ;; load first to avoid Org version mismatch warnings
+    (org :variables
+        org-enable-github-support t
+        org-enable-verb-support t)
      ansible
      (auto-completion :variables
                       auto-completion-use-company-box t
@@ -48,6 +52,7 @@ This function should only modify configuration layer settings."
                       ;; recommended for lsp mode
                       auto-completion-minimum-prefix-length 1)
      ;; better-defaults
+     compleseus
      dhall
      ;; eaf seems to be broken
      ;; eaf
@@ -62,7 +67,7 @@ This function should only modify configuration layer settings."
      go
      graphql
      haskell
-     helm
+     ;; helm
      (html :variables
            web-fmt-tool 'web-beautify)
      ;; ivy
@@ -86,9 +91,6 @@ This function should only modify configuration layer settings."
           lsp-ui-doc-enable nil)
      markdown
      multiple-cursors
-     (org :variables
-          org-enable-github-support t
-          org-enable-verb-support t)
      python
      react
      rust
