@@ -217,7 +217,7 @@
       "$mainMod, 0, workspace, 10"
 
       # Show workspace overview
-      "$mainMod SHIFT, up, overview:toggle,"
+      "$mainMod CTRL, up, overview:toggle,"
 
       # Move active window to a workspace with mainMod + SHIFT + [0-9]
       "$mainMod SHIFT, 1, movetoworkspace, 1"
@@ -238,6 +238,23 @@
       # Scroll through existing workspaces with mainMod + scroll
       "$mainMod, mouse_down, workspace, e-1"
       "$mainMod, mouse_up, workspace, e+1"
+
+      # Scroll through existing workspaces with mainMod + CTRL + left/right
+      "$mainMod CTRL, left, workspace, e-1"
+      "$mainMod CTRL, right, workspace, e+1"
+
+      # Toggle window group with mainMod + G
+      "$mainMod, G, togglegroup,"
+
+      # Move focus within group using mainMod + ALT + arrow keys
+      "$mainMod ALT, up, changegroupactive, b"
+      "$mainMod ALT, down, changegroupactive, f"
+
+      # Move windows in/out of group with mainMod + SHIFT + arrow keys
+      "$mainMod SHIFT, left, movewindoworgroup, l"
+      "$mainMod SHIFT, right, movewindoworgroup, r"
+      "$mainMod SHIFT, up, movewindoworgroup, u"
+      "$mainMod SHIFT, down, movewindoworgroup, d"
     ];
 
     # Move/resize windows with mainMod + LMB/RMB and dragging
