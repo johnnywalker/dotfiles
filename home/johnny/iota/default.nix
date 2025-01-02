@@ -14,6 +14,7 @@ in {
   ];
 
   home.packages = with pkgs; [
+    jetbrains.datagrip
     libreoffice
     pkgs-unstable.loupe # image viewer
     pkgs-unstable.oculante # image viewer

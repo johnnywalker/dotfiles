@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
+    jetbrains-toolbox
     ungoogled-chromium
   ];
 
@@ -16,6 +17,7 @@
     "x-scheme-handler/chrome" = "firefox.desktop";
     "x-scheme-handler/http" = "firefox.desktop";
     "x-scheme-handler/https" = "firefox.desktop";
+    "x-scheme-handler/jetbrains" = "jetbrains-toolbox.desktop";
     "text/csv" = "calc.desktop";
   };
   xdg.mimeApps.associations.added = {
