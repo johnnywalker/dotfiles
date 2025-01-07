@@ -4,6 +4,9 @@
     ungoogled-chromium
   ];
 
+  # toolbox attempts to add its own autostart entry, but we need to wrapped version for NixOS
+  xdg.configFile."autostart/jetbrains-toolbox.desktop".source = "${pkgs.jetbrains-toolbox}/share/applications/jetbrains-toolbox.desktop";
+
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = {
     # prevent chromium from opening by default
