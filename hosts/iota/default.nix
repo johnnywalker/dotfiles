@@ -51,6 +51,8 @@
   services.avahi.enable = true;
   services.avahi.nssmdns4 = true;
 
+  gtk.iconCache.enable = true;
+
   programs.thunar.enable = true;
   programs.thunar.plugins = with pkgs.xfce; [
     thunar-archive-plugin

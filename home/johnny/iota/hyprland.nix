@@ -341,14 +341,18 @@ in {
   };
   systemd.user.services.hyprpaper.Unit.After = ["graphical-session.target"];
 
+  qt = {
+    enable = true;
+    platformTheme.name = "gtk3";
+  };
   gtk = {
     enable = true;
     iconTheme = {
-      name = "elementary-Xfce-dark";
+      name = "elementary-xfce-dark";
       package = pkgs.elementary-xfce-icon-theme;
     };
     theme = {
-      # name = "zukitre-dark";
+      # name = "Zukitre-dark";
       # package = pkgs.zuki-themes;
       name = "Nordic";
       package = pkgs.nordic;
