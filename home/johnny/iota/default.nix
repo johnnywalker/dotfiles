@@ -16,15 +16,25 @@ in {
   home.packages = with pkgs; [
     jetbrains.datagrip
     libreoffice
-    pkgs-unstable.loupe # image viewer
-    pkgs-unstable.oculante # image viewer
-    pkgs-unstable.photoqt # image viewer
-    pkgs-unstable.obs-studio # use hyprland nixpkgs to match mesa version
+    # match mesa version if using hyprland flake
+    # pkgs-unstable.loupe # image viewer
+    # pkgs-unstable.oculante # image viewer
+    # pkgs-unstable.photoqt # image viewer
+    # pkgs-unstable.obs-studio
+    loupe # image viewer
+    oculante # image viewer
+    photoqt # image viewer
+    obs-studio
     teams-for-linux
-    pkgs-unstable.satty
-    pkgs-unstable.swappy
-    pkgs-unstable.vimiv-qt # image viewer
-    pkgs-unstable.vlc
+    # match mesa version if using hyprland flake
+    # pkgs-unstable.satty
+    # pkgs-unstable.swappy
+    # pkgs-unstable.vimiv-qt # image viewer
+    # pkgs-unstable.vlc
+    satty
+    swappy
+    vimiv-qt # image viewer
+    vlc
   ];
 
   programs.git = {

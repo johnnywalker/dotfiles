@@ -25,11 +25,13 @@
     # emacs-lsp-booster.url = "/home/johnny/source/johnny/emacs-lsp-booster";
     emacs-lsp-booster.inputs.nixpkgs.follows = "nixpkgs";
 
-    hyprland.url = "github:hyprwm/Hyprland?tag=v0.45.2";
-    hyprspace.url = "github:KZDKM/Hyprspace";
+    # Hyprspace does not yet build with 0.46.2
+    hyprland.url = "github:hyprwm/Hyprland/v0.45.2";
+    # compatible with 0.45.2
+    hyprspace.url = "github:KZDKM/Hyprspace/260f386075c7f6818033b05466a368d8821cde2d";
     hyprspace.inputs.hyprland.follows = "hyprland";
 
-    hyprpolkitagent.url = "github:hyprwm/hyprpolkitagent";
+    hyprpolkitagent.url = "github:hyprwm/hyprpolkitagent/08cab3a4d9277687562702ae2db56305f9165081";
   };
 
   outputs = inputs @ {

@@ -2,7 +2,10 @@
   inputs,
   pkgs,
   ...
-}: {
+}: let
+  hyprland-pkgs = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
+  pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+in {
   # hint Electron apps to use Wayland:
   home.sessionVariables.NIXOS_OZONE_WL = "1";
 
@@ -33,14 +36,15 @@
   '';
 
   programs.kitty.enable = true;
-  # use unstable due to mesa version mismatch
-  programs.kitty.package = pkgs.unstable.kitty;
+  # match mesa version if using hyprland flake
+  # programs.kitty.package = pkgs-unstable.kitty;
   wayland.windowManager.hyprland.enable = true;
-  # wayland.windowManager.hyprland.package = pkgs.unstable.hyprland;
-  wayland.windowManager.hyprland.package =
-    inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+  # wayland.windowManager.hyprland.package = hyprland-pkgs.hyprland;
   wayland.windowManager.hyprland.plugins = [
-    inputs.hyprspace.packages.${pkgs.stdenv.hostPlatform.system}.Hyprspace
+    # inputs.hyprspace.packages.${pkgs.stdenv.hostPlatform.system}.Hyprspace
+    pkgs.hyprlandPlugins.hyprspace
+    # this doesn't seem to work
+    # pkgs-unstable.hyprlandPlugins.hyprspace
   ];
   wayland.windowManager.hyprland.settings = {
     monitor = [
@@ -278,10 +282,10 @@
   };
 
   programs.hyprlock.enable = true;
-  programs.hyprlock.package = pkgs.unstable.hyprlock;
+  # programs.hyprlock.package = pkgs-unstable.hyprlock;
 
   services.hypridle.enable = true;
-  services.hypridle.package = pkgs.unstable.hypridle;
+  # services.hypridle.package = pkgs-unstable.hypridle;
   services.hypridle.settings = {
     general = {
       before_sleep_cmd = "loginctl lock-session"; # lock before suspend.

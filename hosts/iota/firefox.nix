@@ -8,7 +8,8 @@
 in {
   # Install Firefox
   programs.firefox.enable = true;
-  programs.firefox.package = pkgs-unstable.firefox;
+  # match mesa version if using hyprland flake
+  # programs.firefox.package = pkgs-unstable.firefox;
   programs.firefox.policies = {
     # Install Bitwarden
     ExtensionSettings."{446900e4-71c2-419f-a6a7-df9c091e268b}" = {

@@ -13,16 +13,17 @@ in {
   # Use SDDM with Hyprland
   services.displayManager.sddm.enable = true;
   programs.hyprland.enable = true;
-  # programs.hyprland.package = pkgs.unstable.hyprland;
-  programs.hyprland.package = hyprland-pkgs.hyprland;
-  # programs.hyprland.portalPackage = pkgs.unstable.xdg-desktop-portal-hyprland;
-  programs.hyprland.portalPackage = hyprland-pkgs.xdg-desktop-portal-hyprland;
+  programs.hyprland.withUWSM = true;
+  # uncomment to use hyprland flake
+  # programs.hyprland.package = hyprland-pkgs.hyprland;
+  # programs.hyprland.portalPackage = hyprland-pkgs.xdg-desktop-portal-hyprland;
 
   environment.systemPackages = with pkgs; [
-    # use unstable due to mesa version mismatch
-    unstable.kitty
+    # fix mesa version mismatch if using hyprland flake
+    # pkgs-unstable.kitty
+    kitty
   ];
 
-  # match mesa version to avoid hyprland crash
-  hardware.graphics.package = pkgs-unstable.mesa.drivers;
+  # match mesa version if using hyprland flake
+  # hardware.graphics.package = pkgs-unstable.mesa.drivers;
 }
