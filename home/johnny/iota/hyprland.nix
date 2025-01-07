@@ -10,6 +10,7 @@ in {
   home.sessionVariables.NIXOS_OZONE_WL = "1";
   home.sessionVariables.XCURSOR_SIZE = "24";
   home.sessionVariables.HYPRCURSOR_SIZE = "24";
+  home.sessionVariables.GRIMBLAST_EDITOR = "${pkgs.swappy}/bin/swappy -f";
 
   programs.zsh.profileExtra = ''
     if uwsm check may-start && uwsm select; then
@@ -23,6 +24,7 @@ in {
     cliphist
     fuzzel
     grim
+    grimblast
     mako
     pavucontrol
     slurp
@@ -200,6 +202,12 @@ in {
       "$mainMod, J, togglesplit," # dwindle
       # "$mainMod, L, exec, hyprlock"
       "$mainMod, L, exec, loginctl lock-session"
+
+      # Screenshot binds
+      ", Print, exec, uwsm app -- uwsm app -- grimblast --notify copy output" # screenshot to clipboard
+      "CTRL, Print, exec, uwsm app -- grimblast --notify save area" # snip area and save to file
+      "SHIFT, Print, exec, uwsm app -- grimblast --notify copy area" # snip area and copy to clipboard
+      "$mainMod, Print, exec, uwsm app -- grimblast edit area" # snip area and edit
 
       # display cliphist
       "$mainMod, V, exec, $cliphist_list"
