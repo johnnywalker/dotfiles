@@ -323,6 +323,10 @@ in {
         on-timeout = "hyprctl dispatch dpms off";
         on-resume = "hyprctl dispatch dpms on";
       }
+      {
+        timeout = 1800; # 30 min
+        on-timeout = "systemctl suspend";
+      }
     ];
   };
   systemd.user.services.hypridle.Unit.After = ["graphical-session.target"];
