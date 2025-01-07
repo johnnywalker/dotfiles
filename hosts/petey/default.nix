@@ -24,9 +24,9 @@
   # networking.useDHCP = true;
 
   networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
-  networking.wireless.environmentFile = config.sops.secrets.wireless-env.path;
+  networking.wireless.secretsFile = config.sops.secrets.wireless-secrets.path;
   networking.wireless.networks = {
-    RuggedBits.psk = "@RUGGEDBITS_PSK@";
+    RuggedBits.pskRaw = "ext:psk_ruggedbits";
   };
 
   # Disable networkmanager

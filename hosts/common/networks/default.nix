@@ -1,7 +1,7 @@
 {...}: {
   sops = {
     secrets = {
-      wireless-env = {
+      wireless-secrets = {
         sopsFile = ./secrets.yaml;
       };
     };
