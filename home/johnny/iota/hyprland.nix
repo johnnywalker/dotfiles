@@ -8,6 +8,14 @@
 in {
   # hint Electron apps to use Wayland:
   home.sessionVariables.NIXOS_OZONE_WL = "1";
+  home.sessionVariables.XCURSOR_SIZE = "24";
+  home.sessionVariables.HYPRCURSOR_SIZE = "24";
+
+  programs.zsh.profileExtra = ''
+    if uwsm check may-start && uwsm select; then
+      exec systemd-cat -t uwsm_start uwsm start default
+    fi
+  '';
 
   # TODO configure hyprswitch
   # TODO configure hyprexpo
@@ -18,10 +26,7 @@ in {
     mako
     pavucontrol
     slurp
-    # xfce.thunar # installed by programs.thunar
-    waybar
     wlogout
-    # wofi
   ];
 
   xdg.configFile."fuzzel/fuzzel.ini".text = ''
@@ -35,6 +40,10 @@ in {
     width = 1
   '';
 
+  services.cliphist.enable = true;
+  systemd.user.services.cliphist.Unit.After = ["graphical-session.target"];
+  systemd.user.services.cliphist-images.Unit.After = ["graphical-session.target"];
+
   programs.kitty.enable = true;
   # match mesa version if using hyprland flake
   # programs.kitty.package = pkgs-unstable.kitty;
@@ -46,34 +55,26 @@ in {
     # this doesn't seem to work
     # pkgs-unstable.hyprlandPlugins.hyprspace
   ];
+  # use UWSM
+  wayland.windowManager.hyprland.systemd.enable = false;
   wayland.windowManager.hyprland.settings = {
     monitor = [
       "HDMI-A-1,3840x1600@30,0x0,auto"
       ",preferred,auto,1"
     ];
+    "$terminal" = "uwsm app -- kitty";
+    "$fileManager" = "uwsm app -- thunar";
+    "$menu" = "uwsm app -- fuzzel";
+    "$logout" = "uwsm app -- wlogout";
+    "$cliphist_list" = "uwsm app -- cliphist list | fuzzel --dmenu | cliphist decode | wl-copy";
 
-    "$terminal" = "kitty";
-    "$fileManager" = "thunar";
-    # "$menu" = "wofi --show drun";
-    "$menu" = "fuzzel";
-    "$logout" = "wlogout";
 
     # auto-start
     exec-once = [
-      # cliphist
-      "wl-paste --type text --watch cliphist store" # Stores only text data
-      "wl-paste --type image --watch cliphist store" # Stores only image data
-      "firefox"
-      "mako"
-      "${pkgs.networkmanagerapplet}/bin/nm-applet"
-      "teams-for-linux"
-      "waybar"
-    ];
-
-    # environment variables
-    env = [
-      "XCURSOR_SIZE,24"
-      "HYPRCURSOR_SIZE,24"
+      "uwsm app -- firefox"
+      "uwsm app -- mako"
+      # "${pkgs.networkmanagerapplet}/bin/nm-applet"
+      "uwsm app -- teams-for-linux"
     ];
 
     # https://wiki.hyprland.org/Configuring/Variables/#general
@@ -200,7 +201,7 @@ in {
       "$mainMod, L, exec, loginctl lock-session"
 
       # display cliphist
-      "$mainMod, V, exec, cliphist list | fuzzel --dmenu | cliphist decode | wl-copy"
+      "$mainMod, V, exec, $cliphist_list"
 
       # Move focus with mainMod + arrow keys
       "$mainMod, left, movefocus, l"
@@ -307,6 +308,7 @@ in {
       }
     ];
   };
+  systemd.user.services.hypridle.Unit.After = ["graphical-session.target"];
 
   gtk = {
     enable = true;
