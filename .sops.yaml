@@ -4,7 +4,7 @@ keys:
   - &admin_johnny age1thw8surng7e2hxws052fdje0nfftmh42e523tcrts7ltla4nmenqatj7sz
   - &admin_jwalker age1qx4hqya7q5y43dzh5fyfhu4yn0m508mrf3rd4tfxytaclwvpfadqgnd2ls
   # Hosts
-  - &host_iota age1ea7q6p7lg42kup75k97un5dl6z7z3zn8tnmkw4fl4dl6knh2vffsjwclpy
+  - &host_iota age1aap6uvzu2c6j73fvfnsw80ceerv2dmu5mz0vvmgplcm53n8n5s2q3w27ha
   - &host_m3800 age1a5glegke4qggmu4ah08f53s4trhh6sc59vpx2z6kqvuchwdzs4eqa56er3
   - &host_petey age10mddgy5g7ws2gdakd90hn8sswctzwfjmr9xae55dw95zq24kyqdqma8uzh
 creation_rules:
