@@ -6,6 +6,7 @@
 }: {
   imports = [
     ../common/presets/nixos.nix
+    ../common/networks
     ./amdgpu.nix
     ./hardware-configuration.nix
     ./clamav.nix
@@ -35,12 +36,18 @@
 
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = config.services.openssh.ports;
-  # networking.useDHCP = true;
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Enable networking
-  networking.networkmanager.enable = true;
-  networking.networkmanager.enableStrongSwan = true;
+  # networking.useDHCP = true;
+
+  networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
+  networking.wireless.secretsFile = config.sops.secrets.wireless-secrets.path;
+  networking.wireless.networks = {
+    RuggedBits.pskRaw = "ext:psk_ruggedbits";
+  };
+
+  # Disable networkmanager
+  networking.networkmanager.enable = false;
+
   services.avahi.enable = true;
   services.avahi.nssmdns4 = true;
 

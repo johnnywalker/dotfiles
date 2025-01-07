@@ -23,16 +23,17 @@
 
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = config.services.openssh.ports;
+
   # networking.useDHCP = true;
 
-  # TODO
-  # - configure wireless
-  # - configure JetBrains Mono font for terminal (including Guake)
+  networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
+  networking.wireless.secretsFile = config.sops.secrets.wireless-secrets.path;
+  networking.wireless.networks = {
+    RuggedBits.pskRaw = "ext:psk_ruggedbits";
+  };
 
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Enable networking
-  networking.networkmanager.enable = true;
+  # Disable networkmanager
+  networking.networkmanager.enable = false;
 
   services.logind.lidSwitch = "hybrid-sleep";
 
