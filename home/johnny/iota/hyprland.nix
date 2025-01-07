@@ -200,8 +200,7 @@ in {
       "$mainMod, SPACE, exec, $menu"
       "$mainMod, P, pseudo," # dwindle
       "$mainMod, J, togglesplit," # dwindle
-      # "$mainMod, L, exec, hyprlock"
-      "$mainMod, L, exec, loginctl lock-session"
+      "$mainMod, L, exec, hyprlock"
 
       # Screenshot binds
       ", Print, exec, uwsm app -- uwsm app -- grimblast --notify copy output" # screenshot to clipboard
@@ -293,6 +292,16 @@ in {
 
   programs.hyprlock.enable = true;
   # programs.hyprlock.package = pkgs-unstable.hyprlock;
+  xdg.configFile."hypr/hyprlock.conf".text = ''
+    input-field {
+      monitor =
+      fade_on_empty = false
+    }
+
+    background {
+      path = ${./wallpapers/54088897300_3e378b6a5f_o.png}
+    }
+  '';
 
   services.hypridle.enable = true;
   # services.hypridle.package = pkgs-unstable.hypridle;
@@ -305,11 +314,10 @@ in {
     };
 
     listener = [
-      # getting red screen of death on 0.41.2
-      # {
-      #   timeout = 900; # 10 min
-      #   on-timeout = "loginctl lock-session"; # lock screen when timeout has passed
-      # }
+      {
+        timeout = 900; # 10 min
+        on-timeout = "loginctl lock-session"; # lock screen when timeout has passed
+      }
       {
         timeout = 930; # 10.5 min
         on-timeout = "hyprctl dispatch dpms off";
