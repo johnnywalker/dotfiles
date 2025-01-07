@@ -65,6 +65,10 @@ in {
     "$logout" = "uwsm app -- wlogout";
     "$cliphist_list" = "uwsm app -- cliphist list | fuzzel --dmenu | cliphist decode | wl-copy";
 
+    # debug = {
+    #   disable_logs = false;
+    #   enable_stdout_logs = true;
+    # };
 
     # auto-start
     exec-once = [
