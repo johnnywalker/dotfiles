@@ -11,6 +11,7 @@ in {
     ./hyprpolkitagent.nix
     ./mpd.nix
     ./teams-for-linux.nix
+    ./waybar.nix
   ];
 
   home.packages = with pkgs; [
