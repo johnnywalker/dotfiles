@@ -27,4 +27,8 @@
     "text/csv" = "calc.desktop";
     "image/jpeg" = "oculante.desktop;org.gnome.Loupe.desktop;vimiv.desktop;satty.desktop;org.photoqt.PhotoQt.desktop";
   };
+
+  xdg.configFile."xfce4/helpers.rc".text = ''
+    TerminalEmulator=kitty
+  '';
 }
