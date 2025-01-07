@@ -29,16 +29,17 @@ in {
     wlogout
   ];
 
-  xdg.configFile."fuzzel/fuzzel.ini".text = ''
-    [colors]
-    background = 111316f0
-    text = 888888ff
-    selection = 888888ff
-    selection-text = 111316f0
-    border = 111316ff
-    [border]
-    width = 1
-  '';
+  programs.fuzzel.enable = true;
+  programs.fuzzel.settings = {
+    colors = {
+      background = "111316f0";
+      text = "888888ff";
+      selection = "888888ff";
+      "selection-text" = "111316f0";
+      border = "111316ff";
+    };
+    border.width = 1;
+  };
 
   services.cliphist.enable = true;
   systemd.user.services.cliphist.Unit.After = ["graphical-session.target"];
