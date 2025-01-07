@@ -15,6 +15,8 @@ in {
   ];
 
   home.packages = with pkgs; [
+    cameractrls-gtk4
+    font-manager
     jetbrains.datagrip
     libreoffice
     # match mesa version if using hyprland flake
