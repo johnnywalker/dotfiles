@@ -74,6 +74,7 @@ in {
 
     # auto-start
     exec-once = [
+      "hyprctl setcursor Nordzy-hyprcursors 24"
       "uwsm app -- firefox"
       "uwsm app -- mako"
       # "${pkgs.networkmanagerapplet}/bin/nm-applet"
@@ -347,6 +348,11 @@ in {
   };
   gtk = {
     enable = true;
+    cursorTheme = {
+      name = "Nordzy-cursors";
+      # use unstable to get hyprcursors as well
+      package = pkgs.unstable.nordzy-cursor-theme;
+    };
     iconTheme = {
       name = "elementary-xfce-dark";
       package = pkgs.elementary-xfce-icon-theme;
