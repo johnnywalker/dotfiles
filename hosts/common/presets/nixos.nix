@@ -53,11 +53,13 @@
     emacs-all-the-icons-fonts
     (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
     noto-fonts
+    noto-fonts-emoji
     roboto
     source-code-pro
     source-sans-pro
     source-serif-pro
   ];
+  fonts.fontconfig.subpixel.rgba = "rgb";
 
   programs.zsh.enable = true;
 
