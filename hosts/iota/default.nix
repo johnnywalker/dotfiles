@@ -94,6 +94,7 @@
   # $ nix-env -qaP | grep wget
   # environment.systemPackages = [];
   environment.systemPackages = with pkgs; [
+    lm_sensors
     samba
     tree
   ];
