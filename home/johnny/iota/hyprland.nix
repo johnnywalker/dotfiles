@@ -59,10 +59,6 @@ in {
   # use UWSM
   wayland.windowManager.hyprland.systemd.enable = false;
   wayland.windowManager.hyprland.settings = {
-    monitor = [
-      "HDMI-A-1,3840x1600@30,0x0,auto"
-      ",preferred,auto,1"
-    ];
     "$terminal" = "uwsm app -- kitty";
     "$fileManager" = "uwsm app -- thunar";
     "$menu" = "uwsm app -- fuzzel";
