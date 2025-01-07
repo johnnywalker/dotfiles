@@ -1,52 +1,50 @@
 {lib, ...}: {
-  programs = {
-    gh = {
-      enable = true;
-    };
-    git = {
-      enable = true;
-      userName = "Johnny Walker";
-      userEmail = lib.mkDefault "748017+johnnywalker@users.noreply.github.com";
+  programs.gh.enable = true;
+  programs.git = {
+    enable = true;
+    userName = "Johnny Walker";
+    userEmail = lib.mkDefault "748017+johnnywalker@users.noreply.github.com";
 
-      delta = {
-        enable = true;
-        options = {
-          dark = true;
-          features = "side-by-side";
-          hyperlinks = false;
-          line-numbers = true;
-          navigate = true;
-          syntax-theme = "Dracula";
-        };
+    delta = {
+      enable = true;
+      options = {
+        dark = true;
+        features = "side-by-side";
+        hyperlinks = false;
+        line-numbers = true;
+        navigate = true;
+        syntax-theme = "Dracula";
+      };
+    };
+
+    lfs.enable = true;
+
+    extraConfig = {
+      color = {
+        ui = true;
       };
 
-      extraConfig = {
-        color = {
-          ui = true;
-        };
+      core = {
+        editor = "nvim -u NONE";
+        filemode = false;
+        ignorecase = false;
+      };
 
-        core = {
-          editor = "nvim -u NONE";
-          filemode = false;
-          ignorecase = false;
-        };
+      github = {
+        user = "johnnywalker";
+      };
 
-        github = {
-          user = "johnnywalker";
-        };
+      init = {
+        defaultBranch = "main";
+      };
 
-        init = {
-          defaultBranch = "main";
-        };
+      merge = {
+        # Include common parent when merge conflicts arise
+        conflictStyle = "diff3";
+      };
 
-        merge = {
-          # Include common parent when merge conflicts arise
-          conflictStyle = "diff3";
-        };
-
-        pull = {
-          ff = "only";
-        };
+      pull = {
+        ff = "only";
       };
     };
   };
