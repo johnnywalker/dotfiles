@@ -78,6 +78,7 @@ in {
       "uwsm app -- firefox"
       "uwsm app -- mako"
       # "${pkgs.networkmanagerapplet}/bin/nm-applet"
+      "uwsm app -- slack"
       "uwsm app -- teams-for-linux"
     ];
 

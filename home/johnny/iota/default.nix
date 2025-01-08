@@ -29,6 +29,7 @@ in {
     oculante # image viewer
     photoqt # image viewer
     obs-studio
+    slack
     teams-for-linux
     # match mesa version if using hyprland flake
     # pkgs-unstable.satty
