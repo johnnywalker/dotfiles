@@ -24,11 +24,11 @@
   };
 
   # Passwordless sudo when SSH'ing with keys
-  security = {
-    pam = {
-      sshAgentAuth.enable = true;
-    };
-  };
+  # security = {
+  #   pam = {
+  #     sshAgentAuth.enable = true;
+  #   };
+  # };
 
   # NOTE: port not opened by default
   # networking = {

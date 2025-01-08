@@ -1,11 +1,18 @@
-{config, ...}: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ../common/presets/nixos.nix
     ./hardware-configuration.nix
     ./clamav.nix
     ./dns.nix
     ./firefox.nix
+    ./nfs.nix
     ./nix-ld.nix
+    ./sway.nix
   ];
 
   # Bootloader.
@@ -16,16 +23,33 @@
 
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = config.services.openssh.ports;
+
   # networking.useDHCP = true;
 
-  # TODO
-  # - configure wireless
-  # - configure JetBrains Mono font for terminal (including Guake)
+  networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
+  networking.wireless.secretsFile = config.sops.secrets.wireless-secrets.path;
+  networking.wireless.networks = {
+    RuggedBits.pskRaw = "ext:psk_ruggedbits";
+  };
 
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # Disable networkmanager
+  networking.networkmanager.enable = false;
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  services.logind.lidSwitch = "hybrid-sleep";
+
+  programs.thunar.enable = true;
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-archive-plugin
+    thunar-media-tags-plugin
+    thunar-volman
+  ];
+  # enable network browsing in thunar
+  services.gvfs = {
+    enable = true;
+    # use version with samba support
+    package = lib.mkForce pkgs.gnome.gvfs;
+  };
+  services.tumbler.enable = true; # Thumbnail support for images
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;

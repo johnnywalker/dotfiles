@@ -32,13 +32,17 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(python
-     ansible
+   '(
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+    ;; load first to avoid Org version mismatch warnings
+    (org :variables
+        org-enable-github-support t
+        org-enable-verb-support t)
+     ansible
      (auto-completion :variables
                       auto-completion-use-company-box t
                       ;; disable TAB completion (prioritize copilot)
@@ -48,17 +52,22 @@ This function should only modify configuration layer settings."
                       ;; recommended for lsp mode
                       auto-completion-minimum-prefix-length 1)
      ;; better-defaults
+     compleseus
+     dhall
      ;; eaf seems to be broken
      ;; eaf
      ;; emacs-lisp
      (git :variables
           git-magit-status-fullscreen t
           magit-diff-refine-hunk t
+          magit-wip-mode t
+          ;; avoid auto-save - becomes very disruptive with magit-wip-mode
+          magit-save-repository-buffers nil
           git-enable-magit-todos-plugin t)
      go
      graphql
      haskell
-     helm
+     ;; helm
      (html :variables
            web-fmt-tool 'web-beautify)
      ;; ivy
@@ -70,7 +79,6 @@ This function should only modify configuration layer settings."
                  ;; seems to interfere with :typescript-fmt-on-save
                  javascript-fmt-on-save t)
      kotlin
-     ;; lsp
      (lsp :variables
           ;; disable documentation instead of rendering in eldoc
           ;; lsp-signature-render-documentation nil
@@ -78,12 +86,12 @@ This function should only modify configuration layer settings."
           ;; docstring in the current buffer instead of the minibuffer
           lsp-signature-function 'lsp-signature-posframe
           ;; lsp-signature-auto-activate '(:on-server-request)
-          lsp-signature-auto-activate nil)
+          lsp-signature-auto-activate nil
+          ;; disable doc popups
+          lsp-ui-doc-enable nil)
      markdown
      multiple-cursors
-     (org :variables
-          org-enable-github-support t
-          org-enable-verb-support t)
+     python
      react
      rust
      scala
@@ -134,10 +142,14 @@ This function should only modify configuration layer settings."
                          :fetcher github
                          :repo "copilot-emacs/copilot.el"
                          :files ("*.el" "dist")))
-     ox-pandoc)
+     ox-pandoc
+     nickel-mode)
 
    ;; A list of packages that cannot be updated.
-   dotspacemacs-frozen-packages '()
+    dotspacemacs-frozen-packages
+    '(
+       ;; managed by nix
+       vterm-module)
 
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '()
@@ -149,7 +161,7 @@ This function should only modify configuration layer settings."
    ;; installs only the used packages but won't delete unused ones. `all'
    ;; installs *all* packages supported by Spacemacs and never uninstalls them.
    ;; (default is `used-only')
-   dotspacemacs-install-packages 'used-only))
+   dotspacemacs-install-packages 'used-but-keep-unused))
 
 (defun dotspacemacs/init ()
   "Initialization:
@@ -306,7 +318,10 @@ It should only modify the values of Spacemacs settings."
 
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
-   ;; with 2 themes variants, one dark and one light)
+   ;; with 2 themes variants, one dark and one light). A theme from external
+   ;; package can be defined with `:package', or a theme can be defined with
+   ;; `:location' to download the theme package, refer the themes section in
+   ;; DOCUMENTATION.org for the full theme specifications.
    dotspacemacs-themes '(spacemacs-dark
                          spacemacs-light)
 
@@ -323,7 +338,9 @@ It should only modify the values of Spacemacs settings."
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
 
-   ;; Default font or prioritized list of fonts. The `:size' can be specified as
+   ;; Default font or prioritized list of fonts. This setting has no effect when
+   ;; running Emacs in terminal. The font set here will be used for default and
+   ;; fixed-pitch faces. The `:size' can be specified as
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
    ;; dotspacemacs-default-font '("Source Code Pro"
@@ -332,7 +349,7 @@ It should only modify the values of Spacemacs settings."
    ;;                             :width normal)
    dotspacemacs-default-font '(;; "JetBrains Mono"
                                 "JetBrainsMono Nerd Font"
-                               :size 13.0
+                               :size @dotspacemacs_font_size@
                                :weight normal
                                :width normal)
 
@@ -409,6 +426,10 @@ It should only modify the values of Spacemacs settings."
    ;; Which-key frame position. Possible values are `right', `bottom' and
    ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
    ;; right; if there is insufficient space it displays it at the bottom.
+   ;; It is also possible to use a posframe with the following cons cell
+   ;; `(posframe . position)' where position can be one of `center',
+   ;; `top-center', `bottom-center', `top-left-corner', `top-right-corner',
+   ;; `top-right-corner', `bottom-left-corner' or `bottom-right-corner'
    ;; (default 'bottom)
    dotspacemacs-which-key-position 'bottom
 
@@ -418,6 +439,22 @@ It should only modify the values of Spacemacs settings."
    ;; displays the buffer in a same-purpose window even if the buffer can be
    ;; displayed in the current window. (default nil)
    dotspacemacs-switch-to-buffer-prefers-purpose nil
+
+   ;; Whether side windows (such as those created by treemacs or neotree)
+   ;; are kept or minimized by `spacemacs/toggle-maximize-window' (SPC w m).
+   ;; (default t)
+   dotspacemacs-maximize-window-keep-side-windows t
+
+   ;; If nil, no load-hints enabled. If t, enable the `load-hints' which will
+   ;; put the most likely path on the top of `load-path' to reduce walking
+   ;; through the whole `load-path'. It's an experimental feature to speedup
+   ;; Spacemacs on Windows. Refer the FAQ.org "load-hints" session for details.
+   dotspacemacs-enable-load-hints nil
+
+   ;; If t, enable the `package-quickstart' feature to avoid full package
+   ;; loading, otherwise no `package-quickstart' attemption (default nil).
+   ;; Refer the FAQ.org "package-quickstart" section for details.
+   dotspacemacs-enable-package-quickstart nil
 
    ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
@@ -522,7 +559,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, start an Emacs server if one is not already running.
    ;; (default nil)
-   dotspacemacs-enable-server nil
+   dotspacemacs-enable-server @dotspacemacs_enable_server@
 
    ;; Set the emacs server socket location.
    ;; If nil, uses whatever the Emacs default is, otherwise a directory path
@@ -533,12 +570,19 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server nil
+   dotspacemacs-persistent-server @dotspacemacs_persistent_server@
 
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
    ;; (default '("rg" "ag" "pt" "ack" "grep"))
    dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
+
+   ;; The backend used for undo/redo functionality. Possible values are
+   ;; `undo-fu', `undo-redo' and `undo-tree' see also `evil-undo-system'.
+   ;; Note that saved undo history does not get transferred when changing
+   ;; your undo system. The default is currently `undo-fu' as `undo-tree'
+   ;; is not maintained anymore and `undo-redo' is very basic."
+   dotspacemacs-undo-system 'undo-fu
 
    ;; Format specification for setting the frame title.
    ;; %a - the `abbreviated-file-name', or `buffer-name'
@@ -575,6 +619,9 @@ It should only modify the values of Spacemacs settings."
    ;; to aggressively delete empty line and long sequences of whitespace,
    ;; `trailing' to delete only the whitespace at end of lines, `changed' to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
+   ;; The variable `global-spacemacs-whitespace-cleanup-modes' controls
+   ;; which major modes have whitespace cleanup enabled or disabled
+   ;; by default.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
 
@@ -643,6 +690,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; increase max-lisp-eval-depth to resolve "lisp nesting exceeds max-lisp-eval-depth" error
   (setq max-lisp-eval-depth 10000)
+
+  ;; write custom settings to a separate file
+  (setq custom-file "~/.emacs.d/private/custom-settings.el")
+  (load custom-file)
 )
 
 
@@ -702,6 +753,8 @@ before packages are loaded."
     :config
     (editorconfig-mode 1))
 
+  (load "~/.emacs.d/private/nickel-mode.el")
+
   ;; begin: copilot
 
   ;; accept completion from copilot and fallback to company
@@ -728,7 +781,8 @@ before packages are loaded."
     (define-key copilot-completion-map (kbd "C-<tab>") 'copilot-accept-completion-by-word)
     (define-key copilot-completion-map (kbd "C-M-TAB") 'copilot-accept-completion-by-line)
     (define-key copilot-completion-map (kbd "C-M-<tab>") 'copilot-accept-completion-by-line)
-    (define-key copilot-mode-map (kbd "M-[") 'copilot-previous-completion)
+    ;; use M-} instead of M-[ to avoid conflict with xterm focus in/out bindings
+    (define-key copilot-mode-map (kbd "M-}") 'copilot-previous-completion)
     (define-key copilot-mode-map (kbd "M-]") 'copilot-next-completion)
     (define-key copilot-mode-map (kbd "M-\\") 'copilot-complete)
 
@@ -788,8 +842,13 @@ before packages are loaded."
   ;; `C-g' to close doc
   ;; https://github.com/emacs-lsp/lsp-ui/issues/442
   (advice-add #'keyboard-quit :before #'lsp-ui-doc-hide)
+
+  ;; ruff is still unstable - requires --preview flag
+  (setq lsp-ruff-ruff-args '("--preview"))
 )
 
+;; TODO no longer used - extract custom settings defaults to separate file
+;; - e.g. custom-settings-defaults.el
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 (defun dotspacemacs/emacs-custom-settings ()
@@ -797,7 +856,7 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
+  (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
@@ -811,22 +870,27 @@ This function is called at the very end of Spacemacs initialization."
  '(lsp-clients-typescript-preferences '(:importModuleSpecifierPreference "project-relative"))
  '(lsp-clients-typescript-server-args '("--stdio"))
  '(lsp-idle-delay 1)
- '(lsp-metals-fallback-scala-version "3.3.3")
+ '(lsp-metals-fallback-scala-version "3.3.4")
  '(lsp-typescript-tsserver-log "verbose")
  ;; disable branch scanner - causes performance issues in large repos
  '(magit-todos-branch-list nil)
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
- '(magit-wip-mode t)
  '(mouse-wheel-flip-direction t)
- '(org-agenda-files '("~/org/ehp.org" "/Users/johnny/org/notes.org"))
+ '(org-agenda-files '("~/org/notes.org"))
  '(org-export-backends '(ascii html icalendar latex md odt org))
  '(package-selected-packages
-    '(php-mode blacken code-cells company-anaconda anaconda-mode cython-mode helm-cscope helm-pydoc importmagic epc ctable concurrent deferred live-py-mode lsp-pyright lsp-python-ms nose pip-requirements pipenv load-env-vars pippel poetry py-isort pydoc pyenv-mode pythonic pylookup pytest pyvenv sphinx-doc stickyfunc-enhance xcscope yapfify ansible ansible-doc company-ansible jinja2-mode ox-pandoc ox-gfm sqlup-mode rjsx-mode company-web web-completion-data graphql-mode helm-css-scss pug-mode sass-mode haml-mode scss-mode slim-mode tagedit emmet-mode typescript-mode web-mode browse-at-remote diff-hl evil-org gnuplot helm-org-rifle magit-todos org-cliplink org-contrib org-download org-mime org-pomodoro alert log4e gntp org-present org-projectile org-project-capture org-category-capture org-rich-yank orgit-forge orgit company-box frame-local helm wfnames helm-core compleseus-spacemacs-help consult-lsp consult-yasnippet embark-consult consult embark flyspell-correct-popup marginalia orderless vertico wgrep rustic flycheck-kotlin groovy-imports pcache groovy-mode kotlin-mode lsp-java maven-test-mode mvn json-mode json-navigator hierarchy json-reformat json-snatcher add-node-modules-path impatient-mode htmlize import-js grizzl js-doc js2-refactor multiple-cursors livid-mode nodejs-repl npm-mode prettier-js skewer-mode js2-mode simple-httpd tern web-beautify neotree company-go flycheck-golangci-lint go-eldoc go-fill-struct go-gen-test go-guru go-impl go-rename go-tag go-mode godoctor company-terraform terraform-mode hcl-mode copilot esh-help eshell-prompt-extras eshell-z multi-term multi-vterm shell-pop terminal-here vterm xterm-color just-mode yaml-mode direnv nix-mode ac-ispell attrap auto-complete auto-dictionary auto-yasnippet cmm-mode company-cabal dante lcr eldoc xref flycheck-haskell flycheck-pos-tip flyspell-correct-helm flyspell-correct fuzzy gh-md haskell-snippets helm-c-yasnippet helm-company helm-hoogle helm-lsp hindent hlint-refactor lsp-haskell haskell-mode lsp-origami origami lsp-ui markdown-toc mmm-mode yasnippet-snippets yasnippet forge ghub closql emacsql compat treepy git-link git-messenger git-modes git-timemachine gitignore-templates helm-git-grep helm-ls-git smeargle treemacs-magit magit magit-section git-commit with-editor transient cargo company counsel-gtags counsel swiper ivy dap-mode lsp-docker lsp-treemacs bui yaml lsp-mode markdown-mode flycheck-rust ggtags racer pos-tip ron-mode rust-mode toml-mode vim-powerline ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay string-inflection string-edit-at-point spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint inspector info+ indent-guide hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-descbinds google-translate golden-ratio flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-def editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile all-the-icons aggressive-indent ace-link ace-jump-helm-line))
+    '(php-mode blacken code-cells company-anaconda anaconda-mode cython-mode helm-cscope helm-pydoc importmagic epc ctable concurrent deferred live-py-mode lsp-pyright lsp-python-ms nose pip-requirements pipenv load-env-vars pippel poetry py-isort pydoc pyenv-mode pythonic pylookup pytest pyvenv sphinx-doc stickyfunc-enhance xcscope yapfify ansible ansible-doc company-ansible jinja2-mode ox-pandoc ox-gfm sqlup-mode rjsx-mode company-web web-completion-data graphql-mode helm-css-scss pug-mode sass-mode haml-mode scss-mode slim-mode tagedit emmet-mode typescript-mode web-mode browse-at-remote diff-hl evil-org gnuplot helm-org-rifle magit-todos org-cliplink org-contrib org-download org-mime org-pomodoro alert log4e gntp org-present org-projectile org-project-capture org-category-capture org-rich-yank orgit-forge orgit company-box frame-local helm wfnames helm-core compleseus-spacemacs-help consult-lsp consult-yasnippet embark-consult consult embark flyspell-correct-popup marginalia orderless vertico wgrep rustic flycheck-kotlin groovy-imports pcache groovy-mode kotlin-mode lsp-java maven-test-mode mvn json-mode json-navigator hierarchy json-reformat json-snatcher add-node-modules-path impatient-mode htmlize import-js grizzl js-doc js2-refactor multiple-cursors livid-mode nodejs-repl npm-mode prettier-js skewer-mode js2-mode simple-httpd tern web-beautify neotree company-go flycheck-golangci-lint go-eldoc go-fill-struct go-gen-test go-guru go-impl go-rename go-tag go-mode godoctor company-terraform terraform-mode hcl-mode copilot esh-help eshell-prompt-extras eshell-z multi-term multi-vterm shell-pop terminal-here vterm xterm-color just-mode yaml-mode direnv nix-mode ac-ispell attrap auto-complete auto-dictionary auto-yasnippet cmm-mode company-cabal dante lcr eldoc xref flycheck-haskell flycheck-pos-tip flyspell-correct-helm flyspell-correct fuzzy gh-md haskell-snippets helm-c-yasnippet helm-company helm-hoogle helm-lsp hindent hlint-refactor lsp-haskell haskell-mode lsp-origami origami lsp-ui markdown-toc mmm-mode yasnippet-snippets yasnippet forge ghub closql emacsql compat treepy git-link git-messenger git-modes git-timemachine gitignore-templates helm-git-grep helm-ls-git smeargle treemacs-magit magit magit-section git-commit with-editor transient cargo company counsel-gtags counsel swiper ivy dap-mode lsp-docker lsp-treemacs bui yaml lsp-mode markdown-mode flycheck-rust ggtags racer pos-tip ron-mode rust-mode toml-mode vim-powerline ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay string-inflection string-edit-at-point spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint inspector info+ indent-guide hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-descbinds google-translate golden-ratio flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-def editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile all-the-icons aggressive-indent ace-link ace-jump-helm-line))
  '(safe-local-variable-values
-    '((eval progn
+    '((eval add-hook 'before-save-hook 'time-stamp)
+       (eval progn
         (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.terraform\\.[^.]+$")
         (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]metastore_db$"))
        (eval add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.terraform\\.[^.]+$")
+       (eval progn
+         (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]build$")
+         (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]dist$"))
+       (lsp-enabled-clients deno-ls)
+       (lsp-disabled-clients ts-ls)
        (typescript-backend . tide)
        (typescript-backend . lsp)
        (javascript-backend . tide)

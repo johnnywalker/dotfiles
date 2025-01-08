@@ -26,7 +26,6 @@
 
   nix = {
     extraOptions = ''
-      plugin-files = ${pkgs.nix-plugins}/lib/nix/plugins
       # keep-outputs = true
       # keep-derivations = true
     '';
@@ -38,7 +37,7 @@
       # auto-optimise-store = pkgs.stdenv.isLinux;
       # let's try periodic optimization instead
       auto-optimise-store = false;
-      experimental-features = ["nix-command" "flakes" "repl-flake"];
+      experimental-features = ["nix-command" "flakes"];
       # keep-derivations = true;
       # keep-outputs = true;
       trusted-users =

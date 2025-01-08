@@ -15,6 +15,8 @@
     ../global/oom-killer.nix
     ../global/openssh.nix
 
+    ../nixos/yubikey.nix
+
     ../users/johnny
   ];
 
@@ -32,26 +34,42 @@
     # pathsToLink = ["/share" "/bin"];
     systemPackages = with pkgs; [
       bitwarden-desktop
-      cmake # required to build some emacs packages
-      emacs29-pgtk
+      btop
       gh
       guake
       neovide
       neovim-gtk
       neovim-qt
-      nerdfonts
       psmisc
       ripgrep
       vim
       wl-clipboard
+      xdg-launch
     ];
   };
+
+  fonts.enableDefaultPackages = true;
+  fonts.packages = with pkgs; [
+    emacs-all-the-icons-fonts
+    (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
+    noto-fonts
+    noto-fonts-emoji
+    roboto
+    source-code-pro
+    source-sans-pro
+    source-serif-pro
+  ];
+  fonts.fontconfig.subpixel.rgba = "rgb";
 
   programs.zsh.enable = true;
 
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
+    settings = {
+      allow-loopback-pinentry = "";
+      allow-emacs-pinentry = "";
+    };
   };
 
   system = {

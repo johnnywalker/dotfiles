@@ -38,7 +38,7 @@
     settings = {
       # https://github.com/NixOS/nix/issues/7273
       auto-optimise-store = pkgs.stdenv.isLinux;
-      experimental-features = ["nix-command" "flakes" "repl-flake"];
+      experimental-features = ["nix-command" "flakes"];
       trusted-users = ["root" "@admin"];
       # min-free = lib.mkDefault (10 * 1000 * 1000 * 1000); # 10gb
       # cores = 0;
@@ -99,7 +99,6 @@
   environment.systemPackages = with pkgs; [
     alacritty
     colima
-    emacs29-macport
     grandperspective # visualize disk usage
     # (import ./emacs.nix {inherit pkgs;})
     iconv # not sure why
