@@ -9,6 +9,7 @@ in {
     ../common/presets/nixos.nix
     ./hyprland.nix
     ./hyprpolkitagent.nix
+    ./jetbrains.nix
     ./mpd.nix
     ./teams-for-linux.nix
     ./waybar.nix
