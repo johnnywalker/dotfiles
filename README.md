@@ -1,12 +1,15 @@
-# nix-darwin flake
+# dotfiles
 
-This is my [nix-darwin](https://github.com/LnL7/nix-darwin) configuration.
+Configuration files for NixOS and macOS systems. The latter uses
+[nix-darwin](https://github.com/LnL7/nix-darwin) to manage system configuration.
 
 ## Usage
 
--   `make switch` to apply the configuration.
+-   `sudo make switch` to apply the configuration (NixOS).
+-   `make switch` to apply the configuration (macOS).
 
 ## References
 
+-   [NixOS Configuration Options](https://nixos.org/manual/nixos/stable/options.html)
+-   [Home Manager Configuration Options](https://nix-community.github.io/home-manager/options.html)
 -   [nix-darwin manual](https://daiderd.com/nix-darwin/manual/)
--   [NixOS manual](https://nixos.org/manual/nixos/unstable/options.html)
