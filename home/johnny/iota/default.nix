@@ -15,31 +15,28 @@ in {
     ./waybar.nix
   ];
 
-  home.packages = with pkgs; [
-    cameractrls-gtk4
-    font-manager
-    jetbrains.datagrip
-    libreoffice
-    # match mesa version if using hyprland flake
-    # pkgs-unstable.loupe # image viewer
-    # pkgs-unstable.oculante # image viewer
-    # pkgs-unstable.photoqt # image viewer
-    # pkgs-unstable.obs-studio
-    loupe # image viewer
-    oculante # image viewer
-    photoqt # image viewer
-    obs-studio
-    qalculate-gtk
-    slack
-    teams-for-linux
-    # match mesa version if using hyprland flake
-    # pkgs-unstable.satty
-    # pkgs-unstable.swappy
-    # pkgs-unstable.vimiv-qt # image viewer
-    # pkgs-unstable.vlc
-    satty
-    swappy
-    vimiv-qt # image viewer
-    vlc
-  ];
+  home.packages = with pkgs;
+    [
+      cameractrls-gtk4
+      font-manager
+      jetbrains.datagrip
+      libreoffice
+      obs-studio
+      qalculate-gtk
+      slack
+      teams-for-linux
+    ]
+    ++ (
+      # match mesa version if using hyprland flake
+      # with pkgs-unstable;
+      with pkgs; [
+        loupe # image viewer
+        oculante # image viewer
+        photoqt # image viewer
+        satty
+        swappy # simple image editor (for editing screenshots)
+        vimiv-qt # image viewer
+        vlc
+      ]
+    );
 }
