@@ -1,15 +1,8 @@
 {
   config,
-  inputs,
   pkgs,
   ...
 }: {
-  home-manager = {
-    users = {
-      johnny = import "${inputs.self}/home/johnny/${config.networking.hostName}";
-    };
-  };
-
   users = {
     mutableUsers = false;
     users = {

@@ -19,6 +19,8 @@
 
     lfs.enable = true;
 
+    signing.key = lib.mkDefault "";
+
     extraConfig = {
       color = {
         ui = true;

@@ -8,9 +8,7 @@
     ../common/presets/nixos.nix
     ./hardware-configuration.nix
     ./clamav.nix
-    ./dns.nix
     ./firefox.nix
-    ./nfs.nix
     ./nix-ld.nix
     ./sway.nix
   ];
@@ -27,10 +25,6 @@
   # networking.useDHCP = true;
 
   networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
-  networking.wireless.secretsFile = config.sops.secrets.wireless-secrets.path;
-  networking.wireless.networks = {
-    RuggedBits.pskRaw = "ext:psk_ruggedbits";
-  };
 
   # Disable networkmanager
   networking.networkmanager.enable = false;

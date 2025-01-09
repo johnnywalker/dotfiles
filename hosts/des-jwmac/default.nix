@@ -1,4 +1,13 @@
-{pkgs, ...}: {
+{
+  # inputs,
+  pkgs,
+  ...
+}: {
+  imports = [
+    ../common/global/home-manager.nix
+    ../common/global/nix/darwin.nix
+  ];
+
   nix = {
     distributedBuilds = true;
 
@@ -12,16 +21,6 @@
     # ref: https://elvishjerricco.github.io/2018/06/24/secure-declarative-key-management.html
     envVars = builtins.fromJSON (builtins.extraBuiltins.decrypt "hosts/des-jwmac/secrets/nix-env-vars.json");
 
-    gc = {
-      automatic = true;
-      interval = {
-        Weekday = 0;
-        Hour = 2;
-        Minute = 0;
-      };
-      options = "--delete-older-than 30d";
-    };
-
     # had trouble getting this to build the first time and had to bootstrap
     # https://nixos.org/manual/nixpkgs/unstable/#sec-darwin-builder
     # run builder manually: `nix run nixpkgs#darwin.linux-builder`
@@ -33,14 +32,7 @@
       };
     };
 
-    package = pkgs.nix;
-
     settings = {
-      # https://github.com/NixOS/nix/issues/7273
-      auto-optimise-store = pkgs.stdenv.isLinux;
-      experimental-features = ["nix-command" "flakes"];
-      trusted-users = ["root" "@admin"];
-      # min-free = lib.mkDefault (10 * 1000 * 1000 * 1000); # 10gb
       # cores = 0;
       max-jobs = 2;
 
@@ -147,5 +139,7 @@
 
   users.users."johnny" = {
     shell = pkgs.zsh;
+    # https://github.com/LnL7/nix-darwin/issues/682
+    home = "/Users/johnny";
   };
 }

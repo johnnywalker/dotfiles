@@ -1,13 +1,9 @@
 {
   pkgs,
   lib,
-  inputs,
   ...
 }: {
   imports = [
-    inputs.sops-nix.nixosModules.sops
-    inputs.home-manager.nixosModules.home-manager
-
     ../global/nix/nixos.nix
     ../global/docker.nix
     ../global/home-manager.nix

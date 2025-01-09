@@ -5,10 +5,8 @@
 }: {
   imports = [
     ../common/presets/nixos.nix
-    ../common/networks
     ../common/users/henry
     ./hardware-configuration.nix
-    ./dns.nix
     ./firefox.nix
   ];
 
@@ -24,10 +22,6 @@
   # networking.useDHCP = true;
 
   networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
-  networking.wireless.secretsFile = config.sops.secrets.wireless-secrets.path;
-  networking.wireless.networks = {
-    RuggedBits.pskRaw = "ext:psk_ruggedbits";
-  };
 
   # Disable networkmanager
   networking.networkmanager.enable = false;

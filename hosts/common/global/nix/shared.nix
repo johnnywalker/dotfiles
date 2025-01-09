@@ -1,29 +1,8 @@
 {
   pkgs,
   lib,
-  inputs,
   ...
 }: {
-  nixpkgs = {
-    overlays = [
-      # Any additional overlays can be placed here
-      (final: prev: {
-        unstable = import inputs.nixpkgs-unstable {
-          system = final.system;
-          config = final.config;
-        };
-
-        # master = import inputs.nixpkgs-master {
-        #   system = final.system;
-        #   config = final.config;
-        # };
-      })
-    ];
-    config = {
-      allowUnfree = true;
-    };
-  };
-
   nix = {
     extraOptions = ''
       # keep-outputs = true

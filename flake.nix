@@ -63,14 +63,6 @@
     treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
 
     specialArgs = {inherit inputs self;};
-
-    # NOTE: only used on darwin
-    overlays = [
-      (prev: final: {
-        unstable = import nixpkgs-unstable {inherit (prev) system;};
-      })
-      emacs-lsp-booster.overlays.default
-    ];
   in {
     # for `nix fmt`
     formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
@@ -84,63 +76,96 @@
       inherit specialArgs;
       system = "x86_64-darwin";
       modules = [
-        ./hosts/des-jwmac/default.nix
         home-manager.darwinModules.home-manager
+        self.darwinModules.home-manager-special-args
+        self.darwinModules.nixpkgs
+        self.darwinModules.des-jwmac
         {
-          home-manager = {
-            extraSpecialArgs = specialArgs;
-            sharedModules = [
-              sops-nix.homeManagerModules.sops
-            ];
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            users.johnny = import ./home/johnny/des-jwmac;
-          };
-          nixpkgs = {
-            inherit overlays;
-            # for terraform
-            config.allowUnfree = true;
-          };
-          # https://github.com/LnL7/nix-darwin/issues/682
-          users.users.johnny.home = "/Users/johnny";
+          home-manager.users.johnny.imports = [self.homeModules."johnny/des-jwmac"];
         }
       ];
+    };
+
+    darwinModules = {
+      home-manager-special-args = self.nixosModules.home-manager-special-args;
+      nixpkgs = self.nixosModules.nixpkgs;
+      des-jwmac = import ./hosts/des-jwmac;
+    };
+
+    homeModules = {
+      "johnny/des-jwmac" = import ./home/johnny/des-jwmac;
+      "johnny/iota" = import ./home/johnny/iota;
+      "johnny/m3800" = import ./home/johnny/m3800;
+      "johnny/petey" = import ./home/johnny/petey;
+    };
+
+    nixosModules = {
+      home-manager-special-args = {
+        home-manager.extraSpecialArgs = specialArgs;
+      };
+      nixpkgs = {pkgs, ...}: {
+        nixpkgs = {
+          overlays = [
+            # Any additional overlays can be placed here
+            (final: prev: {
+              unstable = import inputs.nixpkgs-unstable {
+                inherit (final) config system;
+              };
+
+              # master = import inputs.nixpkgs-master {
+              #   inherit (final) config system;
+              # };
+
+              # emacs-lsp-booster = emacs-lsp-booster.packages.${pkgs.system}.default;
+            })
+          ];
+          config = {
+            allowUnfree = true;
+          };
+        };
+      };
+      iota = import ./hosts/iota;
+      m3800 = import ./hosts/m3800;
+      petey = import ./hosts/petey;
     };
 
     nixosConfigurations = {
       iota = nixpkgs.lib.nixosSystem {
         inherit specialArgs;
         modules = [
-          "${self}/hosts/iota"
+          sops-nix.nixosModules.sops
+          home-manager.nixosModules.home-manager
+          self.nixosModules.home-manager-special-args
+          self.nixosModules.nixpkgs
+          self.nixosModules.iota
           {
-            home-manager = {
-              extraSpecialArgs = specialArgs;
-              users.johnny = import ./home/johnny/iota;
-            };
+            home-manager.users.johnny.imports = [self.homeModules."johnny/iota"];
           }
         ];
       };
       m3800 = nixpkgs.lib.nixosSystem {
         inherit specialArgs;
         modules = [
-          "${self}/hosts/m3800"
+          sops-nix.nixosModules.sops
+          home-manager.nixosModules.home-manager
+          self.nixosModules.home-manager-special-args
+          self.nixosModules.nixpkgs
+          self.nixosModules.m3800
           {
-            home-manager = {
-              extraSpecialArgs = specialArgs;
-              users.johnny = import ./home/johnny/m3800;
-            };
+            home-manager.users.johnny.imports = [self.homeModules."johnny/m3800"];
           }
         ];
       };
       petey = nixpkgs.lib.nixosSystem {
         inherit specialArgs;
         modules = [
-          "${self}/hosts/petey"
+          sops-nix.nixosModules.sops
+          home-manager.nixosModules.home-manager
+          self.nixosModules.home-manager-special-args
+          self.nixosModules.nixpkgs
+          self.nixosModules.petey
           {
-            home-manager = {
-              extraSpecialArgs = specialArgs;
-              users.johnny = import ./home/johnny/petey.nix;
-            };
+            home-manager.users.johnny.imports = [self.homeModules."johnny/petey"];
           }
         ];
       };

@@ -6,17 +6,13 @@
 }: {
   imports = [
     ../common/presets/nixos.nix
-    ../common/networks
     ./amdgpu.nix
     ./hardware-configuration.nix
     ./clamav.nix
-    ./dns.nix
     ./firefox.nix
     ./hyprland.nix
     ./keyboard.nix
-    ./nfs.nix
     ./nix-ld.nix
-    ./wireguard.nix
   ];
 
   # Bootloader.
@@ -40,10 +36,6 @@
   # networking.useDHCP = true;
 
   networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
-  networking.wireless.secretsFile = config.sops.secrets.wireless-secrets.path;
-  networking.wireless.networks = {
-    RuggedBits.pskRaw = "ext:psk_ruggedbits";
-  };
 
   # Disable networkmanager
   networking.networkmanager.enable = false;
