@@ -11,6 +11,7 @@ in {
     ./hyprpolkitagent.nix
     ./jetbrains.nix
     ./mpd.nix
+    ./pass.nix
     ./teams-for-linux.nix
     ./waybar.nix
   ];
