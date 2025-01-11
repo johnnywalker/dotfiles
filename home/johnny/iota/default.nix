@@ -20,6 +20,7 @@ in {
     [
       cameractrls-gtk4
       font-manager
+      ghostty
       jetbrains.datagrip
       libreoffice
       obs-studio
