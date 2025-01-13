@@ -142,6 +142,9 @@ This function should only modify configuration layer settings."
                          :fetcher github
                          :repo "copilot-emacs/copilot.el"
                          :files ("*.el" "dist")))
+     (lsp-vtsls :location (recipe
+                           :fetcher github
+                           :repo "sdvcrx/lsp-vtsls"))
      ox-pandoc
      nickel-mode)
 
@@ -752,6 +755,16 @@ before packages are loaded."
     :ensure t
     :config
     (editorconfig-mode 1))
+
+  (use-package lsp-vtsls
+    :after lsp-mode
+    :config
+    (setq
+      ;; show all LSP doc on minibuffer (probably want to disable)
+      lsp-eldoc-render-all t
+      ;; https://github.com/yioneko/vtsls#bad-performance-of-completion
+      lsp-vtsls-server-side-fuzzy-match t
+      lsp-vtsls-entries-limit 10))
 
   (load "~/.emacs.d/private/nickel-mode.el")
 
