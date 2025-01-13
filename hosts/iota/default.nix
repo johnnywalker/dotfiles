@@ -40,9 +40,6 @@
   # Disable networkmanager
   networking.networkmanager.enable = false;
 
-  services.avahi.enable = true;
-  services.avahi.nssmdns4 = true;
-
   gtk.iconCache.enable = true;
 
   programs.thunar.enable = true;
