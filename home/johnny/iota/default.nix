@@ -21,11 +21,13 @@ in {
       cameractrls-gtk4
       font-manager
       ghostty
+      gimp
       jetbrains.datagrip
       libreoffice
       obs-studio
       qalculate-gtk
       slack
+      sql-formatter
       teams-for-linux
     ]
     ++ (
