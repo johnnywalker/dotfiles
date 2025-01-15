@@ -42,6 +42,7 @@
       k6
       kubectl
       kubernetes-helm
+      libxml2 # for xmllint
       # language server for scala
       metals
       # - use snapshot version with fix for https://github.com/scalameta/metals/issues/6472
@@ -86,6 +87,7 @@
       sops
       ssm-session-manager-plugin
       terraform
+      terraform-ls # language server for terraform
       (texlive.combine {
         inherit
           (texlive)
