@@ -1,10 +1,34 @@
 {
   inputs,
+  lib,
   pkgs,
   ...
 }: let
   hyprland-pkgs = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
   pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+
+  # ref: https://github.com/hyprwm/Hyprland/discussions/830
+  # replace with replaceVars in 25.05?
+  select-window = pkgs.substitute {
+    name = "select-window";
+    dir = "bin";
+    src = ./select-window.sh;
+    isExecutable = true;
+
+    substitutions = with pkgs; [
+      "--subst-var-by"
+      "runtimeShell"
+      runtimeShell
+      "--subst-var-by"
+      "path"
+      (lib.makeBinPath [
+        fuzzel
+        gawk
+        gnused
+        jq
+      ])
+    ];
+  };
 in {
   # hint Electron apps to use Wayland:
   home.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -22,11 +46,11 @@ in {
   # TODO configure hyprexpo
   home.packages = with pkgs; [
     cliphist
-    fuzzel
     grim
     grimblast
     mako
     pavucontrol
+    select-window
     slurp
     wlogout
   ];
@@ -66,6 +90,7 @@ in {
     "$menu" = "uwsm app -- fuzzel";
     "$logout" = "uwsm app -- wlogout";
     "$cliphist_list" = "uwsm app -- cliphist list | fuzzel --dmenu | cliphist decode | wl-copy";
+    "$selectWindow" = "uwsm app -- ${select-window}/bin/select-window";
 
     # debug = {
     #   disable_logs = false;
@@ -203,6 +228,7 @@ in {
       "$mainMod, P, pseudo," # dwindle
       "$mainMod, J, togglesplit," # dwindle
       "$mainMod, L, exec, hyprlock"
+      "$mainMod, TAB, exec, $selectWindow"
 
       # Screenshot binds
       ", Print, exec, uwsm app -- uwsm app -- grimblast --notify copy output" # screenshot to clipboard
