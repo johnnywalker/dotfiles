@@ -9,8 +9,8 @@
     ];
   };
   programs.spacemacs = {
-    fontSize = 10.5;
-    enableServer = true;
-    persistentServer = true;
+    fontSize = 13;
+    enableServer = false;
+    persistentServer = false;
   };
 }
