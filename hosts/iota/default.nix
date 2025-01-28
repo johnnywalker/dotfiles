@@ -13,6 +13,7 @@
     ./hyprland.nix
     ./keyboard.nix
     ./nix-ld.nix
+    ./llm.nix
   ];
 
   # Bootloader.
