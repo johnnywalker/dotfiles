@@ -25,6 +25,7 @@ in {
       libreoffice
       obs-studio
       qalculate-gtk
+      signal-desktop
       slack
       sql-formatter
       teams-for-linux
