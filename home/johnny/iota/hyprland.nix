@@ -86,6 +86,7 @@ in {
   wayland.windowManager.hyprland.systemd.enable = false;
   wayland.windowManager.hyprland.settings = {
     "$terminal" = "uwsm app -- kitty";
+    "$termClassed" = "uwsm app -- kitty --class";
     "$fileManager" = "uwsm app -- thunar";
     "$menu" = "uwsm app -- fuzzel";
     "$logout" = "uwsm app -- wlogout";
@@ -232,8 +233,8 @@ in {
     # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
     bind = [
       # "$mainMod, Q, exec, $terminal"
-      # "$mainMod, T, exec, $terminal"
-      "$mainMod, grave, exec, $terminal" # grave accent
+      "$mainMod, T, exec, $terminal"
+      "$mainMod, grave, togglespecialworkspace, term" # toggle drop-up terminal
       # "$mainMod, C, killactive,"
       "$mainMod, W, killactive,"
       # "$mainMod, M, exit,"
@@ -324,6 +325,10 @@ in {
     # See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
     # See https://wiki.hyprland.org/Configuring/Workspace-Rules/ for workspace rules
 
+    workspace = [
+      "special:term, on-created-empty:$termClassed dropterm"
+    ];
+
     # Example windowrule v1
     # windowrule = "float, ^(kitty)$";
 
@@ -332,6 +337,11 @@ in {
 
     windowrulev2 = [
       "suppressevent maximize, class:.*" # You'll probably like this.
+      "stayfocused, class:(pinentry-)(.*)" # fix pinentry losing focus
+      "float, class:^(dropterm)$" # float drop-up terminal
+      "size 80% 60%, class:^(dropterm)$" # set width/height of drop-up terminal
+      "move 10% 35%, class:^(dropterm)$" # position drop-up terminal
+      "animation slide bottom, class:^(dropterm)$" # position drop-down terminal
     ];
   };
 
