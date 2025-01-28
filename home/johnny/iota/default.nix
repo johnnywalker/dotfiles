@@ -22,7 +22,6 @@ in {
       font-manager
       ghostty
       gimp
-      jetbrains.datagrip
       libreoffice
       obs-studio
       qalculate-gtk
