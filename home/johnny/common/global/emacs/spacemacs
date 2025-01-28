@@ -728,7 +728,9 @@ before packages are loaded."
       :init
       ;; reposition the lsp-signature posframe to bottom left
       (setq lsp-signature-posframe-params (list :poshandler 'posframe-poshandler-window-bottom-left-corner :height 10 :width 120 :border-width 1 :min-width 60))
-      )
+      :hook (
+              ;; support tree-sitter modes
+              (tsx-ts-mode typescript-ts-mode js-ts-mode) . lsp-deferred))
 
   (use-package lsp-nix
     :ensure lsp-mode
