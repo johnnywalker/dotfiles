@@ -756,6 +756,7 @@ before packages are loaded."
     :config
     (editorconfig-mode 1))
 
+  ;; language server that wraps VSCode server for TS
   (use-package lsp-vtsls
     :after lsp-mode
     :config
@@ -764,7 +765,7 @@ before packages are loaded."
       lsp-eldoc-render-all t
       ;; https://github.com/yioneko/vtsls#bad-performance-of-completion
       lsp-vtsls-server-side-fuzzy-match t
-      lsp-vtsls-entries-limit 10))
+      lsp-vtsls-entries-limit 1000))
 
   (load "~/.emacs.d/private/nickel-mode.el")
 
