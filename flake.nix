@@ -117,6 +117,22 @@
               # };
 
               # emacs-lsp-booster = emacs-lsp-booster.packages.${pkgs.system}.default;
+              llama-cpp = prev.llama-cpp.overrideAttrs (attrs: {
+                version = "4545";
+                src = final.fetchFromGitHub {
+                  owner = "ggerganov";
+                  repo = "llama.cpp";
+                  tag = "b4545";
+                  hash = "sha256-NUt6Q372jsCzcSAEqe2VZB2ZUpGSZyrvr0wyqrBYoOY=";
+                  leaveDotGit = true;
+                  postFetch = ''
+                    git -C "$out" rev-parse --short HEAD > $out/COMMIT
+                    find "$out" -name .git -print0 | xargs -0 rm -rf
+                  '';
+                };
+                # doesn't seem to work
+                HSA_OVERRIDE_GFX_VERSION = "11.0.0";
+              });
             })
           ];
           config = {
