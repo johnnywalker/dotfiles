@@ -824,7 +824,7 @@ before packages are loaded."
 
   ;; terraform config
   ;; use terraform-ls (official language server)
-  (setq lsp-disabled-clients '(tfls))
+  (add-to-list 'lsp-disabled-clients 'tfls)
   ;; (setq lsp-terraform-ls-enable-show-reference t)
   ;; (setq lsp-semantic-tokens-enable t)
   ;; (setq lsp-semantic-tokens-honor-refresh-requests t)
