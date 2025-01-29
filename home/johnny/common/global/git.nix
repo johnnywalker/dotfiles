@@ -50,4 +50,6 @@
       };
     };
   };
+
+  programs.gitui.enable = true;
 }
