@@ -23,6 +23,7 @@ in {
       ghostty
       gimp
       libreoffice
+      mattermost-desktop
       obs-studio
       qalculate-gtk
       signal-desktop
