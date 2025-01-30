@@ -9,7 +9,7 @@
         "hyprland/workspaces"
         "hyprland/submap"
         "sway/scratchpad"
-        "custom/media"
+        # "custom/media"
       ];
       modules-center = [
         "hyprland/window"
@@ -232,27 +232,27 @@
         "system" = true; # Monitor failed systemwide units.
         "user" = true; # Monitor failed user units.
       };
-      "custom/media" = {
-        format = "{icon} {text}";
-        return-type = "json";
-        max-length = 40;
-        format-icons = {
-          spotify = "";
-          default = "🎜";
-        };
-        escape = true;
-        exec = "$HOME/.config/waybar/mediaplayer.py 2> /dev/null";
-      };
+      # "custom/media" = {
+      #   format = "{icon} {text}";
+      #   return-type = "json";
+      #   max-length = 40;
+      #   format-icons = {
+      #     spotify = "";
+      #     default = "🎜";
+      #   };
+      #   escape = true;
+      #   exec = "$HOME/.config/waybar/mediaplayer.py 2> /dev/null";
+      # };
       "custom/power" = {
         format = "⏻ ";
         tooltip = false;
         menu = "on-click";
-        menu-file = "$HOME/.config/waybar/power_menu.xml";
+        menu-file = "${./waybar/power-menu.xml}";
         menu-actions = {
           shutdown = "shutdown";
           reboot = "reboot";
           suspend = "systemctl suspend";
-          hibernate = "systemctl hibernate";
+          # hibernate = "systemctl hibernate";
         };
       };
     };
