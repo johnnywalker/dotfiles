@@ -3,14 +3,6 @@
   lib,
   ...
 }: {
-  # hint Electron apps to use Wayland:
-  home.sessionVariables.NIXOS_OZONE_WL = "1";
-
-  programs.kitty.enable = true;
-  programs.waybar.enable = true;
-  programs.fuzzel.enable = true;
-  services.cliphist.enable = true;
-
   wayland.windowManager.sway = {
     enable = true;
     config = {

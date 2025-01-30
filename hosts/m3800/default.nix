@@ -9,8 +9,10 @@
     ./hardware-configuration.nix
     ./clamav.nix
     ./firefox.nix
+    ./hyprland.nix
     ./nix-ld.nix
     ./sway.nix
+    ./wayland.nix
   ];
 
   # Bootloader.
@@ -46,11 +48,7 @@
   services.tumbler.enable = true; # Thumbnail support for images
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.enable = false;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -98,7 +96,10 @@
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
-  environment.systemPackages = [];
+  environment.systemPackages = with pkgs; [
+    lm_sensors
+    tree
+  ];
 
   system.stateVersion = "24.05";
 }
