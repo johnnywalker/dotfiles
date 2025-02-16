@@ -100,6 +100,7 @@ This function should only modify configuration layer settings."
             shell-default-position 'bottom
             shell-default-shell 'multi-vterm)
      (spacemacs-layouts :variables
+                        layouts-enable-autosave t
                         persp-autokill-buffer-on-remove 'kill-weak)
      spell-checking
      sql
