@@ -104,8 +104,10 @@ in {
       "uwsm app -- firefox"
       "uwsm app -- mako"
       # "${pkgs.networkmanagerapplet}/bin/nm-applet"
+      "uwsm app -- mattermost"
       "uwsm app -- slack"
       "uwsm app -- teams-for-linux"
+      "uwsm app -- zulip"
     ];
 
     # https://wiki.hyprland.org/Configuring/Variables/#general
