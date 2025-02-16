@@ -30,6 +30,7 @@ in {
       slack
       sql-formatter
       teams-for-linux
+      zulip
     ]
     ++ (
       # match mesa version if using hyprland flake
