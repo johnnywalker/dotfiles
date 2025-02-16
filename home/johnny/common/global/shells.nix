@@ -125,6 +125,7 @@ in {
       enableBashIntegration = true;
     };
     fzf = {
+      enable = true;
       enableZshIntegration = true;
       enableBashIntegration = true;
     };
