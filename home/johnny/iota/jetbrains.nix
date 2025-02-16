@@ -2,6 +2,7 @@
   home.packages = with pkgs; [
     jetbrains-toolbox
     jetbrains.datagrip
+    jetbrains.idea-ultimate
     jetbrains.phpstorm
     jetbrains.webstorm
   ];
