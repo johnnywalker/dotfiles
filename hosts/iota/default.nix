@@ -34,6 +34,9 @@
 
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = config.services.openssh.ports;
+  networking.firewall.allowedUDPPorts = [
+    5353 # mDNS
+  ];
 
   # networking.useDHCP = true;
 
