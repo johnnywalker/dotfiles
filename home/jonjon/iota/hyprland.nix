@@ -387,7 +387,7 @@ in {
 
   services.hyprpaper.enable = true;
   services.hyprpaper.settings = let
-    wallpaper = ./wallpapers/53852285870_01497c017d_o.png;
+    wallpaper = ./wallpapers/uss-constitution-wp4595205.jpg;
   in {
     ipc = "on";
     preload = ["${wallpaper}"];
