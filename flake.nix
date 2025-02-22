@@ -97,6 +97,7 @@
       "johnny/iota" = import ./home/johnny/iota;
       "johnny/m3800" = import ./home/johnny/m3800;
       "johnny/petey" = import ./home/johnny/petey;
+      "jonjon/iota" = import ./home/jonjon/iota;
     };
 
     nixosModules = {
@@ -156,6 +157,7 @@
           self.nixosModules.iota
           {
             home-manager.users.johnny.imports = [self.homeModules."johnny/iota"];
+            home-manager.users.jonjon.imports = [self.homeModules."jonjon/iota"];
           }
         ];
       };
