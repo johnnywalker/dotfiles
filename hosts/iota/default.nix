@@ -72,6 +72,25 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  services.printing.drivers = with pkgs; [canon-cups-ufr2];
+  hardware.printers.ensurePrinters = [
+    {
+      name = "MF642CDW-UFR-II";
+      location = "Home";
+      deviceUri = "ipp://[2600:1700:58b9:a01f:1298:c3ff:fee0:a418]/ipp/print";
+      model = "CNRCUPSMF642CZS.ppd";
+    }
+    {
+      name = "MF642CDW-IPP-Everywhere";
+      location = "Home";
+      deviceUri = "ipp://[2600:1700:58b9:a01f:1298:c3ff:fee0:a418]/ipp/print";
+      model = "everywhere";
+    }
+  ];
+
+  hardware.sane.enable = true;
+  # hardware.sane.netConf = "[2600:1700:58b9:a01f:1298:c3ff:fee0:a418]";
+  hardware.sane.openFirewall = true;
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
@@ -92,6 +111,7 @@
   environment.systemPackages = with pkgs; [
     lm_sensors
     samba
+    simple-scan
     tree
   ];
 
