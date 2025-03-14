@@ -73,6 +73,10 @@ in {
   systemd.user.services.cliphist-images.Unit.After = ["graphical-session.target"];
 
   programs.kitty.enable = true;
+  programs.kitty.settings = {
+    scrollback_lines = 4000;
+    scrollback_pager_history_size = 10;
+  };
   # match mesa version if using hyprland flake
   # programs.kitty.package = pkgs-unstable.kitty;
   wayland.windowManager.hyprland.enable = true;
