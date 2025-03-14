@@ -30,6 +30,9 @@
     allowDiscards = true;
   };
 
+  # support cross-compiling for ARM64
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+
   networking.hostName = "iota";
 
   networking.firewall.enable = true;
