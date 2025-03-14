@@ -45,4 +45,6 @@ in {
         vlc
       ]
     );
+
+  services.trayscale.enable = true;
 }

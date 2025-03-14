@@ -108,6 +108,8 @@
 
   services.cpupower-gui.enable = true;
 
+  services.tailscale.enable = true;
+
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   # environment.systemPackages = [];
