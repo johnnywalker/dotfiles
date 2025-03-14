@@ -30,6 +30,7 @@
         '')
       eslint_d # eslint server for emacs
       fd # faster find
+      ftop # monitor progress of open files
       gdb
       gnumake
       gnupg
@@ -66,6 +67,7 @@
       #   buildInputs = [deps];
       # })
       moreutils
+      nethogs # "net top" tool
       nil
       nodejs
       openjdk
