@@ -723,6 +723,12 @@ before packages are loaded."
   ;; stop me from accidentally closing emacs
   (global-unset-key (kbd "s-w"))
 
+  (with-eval-after-load 'lsp-mode
+    ;; ignore .cache directories
+    (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.cache$")
+    (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.nx$")
+    (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.vercel$"))
+
   ;; begin: lsp config for nix
   (use-package lsp-mode
       :ensure t
