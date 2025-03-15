@@ -1,7 +1,9 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
     evince
+    ftop # monitor progress of open files
     inkscape
+    nethogs # "net top" tool
     ungoogled-chromium
   ];
 
