@@ -90,7 +90,6 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
-    alacritty
     colima
     grandperspective # visualize disk usage
     # (import ./emacs.nix {inherit pkgs;})
