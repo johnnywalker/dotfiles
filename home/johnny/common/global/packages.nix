@@ -9,9 +9,11 @@
       awscli2
       unstable.azure-cli
       bc
+      btop
       cargo
       cargo-udeps
       clipboard-jh
+      coreutils # for gnu tools like `du`
       curl
       dig
       docker
