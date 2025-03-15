@@ -6,6 +6,7 @@
   imports = [
     ../common/global/home-manager.nix
     ../common/global/nix/darwin.nix
+    ./trampolines.nix
   ];
 
   nix = {
@@ -25,7 +26,7 @@
     # https://nixos.org/manual/nixpkgs/unstable/#sec-darwin-builder
     # run builder manually: `nix run nixpkgs#darwin.linux-builder`
     linux-builder = {
-      enable = true;
+      enable = false;
       maxJobs = 4;
       config = {
         virtualisation.cores = 4;
