@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   programs.emacs = {
     enable = true;
-    package = pkgs.emacs29-pgtk;
+    package = pkgs.emacs30-pgtk;
     extraPackages = epkgs: [
       # (epkgs.treesit-grammars.with-grammars (grammars: with grammars; [tree-sitter-bash tree-sitter-dockerfile]))
       epkgs.treesit-grammars.with-all-grammars
