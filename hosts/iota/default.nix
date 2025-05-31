@@ -122,6 +122,7 @@
     samba
     simple-scan
     tree
+    xarchiver
   ];
 
   system.stateVersion = "24.05";
