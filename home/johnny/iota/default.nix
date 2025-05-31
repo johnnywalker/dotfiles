@@ -30,6 +30,8 @@ in {
       slack
       sql-formatter
       teams-for-linux
+      pkgs.unstable.zed-editor.fhs
+      # zed-editor.fhs
       zulip
     ]
     ++ (
