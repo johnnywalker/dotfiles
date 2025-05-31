@@ -48,6 +48,10 @@
   # Disable networkmanager
   networking.networkmanager.enable = false;
 
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
+
   gtk.iconCache.enable = true;
 
   programs.thunar.enable = true;

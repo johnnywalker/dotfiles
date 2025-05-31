@@ -224,13 +224,14 @@ in {
       sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
 
       touchpad = {
-        natural_scroll = false;
+        natural_scroll = true;
+        clickfinger_behavior = true;
       };
     };
 
     # https://wiki.hyprland.org/Configuring/Variables/#gestures
     gestures = {
-      workspace_swipe = false;
+      workspace_swipe = true;
     };
 
     # See https://wiki.hyprland.org/Configuring/Keywords/

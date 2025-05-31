@@ -48,5 +48,6 @@ in {
       ]
     );
 
+  services.blueman-applet.enable = true;
   services.trayscale.enable = true;
 }
