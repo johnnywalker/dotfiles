@@ -82,7 +82,7 @@
   };
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.printing.enable = false;
   services.printing.drivers = with pkgs; [canon-cups-ufr2];
   hardware.printers.ensurePrinters = [
     {
