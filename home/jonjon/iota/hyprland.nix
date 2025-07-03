@@ -384,7 +384,8 @@ in {
       }
       {
         timeout = 1800; # 30 min
-        on-timeout = "systemctl suspend";
+        # on-timeout = "systemctl suspend";
+        on-timeout = "systemctl hybrid-sleep";
       }
     ];
   };

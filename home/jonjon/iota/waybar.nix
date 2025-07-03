@@ -251,8 +251,9 @@
         menu-actions = {
           shutdown = "shutdown";
           reboot = "reboot";
-          suspend = "systemctl suspend";
-          # hibernate = "systemctl hibernate";
+          # suspend = "systemctl suspend";
+          suspend = "systemctl hybrid-sleep";
+          hibernate = "systemctl hibernate";
         };
       };
     };
