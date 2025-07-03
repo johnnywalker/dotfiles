@@ -46,7 +46,8 @@
 
   # networking.useDHCP = true;
 
-  networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
+  # disable wpa_supplicant by default to reduce power management issues
+  networking.wireless.enable = false;
 
   # Disable networkmanager
   networking.networkmanager.enable = false;
