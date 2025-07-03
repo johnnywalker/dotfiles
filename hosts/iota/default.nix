@@ -24,10 +24,13 @@
   # Use latest kernel to support X870 motherboard
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  boot.initrd.luks.devices."crypted" = {
-    device = "/dev/disk/by-uuid/6a54cf6e-af61-4f3b-aad9-f0d24b9ea6ce";
-    preLVM = true;
-    allowDiscards = true;
+  boot.initrd = {
+    luks.devices."crypted" = {
+      device = "/dev/disk/by-uuid/6a54cf6e-af61-4f3b-aad9-f0d24b9ea6ce";
+      preLVM = true;
+      allowDiscards = true;
+    };
+    systemd.enable = true;
   };
 
   # support cross-compiling for ARM64
