@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  zshInitExtra = ''
+  zshInitContent = ''
     # export PATH="${config.home.homeDirectory}/.local/bin:$PATH"
 
     source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
@@ -170,7 +170,7 @@ in {
         history = "omz_history";
       };
       syntaxHighlighting.enable = true;
-      initExtra = zshInitExtra;
+      initContent = zshInitContent;
       profileExtra = zshProfileExtra;
     };
   };

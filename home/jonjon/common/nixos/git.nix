@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   # Use gpg2 with pinentry-mode loopback when executed from Emacs or on a
   # headless system
-  programs.git.signing.gpgPath = let
+  programs.git.signing.signer = let
     gpg2-display-aware = pkgs.writeScriptBin "gpg2-display-aware" ''
       #!${pkgs.runtimeShell}
       if [[ -n "$INSIDE_EMACS" ]] || [[ -z "$WAYLAND_DISPLAY" && -z "$DISPLAY" ]]; then

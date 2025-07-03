@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  zshInitExtra = ''
+  zshInitContent = ''
     source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
     function omz_history {
@@ -80,7 +80,7 @@ in {
         history = "omz_history";
       };
       syntaxHighlighting.enable = true;
-      initExtra = zshInitExtra;
+      initContent = zshInitContent;
     };
   };
 }

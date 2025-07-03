@@ -2,16 +2,16 @@
   description = "Johnny's Nix Configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
 
-    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
 
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    darwin.url = "github:lnl7/nix-darwin/nix-darwin-24.11";
+    darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
     darwin.inputs.nixpkgs.follows = "nixpkgs-darwin";
 
     sops-nix.url = "github:Mic92/sops-nix";
@@ -25,13 +25,13 @@
     # emacs-lsp-booster.url = "/home/johnny/source/johnny/emacs-lsp-booster";
     emacs-lsp-booster.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Hyprspace does not yet build with 0.46.2
-    hyprland.url = "github:hyprwm/Hyprland/v0.45.2";
-    # compatible with 0.45.2
-    hyprspace.url = "github:KZDKM/Hyprspace/260f386075c7f6818033b05466a368d8821cde2d";
-    hyprspace.inputs.hyprland.follows = "hyprland";
+    # # Hyprspace does not yet build with 0.46.2
+    # hyprland.url = "github:hyprwm/Hyprland/v0.45.2";
+    # # compatible with 0.45.2
+    # hyprspace.url = "github:KZDKM/Hyprspace/260f386075c7f6818033b05466a368d8821cde2d";
+    # hyprspace.inputs.hyprland.follows = "hyprland";
 
-    hyprpolkitagent.url = "github:hyprwm/hyprpolkitagent/08cab3a4d9277687562702ae2db56305f9165081";
+    # hyprpolkitagent.url = "github:hyprwm/hyprpolkitagent/08cab3a4d9277687562702ae2db56305f9165081";
   };
 
   outputs = inputs @ {
@@ -44,9 +44,9 @@
     sops-nix,
     treefmt-nix,
     emacs-lsp-booster,
-    hyprland,
-    hyprspace,
-    hyprpolkitagent,
+    # hyprland,
+    # hyprspace,
+    # hyprpolkitagent,
   }: let
     darwinSystems = ["x86_64-darwin" "aarch64-darwin"];
     supportedSystems = ["x86_64-linux" "aarch64-linux"] ++ darwinSystems;
