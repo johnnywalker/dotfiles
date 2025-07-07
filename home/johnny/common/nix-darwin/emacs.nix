@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   programs.emacs = {
     enable = true;
-    package = pkgs.emacs29-macport;
+    package = pkgs.emacs-macport;
     extraPackages = epkgs: [
       epkgs.treesit-grammars.with-all-grammars
       epkgs.tree-sitter-langs
