@@ -142,7 +142,14 @@ This function should only modify configuration layer settings."
      (copilot :location (recipe
                          :fetcher github
                          :repo "copilot-emacs/copilot.el"
+                         ;; workaround copilot-login bug introduced in https://github.com/copilot-emacs/copilot.el/pull/392
+                         ;; - should be resolved now
+                         ;; :commit "a03a4373886e5ee183cc33f90ebf669e0ce163e4"
                          :files ("*.el" "dist")))
+     (hurl-mode :location (recipe
+                            :fetcher github
+                            :repo "jaszhe/hurl-mode"
+                            :files ("*.el")))
      (lsp-vtsls :location (recipe
                            :fetcher github
                            :repo "sdvcrx/lsp-vtsls"))
