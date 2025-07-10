@@ -41,8 +41,6 @@
     };
   };
 
-  # Make sure the nix daemon always runs
-  services.nix-daemon.enable = true;
   # Install a version of nix, that dosen't need "experimental-features = nix-command flakes" in /etc/nix/nix.conf
   # services.nix-daemon.package = pkgs.nixFlakes;
 
@@ -101,7 +99,7 @@
     qemu
   ];
 
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   system.defaults = {
     dock = {
@@ -136,6 +134,9 @@
   };
 
   system.stateVersion = 4;
+
+  # nix-darwin is working on multi-user support
+  system.primaryUser = "johnny";
 
   users.users."johnny" = {
     shell = pkgs.zsh;
