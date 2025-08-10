@@ -47,7 +47,8 @@
   fonts.enableDefaultPackages = true;
   fonts.packages = with pkgs; [
     emacs-all-the-icons-fonts
-    (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
+    nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
     noto-fonts
     noto-fonts-emoji
     roboto
