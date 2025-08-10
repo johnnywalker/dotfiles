@@ -67,7 +67,6 @@
       #   buildInputs = [deps];
       # })
       moreutils
-      nil
       nodejs
       openjdk
       openssl
@@ -79,7 +78,6 @@
       python3
       ripgrep
       rover
-      ruff # formatter, language server for python
       rustc
       rustfmt
       scc # code statistics
@@ -87,7 +85,6 @@
       sops
       ssm-session-manager-plugin
       terraform
-      terraform-ls # language server for terraform
       (texlive.combine {
         inherit
           (texlive)

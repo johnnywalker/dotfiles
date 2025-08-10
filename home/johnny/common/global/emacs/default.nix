@@ -25,6 +25,9 @@
 
     home.packages = with pkgs; [
       (aspellWithDicts (dicts: with dicts; [en en-computers en-science]))
+      nil # language server for nix
+      ruff # formatter, language server for python
+      terraform-ls # language server for terraform
     ];
     # ~/.emacs.d contains a clone of the spacemacs repo. Install via:
     #   git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
