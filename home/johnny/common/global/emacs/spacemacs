@@ -43,14 +43,14 @@ This function should only modify configuration layer settings."
         org-enable-github-support t
         org-enable-verb-support t)
      ansible
-     (auto-completion :variables
-                      auto-completion-use-company-box t
-                      ;; disable TAB completion (prioritize copilot)
-                      auto-completion-tab-key-behavior nil
-                      ;; disable auto-completion popup
-                      auto-completion-idle-delay nil
-                      ;; recommended for lsp mode
-                      auto-completion-minimum-prefix-length 1)
+     ;; (auto-completion :variables
+     ;;                  auto-completion-use-company-box t
+     ;;                  ;; disable TAB completion (prioritize copilot)
+     ;;                  auto-completion-tab-key-behavior 'complete
+     ;;                  ;; disable auto-completion popup
+     ;;                  auto-completion-idle-delay 0.1
+     ;;                  ;; recommended for lsp mode
+     ;;                  auto-completion-minimum-prefix-length 1)
      ;; better-defaults
      compleseus
      dhall
@@ -128,7 +128,8 @@ This function should only modify configuration layer settings."
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages
-   '(
+   '(cape
+     corfu
      nix-mode
      ;; emacs keeps reinstalling this package after saying it's an orphan
      bui
@@ -150,6 +151,7 @@ This function should only modify configuration layer settings."
                             :fetcher github
                             :repo "jaszhe/hurl-mode"
                             :files ("*.el")))
+
      (lsp-vtsls :location (recipe
                            :fetcher github
                            :repo "sdvcrx/lsp-vtsls"))
@@ -163,7 +165,10 @@ This function should only modify configuration layer settings."
        vterm-module)
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages
+    '(
+       ;; company is a dependency in many layers - exclude since we're using corfu
+       company)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -723,6 +728,102 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
+  ;; Automatically auto fill.
+  (add-hook 'text-mode-hook 'spacemacs/toggle-auto-fill-mode-on)
+  (add-hook 'prog-mode-hook 'spacemacs/toggle-auto-fill-mode-on)
+
+  ;; Auto-completion config
+
+  ;; Enable Corfu globally. Recommended since many modes provide
+  ;; Capfs and Dabbrev can be used globally (M-/).
+  (global-corfu-mode)
+  ;; Disable minibuffer completion which messes up a lot
+  (setq global-corfu-minibuffer nil)
+
+  ;; Other modes
+  (setq corfu-echo-mode t)
+  (setq corfu-history-mode t)
+  (setq corfu-popupinfo-mode t)
+
+  (setopt corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  ;; (setopt corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (setopt corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (setopt corfu-preview-current nil)    ;; Disable current candidate preview
+  ;; (setopt corfu-preselect 'prompt)      ;; Preselect the prompt
+  ;; (setopt corfu-on-exact-match nil)     ;; Configure handling of exact matches
+
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  (setopt tab-always-indent 'complete)
+
+  ;; Emacs 30 and newer: Disable Ispell completion function.
+  ;; Try `cape-dict' as an alternative.
+  (setopt text-mode-ispell-word-completion nil)
+
+  ;; dabbrev
+  (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
+  ;; Since 29.1, use `dabbrev-ignored-buffer-regexps' on older.
+  (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode)
+
+  ;; Optionally use the `orderless' completion style.
+  ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
+  ;; (orderless-component-separator #'orderless-escapable-split-on-space)
+  (setopt completion-styles '(orderless basic))
+  (setopt completion-category-defaults nil)
+  (setopt completion-category-overrides '((file (styles partial-completion))))
+
+  ;; (setq corfu-auto        t
+  ;;       corfu-auto-delay  0
+  ;;       corfu-auto-prefix 0)
+
+  ;; (add-hook 'corfu-mode-hook
+  ;;           (lambda ()
+  ;;             ;; Settings only for Corfu
+  ;;             (setq-local completion-styles '(basic)
+  ;;                         completion-category-overrides nil
+  ;;                         completion-category-defaults nil)))
+
+  ;; Transfer to minibuffer
+  (defun corfu-move-to-minibuffer ()
+    (interactive)
+    (pcase completion-in-region--data
+      (`(,beg ,end ,table ,pred ,extras)
+       (let ((completion-extra-properties extras)
+             completion-cycle-threshold completion-cycling)
+         (consult-completion-in-region beg end table pred)))))
+  (keymap-set corfu-map "C-/" #'corfu-move-to-minibuffer)
+  (add-to-list 'corfu-continue-commands #'corfu-move-to-minibuffer)
+
+  ;; Keymap
+  (keymap-unset evil-insert-state-map "C-k")
+
+  ;; Free the RET key for less intrusive behavior.
+  ;; Option 1: Unbind RET completely
+  ;; (keymap-unset corfu-map "RET")
+  ;; Option 2: Use RET only in shell modes
+  ;; (keymap-unset corfu-map "RET")
+  (keymap-set corfu-map "C-j" #'corfu-next)
+  (keymap-set corfu-map "C-k" #'corfu-previous)
+
+  ;; Cape
+  (add-hook 'completion-at-point-functions (cape-company-to-capf #'company-yasnippet))
+  (add-hook 'completion-at-point-functions (cape-company-to-capf #'company-keywords))
+  (add-hook 'completion-at-point-functions #'cape-history)
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block)
+  (add-hook 'completion-at-point-functions #'cape-dict)
+  (add-hook 'completion-at-point-functions #'cape-emoji)
+  (add-hook 'completion-at-point-functions #'cape-keyword)
+  (add-hook 'completion-at-point-functions #'cape-tex)
+
+  ;; Capitals
+  (setq-default dabbrev-case-fold-search nil)
+
+  ;; End: Auto-completion config
+
   ;; nix
   (use-package nix-mode
     :mode "\\.nix\\'")
@@ -788,9 +889,9 @@ before packages are loaded."
   ;; begin: copilot
 
   ;; accept completion from copilot and fallback to company
-  (with-eval-after-load 'company
-    ;; disable inline previews
-    (delq 'company-preview-if-just-one-frontend company-frontends))
+  ;; (with-eval-after-load 'company
+  ;;   ;; disable inline previews
+  ;;   (delq 'company-preview-if-just-one-frontend company-frontends))
 
   ;; unset the binding to `delete-horizontal-space'
   (global-unset-key (kbd "M-\\"))
@@ -908,8 +1009,6 @@ This function is called at the very end of Spacemacs initialization."
  '(mouse-wheel-flip-direction t)
  '(org-agenda-files '("~/org/notes.org"))
  '(org-export-backends '(ascii html icalendar latex md odt org))
- '(package-selected-packages
-    '(php-mode blacken code-cells company-anaconda anaconda-mode cython-mode helm-cscope helm-pydoc importmagic epc ctable concurrent deferred live-py-mode lsp-pyright lsp-python-ms nose pip-requirements pipenv load-env-vars pippel poetry py-isort pydoc pyenv-mode pythonic pylookup pytest pyvenv sphinx-doc stickyfunc-enhance xcscope yapfify ansible ansible-doc company-ansible jinja2-mode ox-pandoc ox-gfm sqlup-mode rjsx-mode company-web web-completion-data graphql-mode helm-css-scss pug-mode sass-mode haml-mode scss-mode slim-mode tagedit emmet-mode typescript-mode web-mode browse-at-remote diff-hl evil-org gnuplot helm-org-rifle magit-todos org-cliplink org-contrib org-download org-mime org-pomodoro alert log4e gntp org-present org-projectile org-project-capture org-category-capture org-rich-yank orgit-forge orgit company-box frame-local helm wfnames helm-core compleseus-spacemacs-help consult-lsp consult-yasnippet embark-consult consult embark flyspell-correct-popup marginalia orderless vertico wgrep rustic flycheck-kotlin groovy-imports pcache groovy-mode kotlin-mode lsp-java maven-test-mode mvn json-mode json-navigator hierarchy json-reformat json-snatcher add-node-modules-path impatient-mode htmlize import-js grizzl js-doc js2-refactor multiple-cursors livid-mode nodejs-repl npm-mode prettier-js skewer-mode js2-mode simple-httpd tern web-beautify neotree company-go flycheck-golangci-lint go-eldoc go-fill-struct go-gen-test go-guru go-impl go-rename go-tag go-mode godoctor company-terraform terraform-mode hcl-mode copilot esh-help eshell-prompt-extras eshell-z multi-term multi-vterm shell-pop terminal-here vterm xterm-color just-mode yaml-mode direnv nix-mode ac-ispell attrap auto-complete auto-dictionary auto-yasnippet cmm-mode company-cabal dante lcr eldoc xref flycheck-haskell flycheck-pos-tip flyspell-correct-helm flyspell-correct fuzzy gh-md haskell-snippets helm-c-yasnippet helm-company helm-hoogle helm-lsp hindent hlint-refactor lsp-haskell haskell-mode lsp-origami origami lsp-ui markdown-toc mmm-mode yasnippet-snippets yasnippet forge ghub closql emacsql compat treepy git-link git-messenger git-modes git-timemachine gitignore-templates helm-git-grep helm-ls-git smeargle treemacs-magit magit magit-section git-commit with-editor transient cargo company counsel-gtags counsel swiper ivy dap-mode lsp-docker lsp-treemacs bui yaml lsp-mode markdown-mode flycheck-rust ggtags racer pos-tip ron-mode rust-mode toml-mode vim-powerline ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay string-inflection string-edit-at-point spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint inspector info+ indent-guide hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-descbinds google-translate golden-ratio flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-def editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile all-the-icons aggressive-indent ace-link ace-jump-helm-line))
  '(safe-local-variable-values
     '((eval add-hook 'before-save-hook 'time-stamp)
        (eval progn
