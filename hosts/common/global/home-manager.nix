@@ -5,7 +5,7 @@
 }: {
   home-manager = {
     # include flake's last modified timestamp to avoid conflicts
-    backupFileExtension = "backup-${builtins.toString self.lastModified}";
+    backupFileExtension = "backup-$(date +%Y%m%d)";
     sharedModules = [
       inputs.sops-nix.homeManagerModules.sops
     ];
