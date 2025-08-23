@@ -2,8 +2,16 @@
 /auto-save-list/
 /eln-cache/
 /elpa/
+/elpaca/
 /eshell/
 /history
-/projects
+/persp-confs/
 /transient/
 /tree-sitter/
+/undo/
+
+/custom.el
+/forge-database.sqlite
+/projectile-bookmarks.eld
+/projects
+/recentf

@@ -30,13 +30,16 @@
 (tool-bar-mode -1)                      ; All these tools are in the menu-bar anyway
 (setq default-frame-alist '((fullscreen . maximized)
 
-                            ;; You can turn off scroll bars by uncommenting these lines:
-                            ;; (vertical-scroll-bars . nil)
-                            ;; (horizontal-scroll-bars . nil)
+                             ;; You can turn off scroll bars by uncommenting these lines:
+                             ;; (vertical-scroll-bars . nil)
+                             ;; (horizontal-scroll-bars . nil)
 
-                            ;; Setting the face in here prevents flashes of
-                            ;; color as the theme gets activated
-                            (background-color . "#000000")
-                            (foreground-color . "#ffffff")
-                            (ns-appearance . dark)
-                            (ns-transparent-titlebar . t)))
+                             ;; Setting the face in here prevents flashes of
+                             ;; color as the theme gets activated
+                             (background-color . "#000000")
+                             (foreground-color . "#ffffff")
+                             (ns-appearance . dark)
+                             (ns-transparent-titlebar . t)))
+
+;; Disable package.el in favor of elpaca
+(setq package-enable-at-startup nil)
