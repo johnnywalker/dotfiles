@@ -332,7 +332,6 @@ active and `force-input' is not nil, `thing-at-point' will be returned."
 (use-package cape
   :ensure t
   :custom
-  ;; (cape-dict-file "~/.config/emacs/dict/en_US.dic")
   (cape-dict-file (concat user-emacs-directory "misc/english-words.txt"))
   :init
   (add-hook 'completion-at-point-functions #'cape-history)
