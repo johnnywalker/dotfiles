@@ -2,12 +2,20 @@
   programs.emacs = {
     enable = true;
     package = pkgs.emacs30-pgtk;
-    extraPackages = epkgs: [
-      # (epkgs.treesit-grammars.with-grammars (grammars: with grammars; [tree-sitter-bash tree-sitter-dockerfile]))
-      epkgs.treesit-grammars.with-all-grammars
-      epkgs.tree-sitter-langs
-      epkgs.vterm
-    ];
+    extraPackages = epkgs: (with epkgs; [
+      bind-map
+      evil
+      evil-args
+      evil-collection
+      evil-exchange
+      evil-matchit
+      evil-nerd-commenter
+      evil-surround
+      # (treesit-grammars.with-grammars (grammars: with grammars; [tree-sitter-bash tree-sitter-dockerfile]))
+      treesit-grammars.with-all-grammars
+      tree-sitter-langs
+      vterm
+    ]);
   };
   programs.spacemacs = {
     fontSize = 10.5;
