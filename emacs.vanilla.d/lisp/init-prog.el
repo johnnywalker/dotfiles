@@ -402,8 +402,14 @@
   :config
   (fset #'jsonrpc--log-event #'ignore)  ; massive perf boost---don't log every event
   ;; Sometimes you need to tell Eglot where to find the language server
-                                        ; (add-to-list 'eglot-server-programs
-                                        ;              '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
+  ;; (add-to-list 'eglot-server-programs
+  ;;   '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
+  (add-to-list 'eglot-server-programs
+    '(((js-mode :language-id "javascript")
+          (js-ts-mode :language-id "javascript")
+          (tsx-ts-mode :language-id "typescriptreact")
+          (typescript-ts-mode :language-id "typescript")
+          (typescript-mode :language-id "typescript")) . ("vtsls" "--stdio")))
   :hook
   ;; Enable Eglot in programming modes
   (prog-mode . (lambda ()
