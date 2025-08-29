@@ -89,5 +89,8 @@
 (use-package diminish
   :ensure t)
 
+;; Resize windows proportionally when splitting, combining
+(setq window-combination-resize t)
+
 (provide 'init-ui)
 ;;; init-ui.el ends here
