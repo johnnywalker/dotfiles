@@ -34,6 +34,7 @@
       tailwindcss-language-server
       terraform-ls # language server for terraform
       vscode-langservers-extracted
+      vtsls
       yaml-language-server
     ];
     # ~/.emacs.d contains a clone of the spacemacs repo. Install via:
