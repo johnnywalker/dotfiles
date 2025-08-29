@@ -440,7 +440,6 @@
 ;;; Eglot booster
 (use-package eglot-booster
   :ensure (:host github :repo "jdtsmith/eglot-booster" :files ("*.el"))
-  :after eglot
   :init
   (setq eglot-booster-io-only t)
   :config
