@@ -296,10 +296,8 @@
     "cv" 'rustic-cargo-check
     "cx" 'rustic-cargo-run
     "ta" 'rustic-cargo-test-run
-    "tt" 'rustic-cargo-current-test)
+    "tt" 'rustic-cargo-current-test))
 
-  :config
-  (push 'rustic-clippy flycheck-checkers))
 
 (use-package web-mode
   :ensure t
