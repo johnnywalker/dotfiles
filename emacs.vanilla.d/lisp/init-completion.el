@@ -306,9 +306,20 @@ active and `force-input' is not nil, `thing-at-point' will be returned."
 
   :bind
   (:map corfu-map
-        ("SPC" . corfu-insert-separator)
-        ("C-n" . corfu-next)
-        ("C-p" . corfu-previous)))
+    ("SPC" . corfu-insert-separator)
+    ("C-n" . corfu-next)
+    ("C-p" . corfu-previous))
+
+  :hook
+  ;; enable auto-completion in prog-mode
+  (prog-mode . (lambda () (setq-local
+                            ;; enable auto completion
+                            corfu-auto t
+                            corfu-auto-delay 0
+                            corfu-popupinfo-delay '(0.1 . 0.1)
+                            completion-styles '(basic)
+                            completion-category-overrides nil
+                            completion-category-defaults nil))))
 
 ;; Part of corfu
 (use-package corfu-popupinfo
