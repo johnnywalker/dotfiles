@@ -187,6 +187,7 @@ active and `force-input' is not nil, `thing-at-point' will be returned."
   :after (avy embark-consult)
   :bind
   (("M-o" . embark-act)         ;; pick some comfortable bindings
+    ("M-O" . embark-act-all)
     ("C-;" . embark-dwim)        ;; good alternative: M-.
     ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
   :init
