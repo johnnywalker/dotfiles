@@ -298,6 +298,8 @@
     "ta" 'rustic-cargo-test-run
     "tt" 'rustic-cargo-current-test))
 
+(use-package terraform-ts-mode
+  :ensure (:host github :repo "kgrotel/terraform-ts-mode" :files ("*.el")))
 
 (use-package web-mode
   :ensure t
