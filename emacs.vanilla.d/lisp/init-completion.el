@@ -231,9 +231,6 @@ active and `force-input' is not nil, `thing-at-point' will be returned."
     '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-  (johnny/set-leader-keys
-    "sl" #'vertico-repeat-previous
-    "sL" #'vertico-repeat-select)
   ;; You'll want to make sure that e.g. fido-mode isn't enabled
   (vertico-mode)
   :config
@@ -260,6 +257,16 @@ active and `force-input' is not nil, `thing-at-point' will be returned."
           ("C-h" . vertico-directory-up))
   ;; tidy shadowed file names
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
+(use-package vertico-repeat
+  :ensure nil
+  :demand t
+  :after vertico
+  :init
+  (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
+  (johnny/set-leader-keys
+    "sl" #'vertico-repeat-previous
+    "sL" #'vertico-repeat-select))
 
 ;; Marginalia: annotations for minibuffer
 (use-package marginalia
