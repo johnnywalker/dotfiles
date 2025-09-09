@@ -168,7 +168,18 @@ active and `force-input' is not nil, `thing-at-point' will be returned."
     ;; Narrowing lets you restrict results to certain groups of candidates
     consult-narrow-key "<"
     ;; disable automatic previews
-    consult-preview-key '("M-." "C-SPC" "C-M-j" "C-M-k")))
+    consult-preview-key '("M-." "C-SPC" "C-M-j" "C-M-k"))
+
+  ;; Tweak the register preview for `consult-register-load',
+  ;; `consult-register-store' and the built-in commands.  This improves the
+  ;; register formatting, adds thin separator lines, register sorting and hides
+  ;; the window mode line.
+  (advice-add #'register-preview :override #'consult-register-window)
+  (setq register-preview-delay 0.5)
+
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+    xref-show-definitions-function #'consult-xref))
 
 (use-package embark-consult
   :ensure t
