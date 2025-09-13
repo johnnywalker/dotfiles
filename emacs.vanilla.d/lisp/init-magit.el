@@ -119,6 +119,9 @@
 (use-package magit-todos
   :ensure t
   :after magit
+  :init
+  ;; disable branch scanner - causes performance issues in large repos
+  (setq magit-todos-branch-list 'nil)
   :config (magit-todos-mode 1))
 
 (provide 'init-magit)
