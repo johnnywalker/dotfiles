@@ -9,11 +9,6 @@
       epkgs.vterm
     ];
   };
-  programs.spacemacs = {
-    fontSize = 10.5;
-    enableServer = true;
-    persistentServer = true;
-  };
   services.emacs.client.enable = true;
   # TODO try re-enabling service again - ran into issues previously with client hanging
   # services.emacs.enable = true;

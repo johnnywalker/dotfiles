@@ -6,6 +6,7 @@
   (error "Works with Emacs 30 and newer; you have version %s" emacs-major-version))
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path (concat (getenv "XDG_CONFIG_HOME") "/emacs/lisp"))
 (defconst *is-a-mac* (eq system-type 'darwin))
 (defconst *is-a-linux* (eq system-type 'gnu/linux))
 
@@ -108,6 +109,11 @@ If the new path's directories does not exist, create them."
 (require 'init-prog)
 (require 'init-org)
 
+;; per-host config
+(defvar johnny-enable-server nil
+  "If non-nil, start an Emacs server if one is not already running.")
+(require 'init-host)
+
 ;; TODO disable `Z' binding in magit status
 ;; TODO key bindings for magit commit mode
 ;; TODO flycheck (eslint_d)
@@ -125,10 +131,11 @@ If the new path's directories does not exist, create them."
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 
-(require 'server)
-(unless (or (daemonp) (server-running-p))
-  (message "Starting a server...")
-  (server-start))
+(when johnny-enable-server
+  (require 'server)
+  (unless (or (daemonp) (server-running-p))
+    (message "Starting a server...")
+    (server-start)))
 
 (setq gc-cons-threshold (or bedrock--initial-gc-threshold 800000))
 

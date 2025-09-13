@@ -7,6 +7,7 @@
 in {
   imports = [
     ../common/presets/nixos.nix
+    ./emacs
     ./hyprland.nix
     ./hyprpolkitagent.nix
     ./jetbrains.nix

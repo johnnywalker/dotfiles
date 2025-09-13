@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ../common/presets/nixos.nix
+    ./emacs
     ./hyprland.nix
     ./hyprpolkitagent.nix
     ./sway.nix

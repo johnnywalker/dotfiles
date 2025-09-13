@@ -8,9 +8,4 @@
       epkgs.vterm
     ];
   };
-  programs.spacemacs = {
-    fontSize = 13;
-    enableServer = false;
-    persistentServer = false;
-  };
 }

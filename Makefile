@@ -21,4 +21,4 @@ ifeq ($(OS_NAME), darwin)
 endif
 
 rcup:
-	nix shell nixpkgs#rcm --command rcup -- -d public -S emacs.vanilla.d emacs.vanilla.d
+	nix shell nixpkgs#rcm --command rcup -- -d public -S emacs.d emacs.d
