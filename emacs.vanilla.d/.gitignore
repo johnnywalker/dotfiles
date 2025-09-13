@@ -10,9 +10,11 @@
 /transient/
 /tree-sitter/
 /undo/
+/url/
 
 /custom.el
 /forge-database.sqlite
 /projectile-bookmarks.eld
+/projectile.cache
 /projects
 /recentf
