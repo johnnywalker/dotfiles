@@ -100,7 +100,7 @@ If the new path's directories does not exist, create them."
 (require 'init-treemacs)
 (recentf-mode 1)
 
-(require 'init-copilot)
+;; (require 'init-copilot)
 (require 'init-direnv)
 (require 'init-flycheck)
 (require 'init-flyspell)
