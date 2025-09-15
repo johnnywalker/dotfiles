@@ -8,7 +8,7 @@
 
 ;; Evil: vi emulation
 (use-package evil
-  :ensure t ; provided by nixpkgs but we need elpaca to finish loading first
+  :ensure t
   :init
   (setq
     evil-respect-visual-line-mode t
@@ -45,7 +45,7 @@
 ;; Evil Collection: evil bindings for parts not covered already
 (use-package evil-collection
   :after evil
-  :ensure nil ; provided by nixpkgs
+  :ensure t
   :config
   (evil-collection-init)
   (with-eval-after-load 'diminish
@@ -53,7 +53,7 @@
 
 ;; bind-map: generalized replacement for evil-leader
 (use-package bind-map
-  :ensure nil ; provided by nixpkgs
+  :ensure t
   :config
   (bind-map johnny-default-map
     :keys (johnny-emacs-leader-key)
@@ -107,7 +107,7 @@
 ;; More examples here:
 ;; - https://github.com/emacs-evil/evil-surround?tab=readme-ov-file#examples
 (use-package evil-surround
-  :ensure nil ; provided by nixpkgs
+  :ensure t
   :after evil-collection
   :init
   ;; `s' for surround instead of `substitute'
@@ -144,7 +144,7 @@
 ;; navigate and manipulate code blocks.
 ;; Just use % for jumping between matching structures to check it out.
 (use-package evil-matchit
-  :ensure nil ; provided by nixpkgs
+  :ensure t
   :after evil-collection
   :config
   (global-evil-matchit-mode 1))

@@ -41,5 +41,11 @@
                              (ns-appearance . dark)
                              (ns-transparent-titlebar . t)))
 
-;; Disable package.el in favor of elpaca
-(setq package-enable-at-startup nil)
+;; To prevent accidentally installing packages directly instead of through Nix,
+;; nil is used as the addresses of archives.
+(setq package-archives '(("gnu"          . nil)
+                          ("gnu-devel"    . nil)
+                          ("nongnu"       . nil)
+                          ("nongnu-devel" . nil)
+                          ("melpa"        . nil)
+                          ("melpa-stable" . nil)))

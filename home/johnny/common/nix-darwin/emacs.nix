@@ -1,11 +1,14 @@
 {pkgs, ...}: {
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacs-macport;
-    extraPackages = epkgs: [
-      epkgs.treesit-grammars.with-all-grammars
-      epkgs.tree-sitter-langs
-      epkgs.vterm
-    ];
-  };
+  home.packages = [
+    # build emacs packages from `use-package` macros in emacs config
+    (pkgs.emacsWithPackagesFromUsePackage {
+      config = pkgs.emacs-config-concat;
+      package = pkgs.emacs-macport;
+      extraEmacsPackages = epkgs: (with epkgs; [
+        treesit-grammars.with-all-grammars
+        tree-sitter-langs
+      ]);
+      override = import ../../../../elisp-packages;
+    })
+  ];
 }

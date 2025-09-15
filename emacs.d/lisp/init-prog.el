@@ -299,7 +299,7 @@
     "tt" 'rustic-cargo-current-test))
 
 (use-package terraform-ts-mode
-  :ensure (:host github :repo "kgrotel/terraform-ts-mode" :files ("*.el")))
+  :ensure t)
 
 (use-package web-mode
   :ensure t
@@ -446,7 +446,7 @@
 
 ;;; Eglot booster
 (use-package eglot-booster
-  :ensure (:host github :repo "jdtsmith/eglot-booster" :files ("*.el"))
+  :ensure t
   :init
   (setq eglot-booster-io-only t)
   :config

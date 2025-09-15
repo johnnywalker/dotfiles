@@ -14,6 +14,9 @@
     darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
     darwin.inputs.nixpkgs.follows = "nixpkgs-darwin";
 
+    gitignore.url = "github:hercules-ci/gitignore.nix";
+    gitignore.inputs.nixpkgs.follows = "nixpkgs";
+
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -24,6 +27,10 @@
     emacs-lsp-booster.url = "github:johnnywalker/emacs-lsp-booster/dont-panic";
     # emacs-lsp-booster.url = "/home/johnny/source/johnny/emacs-lsp-booster";
     emacs-lsp-booster.inputs.nixpkgs.follows = "nixpkgs";
+
+    emacs-overlay.url = "github:nix-community/emacs-overlay/master";
+    emacs-overlay.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    emacs-overlay.inputs.nixpkgs-stable.follows = "nixpkgs";
 
     # # Hyprspace does not yet build with 0.46.2
     # hyprland.url = "github:hyprwm/Hyprland/v0.45.2";
@@ -41,9 +48,11 @@
     nixpkgs-unstable,
     home-manager,
     darwin,
+    gitignore,
     sops-nix,
     treefmt-nix,
     emacs-lsp-booster,
+    emacs-overlay,
     # hyprland,
     # hyprspace,
     # hyprpolkitagent,
@@ -108,6 +117,8 @@
         nixpkgs = {
           overlays = [
             # Any additional overlays can be placed here
+            emacs-overlay.overlays.default
+            (import ./elisp-packages)
             (final: prev: {
               unstable = import inputs.nixpkgs-unstable {
                 inherit (final) config system;
@@ -116,6 +127,21 @@
               # master = import inputs.nixpkgs-master {
               #   inherit (final) config system;
               # };
+
+              # concat emacs config to scan for `use-package` calls
+              emacs-config-concat = let
+                inherit (gitignore.lib) gitignoreSource;
+              in
+                final.stdenv.mkDerivation {
+                  name = "combined-config";
+                  version = "0.1.0";
+                  src = gitignoreSource ./emacs.d;
+                  phases = ["unpackPhase" "installPhase"];
+                  installPhase = ''
+                    cat init.el > $out
+                    cat lisp/*.el >> $out
+                  '';
+                };
 
               # emacs-lsp-booster = emacs-lsp-booster.packages.${pkgs.system}.default;
               llama-cpp = prev.llama-cpp.overrideAttrs (attrs: {
