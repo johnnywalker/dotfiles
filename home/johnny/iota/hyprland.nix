@@ -48,7 +48,6 @@ in {
     cliphist
     grim
     grimblast
-    mako
     pavucontrol
     select-window
     slurp
@@ -106,7 +105,6 @@ in {
     exec-once = [
       "hyprctl setcursor Nordzy-hyprcursors 24"
       "uwsm app -- firefox"
-      "uwsm app -- mako"
       # "${pkgs.networkmanagerapplet}/bin/nm-applet"
       "uwsm app -- mattermost"
       "uwsm app -- slack"

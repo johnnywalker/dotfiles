@@ -13,6 +13,7 @@ in {
     ./jetbrains.nix
     ./mpd.nix
     ./pass.nix
+    ./swaync.nix
     ./teams-for-linux.nix
     ./waybar.nix
   ];
