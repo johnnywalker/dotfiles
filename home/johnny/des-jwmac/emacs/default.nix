@@ -1,3 +1,3 @@
-{
-  xdg.configFile."emacs/lisp/init-host.el".source = ./init-host.el;
+{config, ...}: {
+  sops.secrets."emacs/init-host.el".path = "${config.xdg.configHome}/emacs/lisp/init-host.el";
 }

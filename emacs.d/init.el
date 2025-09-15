@@ -104,6 +104,7 @@ If the new path's directories does not exist, create them."
 (require 'init-flycheck)
 (require 'init-flyspell)
 (require 'init-golden-ratio)
+(require 'init-minuet)
 (require 'init-prog)
 (require 'init-org)
 
