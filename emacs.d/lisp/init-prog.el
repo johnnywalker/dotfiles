@@ -341,7 +341,8 @@
     ("\\.eco\\'"        . web-mode)
     ("\\.ejs\\'"        . web-mode)
     ("\\.ctp\\'"        . web-mode)
-    ("\\.djhtml\\'"     . web-mode))
+    ("\\.djhtml\\'"     . web-mode)
+    ("\\.liquid\\'"     . web-mode))
   :hook
   (web-mode . eglot-ensure))
 
