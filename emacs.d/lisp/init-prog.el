@@ -196,6 +196,9 @@
   (johnny/set-leader-keys-for-major-mode 'json-ts-mode
     "==" #'format-all-buffer))
 
+(use-package just-ts-mode
+  :ensure t)
+
 (use-package toml-mode
   :mode "/\\(\\.toml\\|Cargo.lock\\|\\.cargo/config\\)\\'"
   :ensure t)
