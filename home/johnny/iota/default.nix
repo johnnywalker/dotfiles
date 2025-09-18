@@ -51,5 +51,7 @@ in {
     );
 
   services.blueman-applet.enable = true;
-  services.trayscale.enable = true;
+  # disable for now - tray icon stops working after a bit, and logs are spammed with:
+  # .waybar-wrapped[139573]: Dropping signal ItemsPropertiesUpdated of type (a(ia(sv))a(ias)) since the type from the expected interface is (a(ia{sv})a(ias))
+  services.trayscale.enable = false;
 }
