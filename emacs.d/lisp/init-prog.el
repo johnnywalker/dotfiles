@@ -252,14 +252,14 @@
 ;;; GraphQL
 (use-package graphql-mode
   :ensure t
+  :mode ("\\.graphqls?\\'" "\\.gql\\'")
   :init
   (johnny/declare-prefix-for-mode 'graphql-mode "m=" "format")
   (johnny/declare-prefix-for-mode 'graphql-mode "mg" "goto")
   (johnny/set-leader-keys-for-major-mode 'graphql-mode
     "s" 'graphql-send-query
     "e" 'graphql-select-endpoint
-    "h" 'graphql-edit-headers)
-  )
+    "h" 'graphql-edit-headers))
 
 ;;; Rust
 
