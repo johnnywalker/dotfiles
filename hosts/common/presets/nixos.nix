@@ -32,8 +32,6 @@
       bitwarden-desktop
       btop
       gh
-      guake
-      neovide
       neovim-gtk
       neovim-qt
       psmisc
