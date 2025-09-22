@@ -414,13 +414,15 @@
           (tsx-ts-mode :language-id "typescriptreact")
           (typescript-ts-mode :language-id "typescript")
           (typescript-mode :language-id "typescript")) . ("vtsls" "--stdio")))
-  ;; ;; use clippy for check command
-  ;; (add-to-list 'eglot-server-programs
-  ;;   '((rustic-mode :language-id "rust")
-  ;;      . (eglot-rust-analyzer
-  ;;          "rust-analyzer"
-  ;;          :initializationOptions
-  ;;          (:check (:command "clippy")))))
+
+  (add-to-list 'eglot-server-programs
+    '((rustic-mode :language-id "rust")
+       . ("rust-analyzer"
+           :initializationOptions
+           ;; ;; use clippy for check command
+           ;; (:check (:command "clippy"))
+           ;; use separate target dir for rust-analyzer to avoid errors due to version mismatch
+           (:cargo (:targetDir t)))))
   :hook
   ;; Enable Eglot in programming modes
   (prog-mode . (lambda ()
