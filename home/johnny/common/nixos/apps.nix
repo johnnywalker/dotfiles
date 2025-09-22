@@ -11,9 +11,12 @@
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = {
     # prevent chromium from opening by default
+    "application/illustrator" = "evince.desktop";
     "application/msword" = "writer.desktop";
     "application/mxf" = "vlc.desktop";
     "application/ogg" = "vlc.desktop";
+    "application/pdf" = "evince.desktop";
+    "application/postscript" = "evince.desktop";
     "application/prs.plucker" = "writer.desktop";
     "application/ram" = "vlc.desktop";
     "application/rtf" = "writer.desktop";
