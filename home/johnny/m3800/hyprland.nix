@@ -403,13 +403,13 @@ in {
   };
   systemd.user.services.hypridle.Unit.After = ["graphical-session.target"];
 
-  services.hyprpaper.enable = true;
-  services.hyprpaper.settings = let
-    wallpaper = ../iota/wallpapers/53852285870_01497c017d_o.png;
-  in {
-    ipc = "on";
-    preload = ["${wallpaper}"];
-    wallpaper = [", ${wallpaper}"];
-  };
-  systemd.user.services.hyprpaper.Unit.After = ["graphical-session.target"];
+  # services.hyprpaper.enable = true;
+  # services.hyprpaper.settings = let
+  #   wallpaper = ../iota/wallpapers/53852285870_01497c017d_o.png;
+  # in {
+  #   ipc = "on";
+  #   preload = ["${wallpaper}"];
+  #   wallpaper = [", ${wallpaper}"];
+  # };
+  # systemd.user.services.hyprpaper.Unit.After = ["graphical-session.target"];
 }
