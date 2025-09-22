@@ -14,6 +14,7 @@
       gpt4all
       imagemagick
       inkscape
+      jellyfin-media-player
       libreoffice
       mpv
       signal-desktop
