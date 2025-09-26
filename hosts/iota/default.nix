@@ -36,6 +36,20 @@
   # support cross-compiling for ARM64
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
+  # support software RAID for backup storage
+  boot.swraid.enable = true;
+  boot.swraid.mdadmConf = ''
+    ARRAY /dev/md0 metadata=1.2 UUID=903838dd:5f2e8c33:703f042c:0db5e035
+    # resolve warning about mdmonitor service
+    # PROGRAM ${pkgs.coreutils}/bin/true
+    PROGRAM ${pkgs.util-linux}/bin/logger
+  '';
+  fileSystems."/mnt/backup" = {
+    device = "/dev/md0";
+    fsType = "xfs";
+    options = ["discard"];
+  };
+
   networking.hostName = "iota";
 
   networking.firewall.enable = true;
