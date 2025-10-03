@@ -277,6 +277,14 @@
 		"sr" 'org-agenda-refile
 		"TT" 'org-agenda-todo))
 
+;; GitHub-flavored markdown export
+(use-package ox-gfm
+  :ensure t)
+
+;; Org mode exporters using pandoc
+(use-package ox-pandoc
+  :ensure t)
+
 (use-package org-project-capture
   :ensure t
   :init
