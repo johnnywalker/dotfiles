@@ -26,8 +26,9 @@
   # Disable networkmanager
   networking.networkmanager.enable = false;
 
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "henry";
+  # auto-login breaks gdm - think it's a getty conflict
+  # services.displayManager.autoLogin.enable = true;
+  # services.displayManager.autoLogin.user = "henry";
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -43,6 +44,7 @@
       name = "step1";
       start = ''
         ${pkgs.gcompris}/bin/gcompris-qt &
+        # ${pkgs.tuxtype}/bin/tuxtype &
         waitPID=$!
       '';
     }
