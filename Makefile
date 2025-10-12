@@ -22,3 +22,6 @@ endif
 
 rcup:
 	nix shell nixpkgs#rcm --command rcup -- -d public -S emacs.d emacs.d
+
+boot-petey:
+	nixos-rebuild boot --flake .#petey --target-host petey --use-remote-sudo --show-trace

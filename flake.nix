@@ -105,7 +105,7 @@
       "johnny/des-jwmac" = import ./home/johnny/des-jwmac;
       "johnny/iota" = import ./home/johnny/iota;
       "johnny/m3800" = import ./home/johnny/m3800;
-      "johnny/petey" = import ./home/johnny/petey;
+      "johnny/petey" = import ./home/johnny/petey.nix;
       "jonjon/iota" = import ./home/jonjon/iota;
     };
 
