@@ -25,3 +25,6 @@ rcup:
 
 boot-petey:
 	nixos-rebuild boot --flake .#petey --target-host petey --use-remote-sudo --show-trace
+
+switch-petey:
+	nixos-rebuild switch --flake .#petey --target-host petey --use-remote-sudo --show-trace
