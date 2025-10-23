@@ -20,6 +20,7 @@ in {
 
   home.packages = with pkgs;
     [
+      cameractrls
       cameractrls-gtk4
       font-manager
       ghostty

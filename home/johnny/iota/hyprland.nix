@@ -110,6 +110,7 @@ in {
       "uwsm app -- slack"
       "uwsm app -- teams-for-linux"
       "uwsm app -- zulip"
+      "uwsm app -- \"${pkgs.cameractrls}/bin/cameractrlsd\""
     ];
 
     # https://wiki.hyprland.org/Configuring/Variables/#general
