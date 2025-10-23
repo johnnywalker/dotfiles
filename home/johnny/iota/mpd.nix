@@ -21,7 +21,7 @@
   ];
 
   services.mpd = {
-    enable = true;
+    enable = false;
     extraConfig = ''
       audio_output {
         type "pipewire"
