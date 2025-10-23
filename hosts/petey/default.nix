@@ -38,25 +38,25 @@
   services.xserver.desktopManager.gnome.enable = true;
 
   # Define custom session for launching educational applications.
-  services.xserver.displayManager.session = [
-    {
-      manage = "desktop";
-      name = "step1";
-      start = ''
-        chosen=$(<<<'GCompris
-        Super Mario Bros
-        Super Tux Kart
-        Tux Typing' ${pkgs.rofi}/bin/rofi -dmenu -i -format i)
-        case "$chosen" in
-        0) ${pkgs.gcompris}/bin/gcompris-qt & ;;
-        1) ${pkgs.mari0}/bin/mari0 & ;;
-        2) ${pkgs.superTuxKart}/bin/supertuxkart & ;;
-        3) ${pkgs.tuxtype}/bin/tuxtype & ;;
-        esac
-        waitPID=$!
-      '';
-    }
-  ];
+  # services.xserver.displayManager.session = [
+  #   {
+  #     manage = "desktop";
+  #     name = "step1";
+  #     start = ''
+  #       chosen=$(<<<'GCompris
+  #       Super Mario Bros
+  #       Super Tux Kart
+  #       Tux Typing' ${pkgs.rofi}/bin/rofi -dmenu -i -format i)
+  #       case "$chosen" in
+  #       0) ${pkgs.gcompris}/bin/gcompris-qt & ;;
+  #       1) ${pkgs.mari0}/bin/mari0 & ;;
+  #       2) ${pkgs.superTuxKart}/bin/supertuxkart & ;;
+  #       3) ${pkgs.tuxtype}/bin/tuxtype & ;;
+  #       esac
+  #       waitPID=$!
+  #     '';
+  #   }
+  # ];
 
   # Configure keymap in X11
   services.xserver.xkb = {
