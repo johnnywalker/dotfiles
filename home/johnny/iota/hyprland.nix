@@ -348,6 +348,25 @@ in {
       "size 80% 60%, class:^(dropterm)$" # set width/height of drop-up terminal
       "move 10% 35%, class:^(dropterm)$" # position drop-up terminal
       "animation slide bottom, class:^(dropterm)$" # position drop-down terminal
+      #############################################################################################
+      # Fix odd behaviors in JetBrains IDEs. Sources:
+      # - https://github.com/SIMULATAN/dotfiles/blob/64fc2d8dbad5d5a5de738b68abd11e71f5369c25/hyprland/jetbrains.conf#L17
+      # - https://github.com/hyprwm/Hyprland/issues/1947#issuecomment-2690914693
+      # - https://github.com/fubuki4649/dotfiles/blob/491d3efbced300311eedb5c0a0fd290486fc5755/.config/hypr/hyprland.conf#L132-L147
+      #############################################################################################
+      # Fix focus issues when dialogs are opened or closed
+      "focusonactivate,class:^(jetbrains-.*)$,floating:1"
+      # Fix splash screen showing in weird places and prevent annoying focus takeovers
+      "center,class:^(jetbrains-.*)$,title:^(splash)$,floating:1"
+      "nofocus,class:^(jetbrains-.*)$,title:^(splash)$,floating:1"
+      "noborder,class:^(jetbrains-.*)$,title:^(splash)$,floating:1"
+      # Center popups/find windows
+      "center,class:^(jetbrains-.*)$,title:^( )$,floating:1"
+      # Enabling this makes it impossible to provide input to any popup dialogue (search window, new file, etc.)
+      "stayfocused,class:^(jetbrains-.*)$,title:^( )$,floating:1"
+      "noborder,class:^(jetbrains-.*)$,title:^( )$,floating:1"
+      # Disable window flicker when autocomplete or tooltips appear
+      "noinitialfocus,class:^(jetbrains-.*)$,title:^(win.*)$,floating:1"
     ];
   };
 
