@@ -6,6 +6,7 @@
 }: {
   imports = [
     ../common/presets/nixos.nix
+    ../common/nixos/yubikey.nix
     ../common/users/jonjon
     ./amdgpu.nix
     ./hardware-configuration.nix

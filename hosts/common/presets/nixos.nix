@@ -11,8 +11,6 @@
     ../global/oom-killer.nix
     ../global/openssh.nix
 
-    ../nixos/yubikey.nix
-
     ../users/johnny
   ];
 
