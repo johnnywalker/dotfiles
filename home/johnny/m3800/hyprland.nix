@@ -49,7 +49,7 @@ in {
     grim
     grimblast
     mako
-    pavucontrol
+    myxer
     playerctl
     select-window
     slurp

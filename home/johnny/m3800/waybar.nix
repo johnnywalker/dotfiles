@@ -228,7 +228,7 @@
             ""
           ];
         };
-        on-click = "pavucontrol";
+        on-click = "myxer";
       };
       "systemd-failed-units" = {
         "format" = "✗ {nr_failed}";
