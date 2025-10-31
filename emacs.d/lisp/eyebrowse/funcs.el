@@ -36,9 +36,9 @@ showing the home buffer."
 (dolist (i (number-sequence 9 0 -1))
   (eval `(defun ,(intern (format "johnny/workspace-switch-to-%s" i)) nil
            ,(format "Switch to workspace %s.\n%s"
-              i "See `johnny/workspace-switch-by-pos' for details.")
+              i "See `johnny/workspace-switch-or-create' for details.")
            (interactive)
-           (johnny/workspace-switch-by-pos ,(if (eq 0 i) 9 (1- i))))))
+           (johnny/workspace-switch-or-create ,(if (eq 0 i) 9 (1- i))))))
 
 (defun johnny/workspace-switch-or-create (slot)
   "Given a workspace SLOT number.
