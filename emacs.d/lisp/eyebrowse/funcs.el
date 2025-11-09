@@ -38,7 +38,7 @@ showing the home buffer."
            ,(format "Switch to workspace %s.\n%s"
               i "See `johnny/workspace-switch-or-create' for details.")
            (interactive)
-           (johnny/workspace-switch-or-create ,(if (eq 0 i) 9 (1- i))))))
+           (johnny/workspace-switch-or-create ,i))))
 
 (defun johnny/workspace-switch-or-create (slot)
   "Given a workspace SLOT number.
