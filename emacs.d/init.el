@@ -107,6 +107,7 @@ If the new path's directories does not exist, create them."
 (require 'init-minuet)
 (require 'init-prog)
 (require 'init-org)
+(require 'init-sops)
 
 ;; per-host config
 (defvar johnny-enable-server nil
