@@ -83,11 +83,11 @@
 ;;   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
 
 (use-package hl-todo
-    :ensure t
-    :config
-    ;; global hook activates hl-todo-mode for prog-mode, text-mode
-    ;; mode can be explicitly defined using hl-todo-activate-in-modes variable
-    (global-hl-todo-mode 1))
+  :ensure t
+  :config
+  ;; global hook activates hl-todo-mode for prog-mode, text-mode
+  ;; mode can be explicitly defined using hl-todo-activate-in-modes variable
+  (global-hl-todo-mode 1))
 
 (use-package rainbow-delimiters
   :ensure t
