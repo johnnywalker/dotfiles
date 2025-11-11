@@ -149,6 +149,61 @@
   :config
   (global-evil-matchit-mode 1))
 
+(use-package origami
+  :ensure t
+  :init
+  (let
+    ;; not sure why are we using motion state instead of normal state
+    ((rebind-normal-to-motion-state-map
+       (lambda (key def)
+         (define-key evil-normal-state-map key nil)
+         (define-key evil-motion-state-map key def))))
+    (global-origami-mode)
+    (funcall rebind-normal-to-motion-state-map "za" 'origami-forward-toggle-node)
+    (funcall rebind-normal-to-motion-state-map "zc" 'origami-close-node)
+    (funcall rebind-normal-to-motion-state-map "zC" 'origami-close-node-recursively)
+    (funcall rebind-normal-to-motion-state-map "zO" 'origami-open-node-recursively)
+    (funcall rebind-normal-to-motion-state-map "zo" 'origami-open-node)
+    (funcall rebind-normal-to-motion-state-map "zr" 'origami-open-all-nodes)
+    (funcall rebind-normal-to-motion-state-map "zm" 'origami-close-all-nodes)
+    (funcall rebind-normal-to-motion-state-map "zs" 'origami-show-only-node)
+    (funcall rebind-normal-to-motion-state-map "zn" 'origami-next-fold)
+    (funcall rebind-normal-to-motion-state-map "zp" 'origami-previous-fold)
+    (funcall rebind-normal-to-motion-state-map "zR" 'origami-reset)
+    (funcall rebind-normal-to-motion-state-map (kbd "z <tab>") 'origami-recursively-toggle-node)
+    (funcall rebind-normal-to-motion-state-map (kbd "z TAB") 'origami-recursively-toggle-node)
+
+    (defhydra hydra-origami
+      (:color blue :foreign-keys run :hint none)
+      "
+ Close^^            Open^^             Toggle^^         Goto^^         Other^^
+ ───────^^───────── ─────^^─────────── ─────^^───────── ──────^^────── ─────^^─────────
+ [_c_] at point     [_o_] at point     [_a_] at point   [_n_] next     [_s_] single out
+ [_C_] recursively  [_O_] recursively  [_A_] all        [_p_] previous [_R_] reset
+ [_m_] all          [_r_] all          [_TAB_] like org ^^             [_q_] quit"
+      ("a" origami-forward-toggle-node)
+      ("A" origami-toggle-all-nodes)
+      ("c" origami-close-node)
+      ("C" origami-close-node-recursively)
+      ("o" origami-open-node)
+      ("O" origami-open-node-recursively)
+      ("r" origami-open-all-nodes)
+      ("m" origami-close-all-nodes)
+      ("n" origami-next-fold)
+      ("p" origami-previous-fold)
+      ("s" origami-show-only-node)
+      ("R" origami-reset)
+      ("TAB" origami-recursively-toggle-node)
+      ("<tab>" origami-recursively-toggle-node)
+      ("q" nil :exit t)
+      ("C-g" nil :exit t)
+      ("<SPC>" nil :exit t))
+
+    (johnny/set-leader-keys
+      "z." #'hydra-origami/body)
+    (johnny/declare-prefix
+      "z" "Folding/Zoom")))
+
 (use-package vimish-fold
     :ensure t
     :after evil)
