@@ -7,7 +7,7 @@
 ;;; Code:
 
 (use-package sops
-  :ensure (:type git :host github :repo "djgoku/sops")
+  :ensure t
   :bind (("C-c C-c" . sops-save-file)
          ("C-c C-k" . sops-cancel)
          ("C-c C-d" . sops-edit-file))
