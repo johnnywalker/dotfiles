@@ -149,5 +149,16 @@
   :config
   (global-evil-matchit-mode 1))
 
+(use-package vimish-fold
+    :ensure t
+    :after evil)
+
+(use-package evil-vimish-fold
+    :ensure t
+    :after vimish-fold
+    :init
+    (setq evil-vimish-fold-target-modes '(prog-mode conf-mode text-mode))
+    :config (global-evil-vimish-fold-mode))
+
 (provide 'init-evil)
 ;;; init-evil.el ends here
